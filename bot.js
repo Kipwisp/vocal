@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const bent = require('bent')
 const fs = require('fs') 
 const properties = require('./resources/properties.js')
-const config = require("./config.json");
 const characters = require("./resources/characters.json")
+const config = require("./config.json");
 
 const client = new Discord.Client();
 const post = bent(properties.api, 'POST', 'buffer', properties.headers);
@@ -14,11 +14,11 @@ client.on('ready', () => {
 
 client.on('message', async message => {
     if (message.content === `${config.prefix}help`) {
-        let helpMessage = `Usage: ${config.prefix}xx message \n`;
+        let helpMessage = `Usage: ${config.prefix}xx message \nCharacter codes: \n`;
         for (character in characters) {
-            helpMessage += `${character} : ${characters[character]} \n`;
+            helpMessage += `${character}: ${characters[character]} \n`;
         }
-        message.channel.send(helpMessage);
+        message.reply(helpMessage);
     }
     else if (message.content.substring(0, config.prefix.length) === config.prefix) {
         let length = message.content.substring(config.prefix.length + 3).length;
@@ -27,23 +27,25 @@ client.on('message', async message => {
             return;
         }
 
-        let sentMessage = await message.channel.send('Hold on, this might take a bit...');
+        let sentMessage = await message.reply('Hold on, this might take a bit...');
         let character = message.content.substring(config.prefix.length, config.prefix.length + 2);
         let text = message.content.substring(config.prefix.length + 3);
         let data = {text:text, character:characters[character]};
         
-        console.log("Processing request...");
+        console.log("Sending request...");
         try {
             let response = await post('', data);
             let file = `${text}.wav`;
-            
+            console.log("Retrieved data successfully.")
+            console.log("Processing data...");
+
             fs.writeFile(file, response, (err) => { 
                 if (err) {
                     console.log("Failed to write data.")
                 }
             }); 
 
-            await message.channel.send({ files: [file] });
+            await message.reply({ files: [file] });
             sentMessage.delete();
 
             fs.unlinkSync(file, (err) => {
@@ -53,11 +55,12 @@ client.on('message', async message => {
             });
         } catch (error) {
             console.log(error);
-            message.channel.send('Sorry, your request failed. Try again.');
+            console.log()
+            await message.reply('Sorry, your request failed. Try again.');
             sentMessage.delete();
         }
         
-        console.log("Finished processing");
+        console.log("Finished processing. \n");
     }
 });
 
