@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/Kipwisp/vocal/issues"
   },
-  "homepage": "https://github.com/Kipwisp/vocal#readme"
+  "homepage": "https://github.com/Kipwisp/vocal#readme",
+  "dependencies": {
+    "bent": "^7.1.2",
+    "discord.js": "^12.1.1",
+    "modules": "^0.4.0"
+  }
 }
