@@ -12,33 +12,36 @@ client.on('ready', () => {
  });
 
 client.on('message', async msg => {
-    if (msg.content === 'ping') {
-        msg.channel.send('Hold on this might take a bit...');
+    if (msg.content === "ping") {
+        let sentMessage = await msg.channel.send('Hold on this might take a bit...');
         let data = {text:'Hello this is working!', character:'Twilight Sparkle'};
         
         console.log("Processing request...");
-        await post('', data).then(response => {
-            file = 'output.wav';
+        try {
+            let response = await post('', data);
+            let file = 'output.wav';
+            
             fs.writeFile(file, response, (err) => { 
                 if (err) {
                     console.log("Failed to write data.")
                 }
             }); 
 
-            msg.channel.send({ files: [file] }).then((error, message) => {
-                fs.unlinkSync(file, (err) => {
-                    if (err) {
-                        console.log("Failed to delete temp files.")
-                    }
-                });
+            await msg.channel.send({ files: [file] });
+            sentMessage.delete();
+            fs.unlinkSync(file, (err) => {
+                if (err) {
+                    console.log("Failed to delete temp files.")
+                }
             });
-        }).catch((error) => {
+        } catch (error) {
             console.error;
-            msg.channel.send('Sorry, your request failed to send');
-        });
-
+            msg.channel.send('Sorry, your request failed. Try again.');
+            sentMessage.delete();
+        }
+        
         console.log("Finished processing");
     }
- });
+});
 
 client.login(config.token);
