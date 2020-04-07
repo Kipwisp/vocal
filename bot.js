@@ -13,22 +13,29 @@ client.on('ready', () => {
  });
 
 client.on('message', async message => {
-    if (message.content[0] === config.prefix) {
+    if (message.content === `${config.prefix}help`) {
+        let helpMessage = `Usage: ${config.prefix}xx message \n`;
+        for (character in characters) {
+            helpMessage += `${character} : ${characters[character]} \n`;
+        }
+        message.channel.send(helpMessage);
+    }
+    else if (message.content.substring(0, config.prefix.length) === config.prefix) {
         let length = message.content.substring(config.prefix.length + 3).length;
         if (length > config.char_limit) {
             message.channel.send(`Your message is ${length - config.char_limit} characters over the character limit (${config.char_limit}).`);
             return;
         }
 
-        let sentMessage = await message.channel.send('Hold on this might take a bit...');
+        let sentMessage = await message.channel.send('Hold on, this might take a bit...');
         let character = message.content.substring(config.prefix.length, config.prefix.length + 2);
-        let line = message.content.substring(config.prefix.length + 3);
-        let data = {text:line, character:characters[character]};
+        let text = message.content.substring(config.prefix.length + 3);
+        let data = {text:text, character:characters[character]};
         
         console.log("Processing request...");
         try {
             let response = await post('', data);
-            let file = `${line}.wav`;
+            let file = `${text}.wav`;
             
             fs.writeFile(file, response, (err) => { 
                 if (err) {
@@ -38,6 +45,7 @@ client.on('message', async message => {
 
             await message.channel.send({ files: [file] });
             sentMessage.delete();
+
             fs.unlinkSync(file, (err) => {
                 if (err) {
                     console.log("Failed to delete temp files.")
