@@ -17,41 +17,45 @@ async function parseText(text) {
     : filteredText + '.';
 }
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    try {
+        await client.user.setActivity(`${config.prefix}help`, { type: 'WATCHING' });
+    } catch (error) {
+        console.log("Failed to set activity.");
+    }
  });
 
 client.on('message', async message => {
     if (message.content === `${config.prefix}help`) {
-        let helpMessage = `Usage: ${config.prefix}xx message \nCharacter codes: \n`;
+        let helpMessage = `\`\`\`Usage: ${config.prefix}xx message \nCharacter codes: \n`;
         for (character in characters) {
             helpMessage += `${character}: ${characters[character]} \n`;
         }
-        message.reply(helpMessage);
+        message.reply(`${helpMessage}\`\`\``);
     }
     else if (message.content.match(new RegExp(`^${config.prefix}[a-z][a-z] `))) {
-        let length = message.content.substring(config.prefix.length + 3).length;
-        if (length > config.char_limit) {
-            message.channel.send(`Your message is ${length - config.char_limit} characters over the character limit (${config.char_limit}).`);
+        let character = message.content.substring(config.prefix.length, config.prefix.length + 2);
+        if (!(character in characters)) {
+            await message.reply(`That character code is invalid. Say ${config.prefix}help to view valid codes.`);
+            return;
+        }
+
+        let text = message.content.substring(config.prefix.length + 3);
+        if (text.length > config.char_limit) {
+            await message.channel.send(`Your message is ${text.length - config.char_limit} characters over the character limit (${config.char_limit} characters max).`);
             return;
         }
 
         let sentMessage = await message.reply('Hold on, this might take a bit...');
-        let character = message.content.substring(config.prefix.length, config.prefix.length + 2);
-        let text = message.content.substring(config.prefix.length + 3);
-        let parsedText = await parseText(text);
-        let data = {text:parsedText, character:characters[character]};
 
-        if (!(character in characters)) {
-            await message.reply(`That character code is invalid. Say ${config.prefix}help to view valid codes.`);
-            sentMessage.delete();
-            return;
-        }
-        
+        text = await parseText(text);
+        let data = {text:text, character:characters[character]};
         console.log("Sending request...");
+
         try {
             let response = await post('', data);
-            let file = `${text.replace(/[^A-Z _']/gi, '')}.wav`;
+            let file = `${character}_${text.replace(/[^A-Z _']/gi, '')}.wav`;
             console.log("Retrieved data successfully.");
             console.log("Processing data...");
 
@@ -81,4 +85,3 @@ client.on('message', async message => {
 });
 
 client.login(config.token);
-
