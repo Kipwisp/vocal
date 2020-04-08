@@ -45,12 +45,12 @@ client.on('message', async message => {
         try {
             let response = await post('', data);
             let file = `${text}.wav`;
-            console.log("Retrieved data successfully.")
+            console.log("Retrieved data successfully.");
             console.log("Processing data...");
 
             fs.writeFile(file, response, (err) => { 
                 if (err) {
-                    console.log("Failed to write data.")
+                    console.log("Failed to write data.");
                 }
             }); 
 
@@ -59,12 +59,11 @@ client.on('message', async message => {
 
             fs.unlinkSync(file, (err) => {
                 if (err) {
-                    console.log("Failed to delete temp files.")
+                    console.log("Failed to delete temp files.");
                 }
             });
         } catch (error) {
             console.log(error);
-            console.log()
             await message.reply('Sorry, your request failed. Try again.');
             sentMessage.delete();
         }
