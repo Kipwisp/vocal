@@ -41,15 +41,15 @@ client.on('message', async message => {
             return;
         }
 
-        let text = message.content.substring(config.prefix.length + 3);
+        let text = await parseText(message.content.substring(config.prefix.length + 3));
         if (text.length > config.char_limit) {
-            await message.channel.send(`Your message is ${text.length - config.char_limit} characters over the character limit (${config.char_limit} characters max).`);
+            let difference = text.length - config.char_limit;
+            await message.channel.send(`Your message is ${difference} character${difference == 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
             return;
         }
 
         let sentMessage = await message.reply('Hold on, this might take a bit...');
 
-        text = await parseText(text);
         let data = {text:text, character:characters[character]};
         console.log("Sending request...");
 
@@ -59,21 +59,12 @@ client.on('message', async message => {
             console.log("Retrieved data successfully.");
             console.log("Processing data...");
 
-            fs.writeFile(file, response, (err) => { 
-                if (err) {
-                    console.log("Failed to write data.");
-                    throw err;
-                }
-            }); 
+            fs.writeFileSync(file, response);
 
             await message.reply({ files: [file] });
             sentMessage.delete();
 
-            fs.unlinkSync(file, (err) => {
-                if (err) {
-                    console.log("Failed to delete temp files.");
-                }
-            });
+            fs.unlinkSync(file);
         } catch (error) {
             console.log(error);
             await message.reply('Sorry, your request failed. Try again.');
