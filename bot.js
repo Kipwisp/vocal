@@ -8,6 +8,15 @@ const config = require("./config.json");
 const client = new Discord.Client();
 const post = bent(properties.api, 'POST', 'buffer', properties.headers);
 
+async function parseText(text) {
+  const filteredText = text.replace(/[^A-Z _.,!?:']/gi, '');
+  const lastChar = filteredText[filteredText.length - 1];
+
+  return ['.', ',', ':', '!', '?'].includes(lastChar)
+    ? filteredText
+    : filteredText + '.';
+}
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
  });
@@ -29,7 +38,7 @@ client.on('message', async message => {
 
         let sentMessage = await message.reply('Hold on, this might take a bit...');
         let character = message.content.substring(config.prefix.length, config.prefix.length + 2);
-        let text = message.content.substring(config.prefix.length + 3);
+        let text = await parseText(message.content.substring(config.prefix.length + 3));
         let data = {text:text, character:characters[character]};
         
         console.log("Sending request...");
@@ -65,3 +74,4 @@ client.on('message', async message => {
 });
 
 client.login(config.token);
+
