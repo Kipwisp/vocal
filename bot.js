@@ -29,7 +29,7 @@ client.on('message', async message => {
         }
         message.reply(helpMessage);
     }
-    else if (message.content.substring(0, config.prefix.length) === config.prefix) {
+    else if (message.content.match(new RegExp(`^${config.prefix}[a-z][a-z] `))) {
         let length = message.content.substring(config.prefix.length + 3).length;
         if (length > config.char_limit) {
             message.channel.send(`Your message is ${length - config.char_limit} characters over the character limit (${config.char_limit}).`);
@@ -38,8 +38,15 @@ client.on('message', async message => {
 
         let sentMessage = await message.reply('Hold on, this might take a bit...');
         let character = message.content.substring(config.prefix.length, config.prefix.length + 2);
-        let text = await parseText(message.content.substring(config.prefix.length + 3));
-        let data = {text:text, character:characters[character]};
+        let text = message.content.substring(config.prefix.length + 3);
+        let parsedText = await parseText(text);
+        let data = {text:parsedText, character:characters[character]};
+
+        if (!(character in characters)) {
+            await message.reply(`That character code is invalid. Say ${config.prefix}help to view valid codes.`);
+            sentMessage.delete();
+            return;
+        }
         
         console.log("Sending request...");
         try {
@@ -51,6 +58,7 @@ client.on('message', async message => {
             fs.writeFile(file, response, (err) => { 
                 if (err) {
                     console.log("Failed to write data.");
+                    throw err;
                 }
             }); 
 
