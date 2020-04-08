@@ -51,7 +51,7 @@ client.on('message', async message => {
         console.log("Sending request...");
         try {
             let response = await post('', data);
-            let file = `${text}.wav`;
+            let file = `${text.replace(/[^A-Z _']/gi, '')}.wav`;
             console.log("Retrieved data successfully.");
             console.log("Processing data...");
 
