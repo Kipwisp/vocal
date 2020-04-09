@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const bent = require('bent')
-const fs = require('fs') 
+const fs = require('fs').promises 
 const properties = require('./resources/properties.js')
 const characters = require("./resources/characters.json")
 const config = require("./config.json");
@@ -18,7 +18,7 @@ async function parseText(text) {
 }
 
 client.on('ready', async () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`Logged in as ${client.user.tag}! \n`);
     try {
         await client.user.setActivity(`${config.prefix}help`, { type: 'WATCHING' });
     } catch (error) {
@@ -59,14 +59,14 @@ client.on('message', async message => {
             console.log("Retrieved data successfully.");
             console.log("Processing data...");
 
-            fs.writeFileSync(file, response);
+            await fs.writeFile(file, response);
 
             await message.reply({ files: [file] });
             sentMessage.delete();
 
-            fs.unlinkSync(file);
+            fs.unlink(file).catch(error => console.log("Failed to delete temp file: \n", error));
         } catch (error) {
-            console.log(error);
+            console.log("An error occurred: \n", error);
             await message.reply('Sorry, your request failed. Try again.');
             sentMessage.delete();
         }
