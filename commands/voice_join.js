@@ -8,20 +8,24 @@ let playing = {};
 async function play(connection, message) {
     let guildID = message.guild.id;
     let guildQueue = queue[guildID];
-    let file = guildQueue.shift();
+    let request = guildQueue.shift();
     
-    message.channel.send(`Now playing: ${file}`);
-    dispatcher = connection.play(file);
+    message.channel.send(`Now playing: [${request["character"]}] ${request["line"]}`);
+    dispatcher = connection.play(request["file"]);
     dispatcher.on("speaking", speaking => { 
         if (!speaking) {
-            fs.unlink(file).catch(error => console.log("Failed to delete temp file: \n", error));
+            let timeout = 2000;
 
-            if (guildQueue.length > 0) {
-                play(connection, message);
-            } else {
-                playing[guildID] = false;
-                connection.channel.leave();
-            }
+            fs.unlink(request["file"]).catch(error => console.log("Failed to delete temp file: \n", error));
+
+            setTimeout(() => { 
+                if (guildQueue.length > 0) {
+                    play(connection, message);
+                } else {
+                    playing[guildID] = false;
+                    connection.channel.leave();
+                }
+            }, timeout);
         }
     });
 }
@@ -38,20 +42,20 @@ module.exports = {
             return;
         }
 
-        let file = await helper.getVoiceFile(message);
-        if (!file) return;
+        let result = await helper.getVoiceFile(message);
+        if (!result) return;
 
         let guildID = message.guild.id;
         if (!queue[guildID]) queue[guildID] = [];
         
-        queue[guildID].push(file);
+        queue[guildID].push(result);
        
         if (!playing[guildID]) {
             playing[guildID] = true;
             let connection = await voiceChannel.join();
             play(connection, message);
         } else {
-            message.reply(`Queued your request: ${file}`);
+            message.reply(`Queued your request: [${result["character"]}] ${result["line"]}`);
         }
     }
 };

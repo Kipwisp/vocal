@@ -8,8 +8,9 @@ module.exports = {
     format: `${config.prefix}xx message`,
     description: 'Sends a .wav file of the generated voice for the selected character and message.',
     exec: async (message) => { 
-        let file = await helper.getVoiceFile(message);
-        if (!file) return;
+        let result = await helper.getVoiceFile(message);
+        if (!result) return;
+        let file = result["file"];
 
         try {
             await message.reply({ files: [file] });

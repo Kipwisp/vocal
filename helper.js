@@ -35,7 +35,7 @@ module.exports = {
             return;
         }
 
-        let file = `${character}_${text.replace(/[^A-Z _']/gi, '')} [${crypto.randomBytes(4).toString('hex')}].wav`;
+        let file = `tmp/${character}_${text.replace(/[^A-Z _']/gi, '')} [${crypto.randomBytes(4).toString('hex')}].wav`;
         let sentMessage = await message.reply('Hold on, this might take a bit...');
 
         let data = {text:text, character:characters[character]};
@@ -56,6 +56,7 @@ module.exports = {
         }
         
         console.log("Finished processing. \n");
-        return file;
+
+        return {"file": file, "character": characters[character], "line": text};
     }
 }
