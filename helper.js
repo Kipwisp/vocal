@@ -1,4 +1,5 @@
 const bent = require('bent');
+const crypto = require('crypto');
 const fs = require('fs').promises;
 const characters = require("./resources/characters.json");
 const config = require("./config.json");
@@ -27,14 +28,14 @@ module.exports = {
             return;
         }
 
-        let text = await parseText(message.content.substring(message.content.indexOf(" ")));
+        let text = await parseText(message.content.substring(message.content.indexOf(" ") + 1));
         if (text.length > config.char_limit) {
             let difference = text.length - config.char_limit;
             await message.channel.send(`Your message is ${difference} character${difference == 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
             return;
         }
 
-        let file = `${character}_${text.replace(/[^A-Z _']/gi, '')}.wav`;
+        let file = `${character}_${text.replace(/[^A-Z _']/gi, '')} [${crypto.randomBytes(4).toString('hex')}].wav`;
         let sentMessage = await message.reply('Hold on, this might take a bit...');
 
         let data = {text:text, character:characters[character]};

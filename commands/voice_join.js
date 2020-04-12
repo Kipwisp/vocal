@@ -2,6 +2,30 @@ const fs = require('fs').promises;
 const helper = require("../helper.js");
 const config = require("../config.json");
 
+let queue = {};
+let playing = {};
+
+async function play(connection, message) {
+    let guildID = message.guild.id;
+    let guildQueue = queue[guildID];
+    let file = guildQueue.shift();
+    
+    message.channel.send(`Now playing: ${file}`);
+    dispatcher = connection.play(file);
+    dispatcher.on("speaking", speaking => { 
+        if (!speaking) {
+            fs.unlink(file).catch(error => console.log("Failed to delete temp file: \n", error));
+
+            if (guildQueue.length > 0) {
+                play(connection, message);
+            } else {
+                playing[guildID] = false;
+                connection.channel.leave();
+            }
+        }
+    });
+}
+
 module.exports = {  
     name: 'Voice Join',
     command: new RegExp(`^${config.prefix}[a-z][a-z]\\+ `),
@@ -15,21 +39,19 @@ module.exports = {
         }
 
         let file = await helper.getVoiceFile(message);
-        if (!file) { return; }
+        if (!file) return;
 
-        try {
+        let guildID = message.guild.id;
+        if (!queue[guildID]) queue[guildID] = [];
+        
+        queue[guildID].push(file);
+       
+        if (!playing[guildID]) {
+            playing[guildID] = true;
             let connection = await voiceChannel.join();
-
-            let dispatcher = connection.play(file);
-            dispatcher.on("speaking", speaking => { 
-                if (!speaking) {
-                    setTimeout(() => { voiceChannel.leave(); }, 2000);
-                    fs.unlink(file).catch(error => console.log("Failed to delete temp file: \n", error));
-                }
-            });
-        } catch (error) {
-            voiceChannel.leave();
-            console.log("An error occurred: \n", error);
+            play(connection, message);
+        } else {
+            message.reply(`Queued your request: ${file}`);
         }
     }
 };

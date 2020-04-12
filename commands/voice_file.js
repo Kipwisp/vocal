@@ -9,7 +9,7 @@ module.exports = {
     description: 'Sends a .wav file of the generated voice for the selected character and message.',
     exec: async (message) => { 
         let file = await helper.getVoiceFile(message);
-        if (!file) { return; }
+        if (!file) return;
 
         try {
             await message.reply({ files: [file] });

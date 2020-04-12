@@ -14,6 +14,9 @@ client.on('ready', async () => {
  });
 
 client.on('message', async message => {
+    if (message.author.bot) return;
+    if (!message.content.startsWith(config.prefix)) return;
+    
     for (command of commands.commands) {
         if (message.content.match(command.command)) {
             command.exec(message);
