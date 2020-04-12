@@ -14,7 +14,7 @@ client.on('ready', async () => {
  });
 
 client.on('message', async message => {
-    for (let command of commands.commands) {
+    for (command of commands.commands) {
         if (message.content.match(command.command)) {
             command.exec(message);
             break;

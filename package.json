@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Kipwisp/vocal#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.1.0",
     "bent": "^7.1.2",
     "discord.js": "^12.1.1",
     "modules": "^0.4.0"
