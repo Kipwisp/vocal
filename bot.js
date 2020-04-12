@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const fs = require('fs');
 const commands = require("./commands/commands.js");
 const config = require("./config.json");
 
@@ -16,7 +17,7 @@ client.on('ready', async () => {
 client.on('message', async message => {
     if (message.author.bot) return;
     if (!message.content.startsWith(config.prefix)) return;
-    
+
     for (command of commands.commands) {
         if (message.content.match(command.command)) {
             command.exec(message);
@@ -24,5 +25,11 @@ client.on('message', async message => {
         }
     }
 });
+
+let tmpDir = 'tmp';
+if (!fs.existsSync(tmpDir)) {
+    fs.mkdirSync(tmpDir);
+    console.log("Created tmp directory.");
+}
 
 client.login(config.token);

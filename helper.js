@@ -55,7 +55,7 @@ module.exports = {
             return;
         }
         
-        console.log("Finished processing. \n");
+        console.log("Finished processing.");
 
         return {"file": file, "character": characters[character], "line": text};
     }
