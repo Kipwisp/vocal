@@ -37,8 +37,8 @@ Upon the bot successfully logging into Discord, a message should appear stating 
 ## Commands
 The bot has the following commands:
 
- * **\<prefix\>\<xx\> \<message\>** - The bot will reply with a .wav file of the requested voice.
- * **\<prefix\>\<xx\>+ \<message\>** - The bot will join the voice channel the user is in and play the requested voice.
+ * **\<prefix\>\<character code\> \<message\>** - The bot will reply with a .wav file of the requested voice.
+ * **\<prefix\>\<character code\>+ \<message\>** - The bot will join the voice channel the user is in and play the requested voice.
  * **\<prefix\>help** - The bot will reply with a general format on how to make a voice request and all the character codes for their respective characters.
  * **\<prefix\>invite** - The bot will send its invite link.
   
