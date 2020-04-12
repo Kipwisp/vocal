@@ -9,7 +9,7 @@ module.exports = {
     format: `${config.prefix}help`,
     description: 'Sends a help message containing commands for the bot and character codes.',
     exec: async (message) => { 
-        let helpMessage = `\`\`\`Commands:\n`
+        let helpMessage = `\`\`\`Powered by 15.ai\n\nCommands:\n`
 
         let commands = require("./commands.js");
         for (command of commands.commands) {
