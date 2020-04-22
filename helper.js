@@ -24,14 +24,14 @@ module.exports = {
     getVoiceFile: async (message) => { 
         let character = message.content.substring(config.prefix.length, config.prefix.length + 2);
         if (!(character in characters)) {
-            await message.reply(`That character code is invalid. Say ${config.prefix}help to view valid codes.`);
+            await message.channel.send(`${message.member} That character code is invalid. Say ${config.prefix}help to view valid codes.`);
             return;
         }
 
         let text = await parseText(message.content.substring(message.content.indexOf(" ") + 1));
         if (text.length > config.char_limit) {
             let difference = text.length - config.char_limit;
-            await message.channel.send(`Your message is ${difference} character${difference == 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
+            await message.channel.send(`${message.member} Your message is ${difference} character${difference == 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
             return;
         }
 
@@ -50,7 +50,7 @@ module.exports = {
             sentMessage.delete();
         } catch (error) {
             console.log("An error occurred: \n", error);
-            await message.reply('Sorry, your request failed. Try again.');
+            await message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
             sentMessage.delete();
             return;
         }
