@@ -22,6 +22,6 @@ module.exports = {
         for (character in characters) {
             helpMessage += `${character}: ${characters[character]} \n`;
         }
-        message.reply(`${helpMessage}\`\`\``);
+        message.channel.send(`${message.member} ${helpMessage}\`\`\``);
     }
 };

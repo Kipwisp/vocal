@@ -10,7 +10,7 @@ async function play(connection, message) {
     let guildQueue = queue[guildID];
     let request = guildQueue.shift();
     
-    message.channel.send(`Now playing: [${request["character"]}] ${request["line"]}`);
+    message.channel.send(`Now playing: [${request["character"]}] ${request["line"]} | Requested by ${request["member"]}`);
     dispatcher = connection.play(request["file"]);
     dispatcher.on("speaking", speaking => { 
         if (!speaking) {
@@ -38,7 +38,7 @@ module.exports = {
     exec: async (message) => { 
         let voiceChannel = message.member.voice.channel;
         if (!voiceChannel) {
-            await message.reply(`Please join a voice channel before using that command.`);
+            await message.channel.send(`${message.member} Please join a voice channel before using that command.`);
             return;
         }
 
@@ -55,7 +55,7 @@ module.exports = {
             let connection = await voiceChannel.join();
             play(connection, message);
         } else {
-            message.reply(`Queued your request: [${result["character"]}] ${result["line"]}`);
+            message.channel.send(`${message.member} Queued your request: [${result["character"]}] ${result["line"]}`);
         }
     }
 };

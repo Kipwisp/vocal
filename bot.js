@@ -8,7 +8,7 @@ const client = new Discord.Client();
 client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}! \n`);
     try {
-        await client.user.setActivity(`${config.prefix}help`, { type: 'WATCHING' });
+        await client.user.setActivity(`${config.prefix}help | Powered by 15.ai`, { type: 'WATCHING' });
     } catch (error) {
         console.log("Failed to set activity.");
     }
