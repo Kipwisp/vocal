@@ -1,4 +1,5 @@
 const characters = require("../resources/characters.json");
+const emotions = require("../resources/emotions.json");
 const config = require("../config.json");
 
 const name = 'Help';
@@ -17,11 +18,17 @@ module.exports = {
                 helpMessage += `${command.name} (${command.format}): ${command.description}\n`;
             }
         }
-        
+
         helpMessage += `\nCharacter codes:\n`;
         for (character in characters) {
             helpMessage += `${character}: ${characters[character]} \n`;
         }
+
+        helpMessage += `\nEmotion codes:\n`;
+        for (emotion in emotions) {
+            helpMessage += `${emotion}: ${emotions[emotion]} \n`;
+        }
+
         message.channel.send(`${message.member} ${helpMessage}\`\`\``);
     }
 };

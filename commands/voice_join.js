@@ -10,7 +10,7 @@ async function play(connection, message) {
     let guildQueue = queue[guildID];
     let request = guildQueue.shift();
     
-    message.channel.send(`Now playing: [${request["character"]}] ${request["line"]} | Requested by ${request["member"]}`);
+    message.channel.send(`Now playing: [${request["character"]} - ${requestAnimationFrame["emotion"]}] ${request["line"]} | Requested by ${request["member"]}`);
     dispatcher = connection.play(request["file"]);
     dispatcher.on("speaking", speaking => { 
         if (!speaking) {
@@ -32,9 +32,9 @@ async function play(connection, message) {
 
 module.exports = {  
     name: 'Voice Join',
-    command: new RegExp(`^${config.prefix}[a-z][a-z]\\+ `),
-    format: `${config.prefix}xx+ message`,
-    description: 'Joins the voice channel the user is in and plays the generated voice for the selected character and message.',
+    command: new RegExp(`^${config.prefix}[a-z][a-z][a-z]\\+ `),
+    format: `${config.prefix}xxy+ message`,
+    description: 'Joins the voice channel the user is in and plays the generated voice for the selected character, emotion, and message.',
     exec: async (message) => { 
         let voiceChannel = message.member.voice.channel;
         if (!voiceChannel) {
@@ -55,7 +55,7 @@ module.exports = {
             let connection = await voiceChannel.join();
             play(connection, message);
         } else {
-            message.channel.send(`${message.member} Queued your request: [${result["character"]}] ${result["line"]}`);
+            message.channel.send(`${message.member} Queued your request: [${result["character"]} - ${result["emotion"]}] ${result["line"]}`);
         }
     }
 };
