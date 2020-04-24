@@ -6,7 +6,7 @@ Be sure to check out fifteen's wonderful tool that makes this project possible. 
 Configure the following values for the bot in config.json:
   * token: The unique token for your Discord bot
   * prefix: The prefix the bot looks for in a message in order to be activated
-  * char_limit: The maximum number of characters allowed for a message, 140 is recommended
+  * char_limit: The maximum number of characters allowed for a message, 200 is recommended
   * client_id: The client ID for your Discord bot
 
 An example is shown here:
@@ -14,7 +14,7 @@ An example is shown here:
 { 
   "token"  : "XXXXXXXXXXXXXXXXXXXXXXXX.XXXXXX.XXXXXXXXXXXXXXXXXXXXXXXXXXX",
   "prefix" : "v!",
-  "char_limit" : 140,
+  "char_limit" : 200,
   "client_id": "000000000000000000"
 }
 ```
@@ -37,9 +37,9 @@ Upon the bot successfully logging into Discord, a message should appear stating 
 ## Commands
 The bot has the following commands:
 
- * **\<prefix\>\<character code\> \<message\>** - The bot will reply with a .wav file of the requested voice.
- * **\<prefix\>\<character code\>+ \<message\>** - The bot will join the voice channel the user is in and play the requested voice.
- * **\<prefix\>help** - The bot will reply with a general format on how to make a voice request and all the character codes for their respective characters.
+ * **\<prefix\>\<character code\>\<emotion code\> \<message\>** - The bot will reply with a .wav file of the requested voice.
+ * **\<prefix\>\<character code\>\<emotion code\>+ \<message\>** - The bot will join the voice channel the user is in and play the requested voice.
+ * **\<prefix\>help** - The bot will reply with a general format on how to make a voice request, all the character codes for their respective characters and all the emotion codes.
  * **\<prefix\>invite** - The bot will send its invite link.
   
 ## Dependencies
