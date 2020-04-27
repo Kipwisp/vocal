@@ -4,9 +4,9 @@ const config = require("../config.json");
 
 module.exports = {  
     name: 'Voice File',
-    command: new RegExp(`^${config.prefix}[a-z][a-z][a-z] `),
+    command: new RegExp(`^${config.prefix}[a-z][a-z][a-zA-Z]? `),
     format: `${config.prefix}xxy message`,
-    description: 'Sends a .wav file of the generated voice for the selected character, emotion, and message.',
+    description: 'Sends a .wav file of the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => { 
         let result = await helper.getVoiceFile(message);
         if (!result) return;

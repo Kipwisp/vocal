@@ -1,14 +1,22 @@
 {
-    "ts": "Twilight Sparkle",
-    "fs": "Fluttershy",
-    "ra": "Rarity",
-    "aj": "Applejack",
-    "pp": "Pinkie Pie",
-    "rd": "Rainbow Dash",
-    "pc": "Princess Celestia",
-    "gl": "GLaDOS",
-    "wh": "Wheatley",
-    "na": "The Narrator",
-    "td": "Tenth Doctor",
-    "so": "Soldier"
+    "ts": {
+            "name": "Twilight Sparkle",
+            "emotions": ["Neutral", "Happy"]
+        },
+    "fs": {
+            "name": "Fluttershy",
+            "emotions": ["Neutral"]
+        },
+    "ra": {
+            "name": "Rarity",
+            "emotions": ["Neutral"]
+        },
+    "gl": {
+            "name": "GLaDOS",
+            "emotions": ["Homicidal"]
+        },
+    "so": {
+            "name": "Soldier",
+            "emotions": ["Neutral"]
+        }
 }

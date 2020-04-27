@@ -19,12 +19,18 @@ module.exports = {
             }
         }
 
-        helpMessage += `\nCharacter codes:\n`;
+        helpMessage += `\nCharacter codes and emotions:\n`;
         for (character in characters) {
-            helpMessage += `${character}: ${characters[character]} \n`;
+            helpMessage += `${character}: ${characters[character]["name"]} \nEmotions: `;
+            
+            let emotions = characters[character]["emotions"];
+            for (i = 0; i < emotions.length; ++i) {
+                helpMessage += `${emotions[i]}${i + 1 == emotions.length ? '' : ','} `;
+            }
+            helpMessage += `\n\n`;
         }
 
-        helpMessage += `\nEmotion codes:\n`;
+        helpMessage += `Emotion codes:\n`;
         for (emotion in emotions) {
             helpMessage += `${emotion}: ${emotions[emotion]} \n`;
         }
