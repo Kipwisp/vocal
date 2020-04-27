@@ -10,7 +10,7 @@ async function play(connection, message) {
     let guildQueue = queue[guildID];
     let request = guildQueue.shift();
     
-    message.channel.send(`Now playing: [${request["character"]} - ${requestAnimationFrame["emotion"]}] ${request["line"]} | Requested by ${request["member"]}`);
+    message.channel.send(`Now playing: [${request["character"]} - ${request["emotion"]}] ${request["line"]} | Requested by ${request["member"]}`);
     dispatcher = connection.play(request["file"]);
     dispatcher.on("speaking", speaking => { 
         if (!speaking) {
