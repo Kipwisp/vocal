@@ -11,6 +11,10 @@
             "name": "Rarity",
             "emotions": ["Neutral"]
         },
+    "rd": {
+            "name": "Rainbow Dash",
+            "emotions": ["Neutral"]
+        },
     "gl": {
             "name": "GLaDOS",
             "emotions": ["Homicidal"]
