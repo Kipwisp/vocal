@@ -56,7 +56,7 @@ module.exports = {
             return;
         }
 
-        let file = `tmp/${characterName}_${emotionName}_${text.replace(/[^A-Z _']/gi, '')} [${crypto.randomBytes(4).toString('hex')}].wav`;
+        let file = `tmp/${crypto.randomBytes(2).toString('hex')}_${code}_${text.replace(/[^A-Z _']/gi, '')}.wav`;
         let sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
 
         let data = {text:text, character:characterName, emotion:emotionName};
