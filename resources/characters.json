@@ -1,7 +1,7 @@
 {
     "ts": {
             "name": "Twilight Sparkle",
-            "emotions": ["Neutral", "Happy"]
+            "emotions": ["Happy", "Neutral"]
         },
     "fs": {
             "name": "Fluttershy",
@@ -13,6 +13,10 @@
         },
     "rd": {
             "name": "Rainbow Dash",
+            "emotions": ["Neutral"]
+        },
+    "pp": {
+            "name": "Pinkie Pie",
             "emotions": ["Neutral"]
         },
     "gl": {
