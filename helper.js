@@ -56,7 +56,8 @@ module.exports = {
             return;
         }
 
-        let file = `tmp/${crypto.randomBytes(2).toString('hex')}_${code}_${text.replace(/[^A-Z _']/gi, '')}.wav`;
+        let fileNameLimit = 50;
+        let file = `tmp/${code}_${text.replace(/[^A-Z _']/gi, '').substr(0, fileNameLimit)}_${crypto.randomBytes(2).toString('hex')}.wav`;
         let sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
 
         let data = {text:text, character:characterName, emotion:emotionName};
