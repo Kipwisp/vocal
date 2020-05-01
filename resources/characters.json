@@ -11,12 +11,20 @@
             "name": "Rarity",
             "emotions": ["Neutral"]
         },
+    "aj": {
+            "name": "Applejack",
+            "emotions": ["Neutral"]
+        },
     "rd": {
             "name": "Rainbow Dash",
             "emotions": ["Neutral"]
         },
     "pp": {
             "name": "Pinkie Pie",
+            "emotions": ["Neutral"]
+        },
+    "dh": {
+            "name": "Derpy Hooves",
             "emotions": ["Neutral"]
         },
     "gl": {
