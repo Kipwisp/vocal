@@ -4,7 +4,7 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,10 @@
     "@discordjs/opus": "^0.1.0",
     "bent": "^7.1.2",
     "discord.js": "^12.1.1",
-    "modules": "^0.4.0"
+    "modules": "^0.4.0",
+    "sinon": "^9.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.2"
   }
 }

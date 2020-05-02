@@ -1,35 +1,22 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const commands = require("./commands/commands.js");
 const config = require("./config.json");
+const Vocal = require("./src/vocal.js")
 
-const client = new Discord.Client();
+function run() {
+    let client = new Discord.Client();
+    let bot = new Vocal();
 
-client.on('ready', async () => {
-    console.log(`Logged in as ${client.user.tag}! \n`);
-    try {
-        await client.user.setActivity(`${config.prefix}help | Powered by 15.ai`, { type: 'WATCHING' });
-    } catch (error) {
-        console.log("Failed to set activity.");
+    let tmpDir = 'tmp';
+    if (!fs.existsSync(tmpDir)) {
+        fs.mkdirSync(tmpDir);
+        console.log("Created tmp directory.");
     }
- });
 
-client.on('message', async message => {
-    if (message.author.bot) return;
-    if (!message.content.startsWith(config.prefix)) return;
+    client.on('ready', async () => { bot.setActivity(client) });
+    client.on('message', async (message) => { bot.handleMessage(message) });
 
-    for (command of commands.commands) {
-        if (message.content.match(command.command)) {
-            command.exec(message);
-            break;
-        }
-    }
-});
-
-let tmpDir = 'tmp';
-if (!fs.existsSync(tmpDir)) {
-    fs.mkdirSync(tmpDir);
-    console.log("Created tmp directory.");
+    client.login(config.token);
 }
 
-client.login(config.token);
+run();

@@ -1,6 +1,6 @@
-const characters = require("../resources/characters.json");
-const emotions = require("../resources/emotions.json");
-const config = require("../config.json");
+const characters = require('../../resources/characters.json');
+const emotions = require('../../resources/emotions.json');
+const config = require('../../config.json');
 
 const name = 'Help';
 
@@ -12,7 +12,7 @@ module.exports = {
     exec: async (message) => { 
         let helpMessage = `\`\`\`Powered by 15.ai\n\nCommands:\n`
 
-        let commands = require("./commands.js");
+        let commands = require('./commands.js');
         for (command of commands.commands) {
             if (command.name !== name) {
                 helpMessage += `${command.name} (${command.format}): ${command.description}\n`;
@@ -21,9 +21,9 @@ module.exports = {
 
         helpMessage += `\nCharacter codes and emotions:\n`;
         for (character in characters) {
-            helpMessage += `${character}: ${characters[character]["name"]} \nEmotions: `;
+            helpMessage += `${character}: ${characters[character]['name']} \nEmotions: `;
             
-            let emotions = characters[character]["emotions"];
+            let emotions = characters[character]['emotions'];
             for (i = 0; i < emotions.length; ++i) {
                 helpMessage += `${emotions[i]}${i + 1 == emotions.length ? '' : ','} `;
             }

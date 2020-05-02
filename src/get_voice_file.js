@@ -1,9 +1,9 @@
 const bent = require('bent');
 const crypto = require('crypto');
 const fs = require('fs').promises;
-const characters = require("./resources/characters.json");
-const emotions = require("./resources/emotions.json");
-const config = require("./config.json");
+const characters = require('../resources/characters.json');
+const emotions = require('../resources/emotions.json');
+const config = require('../config.json');
 const post = bent('https://api.fifteen.ai/app/getAudioFile', 'POST', 'buffer', {
         'Host': 'api.fifteen.ai',
         'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
@@ -12,7 +12,9 @@ const post = bent('https://api.fifteen.ai/app/getAudioFile', 'POST', 'buffer', {
         'Referer': 'https://fifteen.ai/app'
     });
 
-async function parseText(text) {
+const FILE_NAME_LIMIT = 50;
+
+async function parseText(text, file) {
     const filteredText = text.replace(/[^A-Z _.,!?:']/gi, '');
     const lastChar = filteredText[filteredText.length - 1];
 
@@ -21,8 +23,7 @@ async function parseText(text) {
     : filteredText + '.';
 }
 
-module.exports = {  
-    getVoiceFile: async (message) => { 
+async function parseMessage(message) {
         let code = message.content.substring(config.prefix.length, message.content.indexOf(' '));
 
         let character = code.substr(0, 2);
@@ -41,12 +42,12 @@ module.exports = {
             }
             emotionName = emotions[emotion];
 
-            if (!characters[character]["emotions"].includes(emotionName)) {
+            if (!characters[character]['emotions'].includes(emotionName)) {
                 await message.channel.send(`${message.member} That character does not have that emotion. Say ${config.prefix}help to view valid character emotions.`);
                 return;
             }
         } else {
-            emotionName = characters[character]["emotions"][0];
+            emotionName = characters[character]['emotions'][0];
         }
 
         let text = await parseText(message.content.substr(message.content.indexOf(' ') + 1));
@@ -56,29 +57,43 @@ module.exports = {
             return;
         }
 
-        let fileNameLimit = 50;
-        let file = `tmp/${code}_${text.replace(/[^A-Z _']/gi, '').substr(0, fileNameLimit)}_${crypto.randomBytes(2).toString('hex')}.wav`;
+        return {text:text, character:characterName, emotion:emotionName, code:code};
+}
+
+async function getResponse(data) {
+    try {
+        let response = await post('', data);
+        console.log('Retrieved data successfully.');
+        console.log('Processing data...');
+
+        return response;
+    } catch (error) {
+        console.log('An error occurred: \n', error);
+        return;
+    }
+}
+
+module.exports = {  
+    getVoiceFile: async (message) => {
+        let data = await parseMessage(message);
+        if (!data) return;
+
         let sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
+        let file = `tmp/${data['code']}_${data['text'].replace(/[^A-Z _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(2).toString('hex')}.wav`;
 
-        let data = {text:text, character:characterName, emotion:emotionName};
-        console.log("Sending request...");
-
-        try {
-            let response = await post('', data);
-            console.log("Retrieved data successfully.");
-            console.log("Processing data...");
-
-            await fs.writeFile(file, response);
-            sentMessage.delete();
-        } catch (error) {
-            console.log("An error occurred: \n", error);
+        console.log('Sending request...');
+        let response = await getResponse(data);
+        sentMessage.delete();
+        
+        if (!response) {
             await message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
-            sentMessage.delete();
             return;
         }
-        
-        console.log("Finished processing.");
 
-        return {"file": file, "character": characterName, "emotion": emotionName, "line": text, "member": message.member};
-    }
+        await fs.writeFile(file, response);
+        console.log('Finished processing.');
+
+        return {'file': file, 'character': data['character'], 'emotion': data['emotion'], 'line': data['text'], 'member': message.member};
+    },
+    parseMessage: parseMessage
 }
