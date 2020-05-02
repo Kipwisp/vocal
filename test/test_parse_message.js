@@ -1,6 +1,6 @@
 const mock = require('../src/mock/mock.js');
-const helper = require("../src/get_voice_file.js");
-const config = require("../config.json");
+const helper = require('../src/get_voice_file.js');
+const config = require('../config.json');
 const assert = require('assert');
 
 describe('#parseMessage(message)', () => {
