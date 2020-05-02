@@ -15,7 +15,7 @@ class Vocal {
         if (message.author.bot) return;
         if (!message.content.startsWith(config.prefix)) return;
 
-        for (let command of commands.commands) {
+        for (const command of commands.commands) {
             if (message.content.match(command.command)) {
                 command.exec(message);
                 break;

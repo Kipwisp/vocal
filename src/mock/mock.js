@@ -1,13 +1,9 @@
+/* eslint-disable max-classes-per-file */
 const sinon = require('sinon');
 
 /* Mock objects for unit testing */
 
 class MockMessage {
-    channel;
-    member;
-    content;
-    author;
-
     constructor(channel, member, content) {
         this.channel = channel;
         this.member = member;
@@ -20,8 +16,6 @@ class MockMessage {
 }
 
 class MockMember {
-    name;
-
     constructor() {
         this.name = 'Tester';
     }
@@ -32,26 +26,23 @@ class MockMember {
 }
 
 class MockAuthor {
-    bot;
-
     constructor(bot) {
         this.bot = bot;
     }
 }
 
 class MockChannel {
-    send_message;
-
     constructor() {
         this.send_message = sinon.fake();
     }
 
+    // eslint-disable-next-line no-unused-vars
     async send(text) {
         this.send_message();
     }
 }
 
-module.exports.MockMessage = MockMessage; 
+module.exports.MockMessage = MockMessage;
 module.exports.MockMember = MockMember;
 module.exports.MockAuthor = MockAuthor;
 module.exports.MockChannel = MockChannel;
