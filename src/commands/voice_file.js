@@ -14,9 +14,9 @@ module.exports = {
 
         try {
             await message.channel.send({ content: `${message.member}`, files: [file] });
-            fs.unlink(file).catch(error => console.log('Failed to delete temp file: \n', error));
+            fs.unlink(file).catch(error => console.log("Failed to delete temp file: \n", error));
         } catch (error) {
-            console.log('An error occurred: \n', error);
+            console.log("An error occurred: \n", error);
         }
     }
 };

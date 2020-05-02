@@ -2,32 +2,42 @@ const fs = require('fs').promises;
 const helper = require('../get_voice_file.js');
 const config = require('../../config.json');
 
+const DELAY = 2000;
+
 let queue = {};
 let playing = {};
 
-async function play(connection, message) {
-    let guildID = message.guild.id;
+async function play(connection, guildID) {
     let guildQueue = queue[guildID];
     let request = guildQueue.shift();
     
-    message.channel.send(`Now playing: [${request['character']} - ${request['emotion']}] ${request['line']} | Requested by ${request['member']}`);
     dispatcher = connection.play(request['file']);
     dispatcher.on('speaking', speaking => { 
         if (!speaking) {
-            let timeout = 2000;
-
             fs.unlink(request['file']).catch(error => console.log("Failed to delete temp file: \n", error));
 
             setTimeout(() => { 
                 if (guildQueue.length > 0) {
-                    play(connection, message);
+                    play(connection, guildID);
                 } else {
                     playing[guildID] = false;
                     connection.channel.leave();
                 }
-            }, timeout);
+            }, DELAY);
         }
     });
+}
+
+async function addToQueue(request, voiceChannel, guildID) {
+    if (!queue[guildID]) queue[guildID] = [];
+    
+    queue[guildID].push(request);
+    
+    if (playing[guildID]) return;
+
+    playing[guildID] = true;
+    let connection = await voiceChannel.join();
+    return connection;
 }
 
 module.exports = {  
@@ -45,15 +55,11 @@ module.exports = {
         let result = await helper.getVoiceFile(message);
         if (!result) return;
 
-        let guildID = message.guild.id;
-        if (!queue[guildID]) queue[guildID] = [];
-        
-        queue[guildID].push(result);
-       
-        if (!playing[guildID]) {
-            playing[guildID] = true;
-            let connection = await voiceChannel.join();
-            play(connection, message);
+        let connection = await addToQueue(result, voiceChannel, message.guild.id);
+
+        if (connection) {
+            message.channel.send(`Now playing: [${result['character']} - ${result['emotion']}] ${result['line']} | Requested by ${result['member']}`);
+            play(connection, message.guild.id);
         } else {
             message.channel.send(`${message.member} Queued your request: [${result['character']} - ${result['emotion']}] ${result['line']}`);
         }
