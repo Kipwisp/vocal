@@ -21,6 +21,7 @@
         "no-plusplus": "off",
         "no-console": "off",
         "class-methods-use-this": "off",
-        "prefer-destructuring": "off"
+        "prefer-destructuring": "off",
+        "guard-for-in": "off"
     }
 }

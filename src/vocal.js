@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const commands = require('./commands/commands.js');
+const commands = require('./commands');
 
 class Vocal {
     async setActivity(client) {

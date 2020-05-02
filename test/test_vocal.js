@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 const assert = require('assert');
-const mock = require('../src/mock/mock.js');
+const mock = require('./mock');
 const Vocal = require('../src/vocal.js');
 const config = require('../config.json');
 

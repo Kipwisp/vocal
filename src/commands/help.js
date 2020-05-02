@@ -13,7 +13,7 @@ module.exports = {
         let helpMessage = '```Powered by 15.ai\n\nCommands:\n';
 
         // eslint-disable-next-line global-require
-        const commands = require('./commands.js');
+        const commands = require('.');
         for (const command of commands.commands) {
             if (command.name !== name) {
                 helpMessage += `${command.name} (${command.format}): ${command.description}\n`;
