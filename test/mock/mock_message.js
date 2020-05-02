@@ -1,12 +1,9 @@
 class MockMessage {
-    constructor(channel, member, content) {
+    constructor(channel, member, author, content) {
         this.channel = channel;
         this.member = member;
-        this.content = content;
-    }
-
-    setAuthor(author) {
         this.author = author;
+        this.content = content;
     }
 }
 

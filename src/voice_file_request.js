@@ -104,6 +104,7 @@ module.exports = {
             emotion: data.emotion,
             line: data.text,
             member: message.member,
+            channel: message.channel,
         };
     },
     parseMessage,

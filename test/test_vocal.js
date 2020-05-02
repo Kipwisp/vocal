@@ -8,50 +8,67 @@ describe('#handleMessage(message)', () => {
     beforeEach(() => {
         vocal = new Vocal();
         mockChannel = new mock.MockChannel();
-        mockMember = new mock.MockMember();
+        mockVoice = new mock.MockVoice();
+        mockMember = new mock.MockMember(mockVoice);
     });
 
-    it('Should not reply if the author of the message is a bot', async () => {
+    it('Should not reply to bot messages', async () => {
         const content = `${config.prefix}help`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, content);
         const mockAuthor = new mock.MockAuthor(true);
-        mockMessage.setAuthor(mockAuthor);
+        const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
 
         vocal.handleMessage(mockMessage);
 
-        assert(mockChannel.send_message.notCalled);
+        assert(mockChannel.send.notCalled);
     });
 
     it('Should not reply if the message does not begin with the prefix', async () => {
         const content = 'help';
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, content);
-        const mockAuthor = new mock.MockAuthor(true);
-        mockMessage.setAuthor(mockAuthor);
+        const mockAuthor = new mock.MockAuthor(false);
+        const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
 
         vocal.handleMessage(mockMessage);
 
-        assert(mockChannel.send_message.notCalled);
+        assert(mockChannel.send.notCalled);
+    });
+
+    it('Should not reply to invalid commands', async () => {
+        const content = `${config.prefix}command`;
+        const mockAuthor = new mock.MockAuthor(false);
+        const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
+
+        vocal.handleMessage(mockMessage);
+
+        assert(mockChannel.send.notCalled);
     });
 
     it('Should reply to the help command', async () => {
         const content = `${config.prefix}help`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, content);
         const mockAuthor = new mock.MockAuthor(false);
-        mockMessage.setAuthor(mockAuthor);
+        const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
 
         vocal.handleMessage(mockMessage);
 
-        assert(mockChannel.send_message.calledOnce);
+        assert(mockChannel.send.calledOnce);
     });
 
     it('Should reply to the invite command', async () => {
         const content = `${config.prefix}invite`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, content);
         const mockAuthor = new mock.MockAuthor(false);
-        mockMessage.setAuthor(mockAuthor);
+        const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
 
         vocal.handleMessage(mockMessage);
 
-        assert(mockChannel.send_message.calledOnce);
+        assert(mockChannel.send.calledOnce);
+    });
+
+    it('Should not execute the voice join command if the user is not in a voice channel and should send an appropriate response', async () => {
+        const content = `${config.prefix}ts+ Test.`;
+        const mockAuthor = new mock.MockAuthor(false);
+        const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
+
+        vocal.handleMessage(mockMessage);
+
+        assert(mockChannel.send.calledWith(`${mockMessage.member} Please join a voice channel before using that command.`));
     });
 });

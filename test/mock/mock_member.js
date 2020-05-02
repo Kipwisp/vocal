@@ -1,6 +1,7 @@
 class MockMember {
-    constructor() {
+    constructor(voice) {
         this.name = 'Tester';
+        this.voice = voice;
     }
 
     toString() {

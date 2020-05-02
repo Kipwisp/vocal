@@ -22,6 +22,7 @@
         "no-console": "off",
         "class-methods-use-this": "off",
         "prefer-destructuring": "off",
-        "guard-for-in": "off"
+        "guard-for-in": "off",
+        "max-len": "off"
     }
 }

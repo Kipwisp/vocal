@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-const helper = require('../get_voice_file.js');
+const helper = require('../voice_file_request.js');
 const config = require('../../config.json');
 
 module.exports = {
@@ -11,8 +11,8 @@ module.exports = {
         const result = await helper.getVoiceFile(message);
         if (!result) return;
 
+        await message.channel.send({ content: `${message.member}`, files: [result.file] });
         try {
-            await message.channel.send({ content: `${message.member}`, files: [result.file] });
             fs.unlink(result.file).catch((error) => console.log('Failed to delete temp file: \n', error));
         } catch (error) {
             console.log('An error occurred: \n', error);

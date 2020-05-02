@@ -1,44 +1,17 @@
 const fs = require('fs').promises;
-const helper = require('../get_voice_file.js');
+const helper = require('../voice_file_request.js');
+const QueueHandler = require('../queue_handler.js');
 const config = require('../../config.json');
 
 const DELAY = 2000;
-
-const queue = {};
-const playing = {};
-
-async function play(connection, guildID) {
-    const guildQueue = queue[guildID];
-    const request = guildQueue.shift();
-
-    const dispatcher = connection.play(request.file);
-    dispatcher.on('speaking', (speaking) => {
-        if (!speaking) {
-            fs.unlink(request.file).catch((error) => console.log('Failed to delete temp file: \n', error));
-
-            setTimeout(() => {
-                if (guildQueue.length > 0) {
-                    play(connection, guildID);
-                } else {
-                    playing[guildID] = false;
-                    connection.channel.leave();
-                }
-            }, DELAY);
-        }
-    });
-}
-
-async function addToQueue(request, voiceChannel, guildID) {
-    if (!queue[guildID]) queue[guildID] = [];
-
-    queue[guildID].push(request);
-
-    if (playing[guildID]) return null;
-
-    playing[guildID] = true;
-    const connection = await voiceChannel.join();
-    return connection;
-}
+const queueHandler = new QueueHandler(async (guildID, request, speaking) => {
+    if (!speaking) {
+        fs.unlink(request.file).catch((error) => console.log('Failed to delete temp file: \n', error));
+        setTimeout(() => {
+            queueHandler.finishPlaying(guildID);
+        }, DELAY);
+    }
+});
 
 module.exports = {
     name: 'Voice Join',
@@ -55,13 +28,7 @@ module.exports = {
         const result = await helper.getVoiceFile(message);
         if (!result) return;
 
-        const connection = await addToQueue(result, voiceChannel, message.guild.id);
-
-        if (connection) {
-            message.channel.send(`Now playing: [${result.character} - ${result.emotion}] ${result.line} | Requested by ${result.member}`);
-            play(connection, message.guild.id);
-        } else {
-            message.channel.send(`${message.member} Queued your request: [${result.character} - ${result.emotion}] ${result.line}`);
-        }
+        queueHandler.addToQueue(message.guild.id, result);
+        queueHandler.startPlaying(message.guild.id, voiceChannel);
     },
 };
