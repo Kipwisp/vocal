@@ -34,5 +34,13 @@
     "so": {
             "name": "Soldier",
             "emotions": ["Neutral"]
-        }
+        },
+    "mp": {
+            "name": "Miss Pauling",
+            "emotions": ["Neutral"]
+        },
+    "rk": {
+        "name": "Rise Kujikawa",
+        "emotions": ["Neutral"]
+    }   
 }
