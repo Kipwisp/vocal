@@ -96,7 +96,7 @@ describe('#play(guildID)', () => {
     });
 });
 
-describe('#startPlaying(guildID, voiceChannel)', () => {
+describe('#joinVoiceChannel(guildID, voiceChannel)', () => {
     beforeEach(() => {
         mockVoiceChannel = new mock.MockVoiceChannel();
         mockConnection = new mock.MockConnection(mockVoiceChannel);
@@ -104,31 +104,31 @@ describe('#startPlaying(guildID, voiceChannel)', () => {
         queueHandler = new QueueHandler(callback);
     });
 
-    it('Should join the voice channel and start playing if it is not currently playing for the guild', async () => {
+    it('Should join the voice channel if it is not currently playing for the guild', async () => {
         const guildID = 1;
         const request = {
             line: 'Test', emotion: 'Test', character: 'Test', channel: mockChannel, member: mockMember,
         };
         queueHandler.guilds = { 1: { queue: [request], playing: false, connection: null } };
 
-        queueHandler.startPlaying(guildID, mockVoiceChannel);
+        queueHandler.joinVoiceChannel(guildID, mockVoiceChannel);
 
         assert(queueHandler.guilds[guildID].playing);
         assert(mockVoiceChannel.join.calledOnce);
     });
 
-    it('Should not do anything if it is currently playing for the guild', async () => {
+    it('Should do nothing if it is currently playing for the guild', async () => {
         const guildID = 1;
         queueHandler.guilds = { 1: { queue: [], playing: true, connection: mockConnection } };
 
-        queueHandler.startPlaying(guildID, mockVoiceChannel);
+        queueHandler.joinVoiceChannel(guildID, mockVoiceChannel);
 
         assert(queueHandler.guilds[guildID].playing);
         assert(mockVoiceChannel.join.notCalled);
     });
 });
 
-describe('#finishPlaying(guildID)', () => {
+describe('#isFinished(guildID)', () => {
     beforeEach(() => {
         mockVoiceChannel = new mock.MockVoiceChannel();
         mockConnection = new mock.MockConnection(mockVoiceChannel);
@@ -140,24 +140,24 @@ describe('#finishPlaying(guildID)', () => {
         const guildID = 1;
         queueHandler.guilds = { 1: { queue: [], playing: true, connection: mockConnection } };
 
-        queueHandler.finishPlaying(guildID);
+        const result = await queueHandler.isFinished(guildID);
 
+        assert(result);
         assert(!queueHandler.guilds[guildID].playing);
-        assert(mockConnection.play.notCalled);
         assert(mockVoiceChannel.leave.calledOnce);
     });
 
-    it('Should play the next request if the queue is not empty', async () => {
+    it('Should not leave the channel if the queue is not empty', async () => {
         const guildID = 1;
         const request = {
             line: 'Test', emotion: 'Test', character: 'Test', channel: mockChannel, member: mockMember,
         };
         queueHandler.guilds = { 1: { queue: [request], playing: true, connection: mockConnection } };
 
-        queueHandler.finishPlaying(guildID);
+        const result = await queueHandler.isFinished(guildID);
 
+        assert(!result);
         assert(queueHandler.guilds[guildID].playing);
-        assert(mockConnection.play.calledOnce);
         assert(mockVoiceChannel.leave.notCalled);
     });
 });

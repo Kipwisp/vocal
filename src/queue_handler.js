@@ -17,26 +17,25 @@ class QueueHandler {
         return dispatcher;
     }
 
-    async startPlaying(guildID, voiceChannel) {
+    async joinVoiceChannel(guildID, voiceChannel) {
         const guild = this.guilds[guildID];
 
         if (guild.playing) return;
 
         guild.playing = true;
         guild.connection = await voiceChannel.join();
-
-        this.play(guildID);
     }
 
-    async finishPlaying(guildID) {
+    async isFinished(guildID) {
         const guild = this.guilds[guildID];
 
-        if (guild.queue.length > 0) {
-            this.play(guildID);
-        } else {
+        if (guild.queue.length === 0) {
             guild.playing = false;
             guild.connection.channel.leave();
+            return true;
         }
+
+        return false;
     }
 
     async addToQueue(guildID, request) {

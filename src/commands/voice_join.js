@@ -11,7 +11,9 @@ const queueHandler = new QueueHandler(async (guildID, request, speaking) => {
     if (!speaking) {
         fs.unlink(request.file).catch((error) => console.log('Failed to delete temp file: \n', error));
         setTimeout(() => {
-            queueHandler.finishPlaying(guildID);
+            if (!queueHandler.isFinished(guildID)) {
+                queueHandler.play(guildID);
+            }
         }, DELAY);
     }
 });
@@ -31,7 +33,8 @@ module.exports = {
         const result = await voiceFileRequester.getVoiceFile(message);
         if (!result) return;
 
-        queueHandler.addToQueue(message.guild.id, result);
-        queueHandler.startPlaying(message.guild.id, voiceChannel);
+        await queueHandler.addToQueue(message.guild.id, result);
+        await queueHandler.joinVoiceChannel(message.guild.id, voiceChannel);
+        queueHandler.play(message.guild.id);
     },
 };
