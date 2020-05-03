@@ -1,6 +1,10 @@
 const fs = require('fs').promises;
-const helper = require('../voice_file_request.js');
+const VoiceFileRequester = require('../voice_file_handler.js');
+const characters = require('../../resources/characters.json');
+const emotions = require('../../resources/characters.json');
 const config = require('../../config.json');
+
+const voiceFileRequester = new VoiceFileRequester(characters, emotions);
 
 module.exports = {
     name: 'Voice File',
@@ -8,7 +12,7 @@ module.exports = {
     format: `${config.prefix}xxy message`,
     description: 'Sends a .wav file of the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => {
-        const result = await helper.getVoiceFile(message);
+        const result = await voiceFileRequester.getVoiceFile(message);
         if (!result) return;
 
         await message.channel.send({ content: `${message.member}`, files: [result.file] });

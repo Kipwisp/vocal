@@ -1,9 +1,12 @@
 const fs = require('fs').promises;
-const helper = require('../voice_file_request.js');
+const VoiceFileRequester = require('../voice_file_handler.js');
 const QueueHandler = require('../queue_handler.js');
+const characters = require('../../resources/characters.json');
+const emotions = require('../../resources/characters.json');
 const config = require('../../config.json');
 
 const DELAY = 2000;
+const voiceFileRequester = new VoiceFileRequester(characters, emotions);
 const queueHandler = new QueueHandler(async (guildID, request, speaking) => {
     if (!speaking) {
         fs.unlink(request.file).catch((error) => console.log('Failed to delete temp file: \n', error));
@@ -25,7 +28,7 @@ module.exports = {
             return;
         }
 
-        const result = await helper.getVoiceFile(message);
+        const result = await voiceFileRequester.getVoiceFile(message);
         if (!result) return;
 
         queueHandler.addToQueue(message.guild.id, result);
