@@ -34,6 +34,12 @@ node bot.js
 ```
 Upon the bot successfully logging into Discord, a message should appear stating "Logged in as [bot name]!" in the console.
 
+## Testing
+Run the following command to run the test suite for the bot:
+```
+npm test
+```
+
 ## Commands
 The bot has the following commands:
 
@@ -45,6 +51,8 @@ The bot has the following commands:
 ## Dependencies
   * [Discord.js](https://discord.js.org/)
   * [Bent](https://github.com/mikeal/bent)
+  * [Mocha](https://mochajs.org/)
+  * [Sinon](https://sinonjs.org/)
 
 ## Licensing
 This project is licensed under the GNU GPLv3 - see [LICENSE](https://raw.githubusercontent.com/Kipwisp/vocal/master/LICENSE?token=AOSFA3HRIRAR4EIZHD4QQC26RUHEO) for details.
