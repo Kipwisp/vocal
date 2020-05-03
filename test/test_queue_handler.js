@@ -104,27 +104,14 @@ describe('#joinVoiceChannel(guildID, voiceChannel)', () => {
         queueHandler = new QueueHandler(callback);
     });
 
-    it('Should join the voice channel if it is not currently playing for the guild', async () => {
+    it('Should join the voice channel', async () => {
         const guildID = 1;
-        const request = {
-            line: 'Test', emotion: 'Test', character: 'Test', channel: mockChannel, member: mockMember,
-        };
-        queueHandler.guilds = { 1: { queue: [request], playing: false, connection: null } };
+        queueHandler.guilds = { 1: { queue: [], playing: false, connection: null } };
 
         queueHandler.joinVoiceChannel(guildID, mockVoiceChannel);
 
         assert(queueHandler.guilds[guildID].playing);
         assert(mockVoiceChannel.join.calledOnce);
-    });
-
-    it('Should do nothing if it is currently playing for the guild', async () => {
-        const guildID = 1;
-        queueHandler.guilds = { 1: { queue: [], playing: true, connection: mockConnection } };
-
-        queueHandler.joinVoiceChannel(guildID, mockVoiceChannel);
-
-        assert(queueHandler.guilds[guildID].playing);
-        assert(mockVoiceChannel.join.notCalled);
     });
 });
 

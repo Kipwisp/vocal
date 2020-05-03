@@ -33,8 +33,11 @@ module.exports = {
         const result = await voiceFileRequester.getVoiceFile(message);
         if (!result) return;
 
-        await queueHandler.addToQueue(message.guild.id, result);
-        await queueHandler.joinVoiceChannel(message.guild.id, voiceChannel);
-        queueHandler.play(message.guild.id);
+        const isPlaying = queueHandler.addToQueue(message.guild.id, result);
+
+        if (!isPlaying) {
+            await queueHandler.joinVoiceChannel(message.guild.id, voiceChannel);
+            queueHandler.play(message.guild.id);
+        }
     },
 };
