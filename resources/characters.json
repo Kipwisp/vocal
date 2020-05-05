@@ -42,5 +42,9 @@
     "rk": {
         "name": "Rise Kujikawa",
         "emotions": ["Neutral"]
+    },
+       "sb": {
+        "name": "SpongeBob",
+        "emotions": ["Neutral"]
     }   
 }
