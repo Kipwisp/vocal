@@ -43,8 +43,12 @@
         "name": "Rise Kujikawa",
         "emotions": ["Neutral"]
     },
-       "sb": {
+    "sb": {
         "name": "SpongeBob",
         "emotions": ["Neutral"]
-    }   
+    },
+    "an": {
+        "name": "Announcer",
+        "emotions": ["Neutral"]
+    }    
 }
