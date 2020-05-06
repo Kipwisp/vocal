@@ -172,13 +172,14 @@ class VoiceFileHandler {
                 if (selectedCharacters.length > 0) {
                     nextCharacter = selectedCharacters.splice(0)[0];
                 } else {
-                    const randomCharacter = characterList.splice(Math.random() * characterList.length, 1)[0];
+                    const randomCharacter = characterList.splice(Math.floor(Math.random() * characterList.length), 1)[0];
+
                     nextCharacter = {
                         name: randomCharacter.name,
-                        emotion: randomCharacter.emotions[Math.random() * randomCharacter.emotions.length],
+                        emotion: randomCharacter.emotions[Math.floor(Math.random() * randomCharacter.emotions.length)],
                     };
                 }
-
+                
                 authorCharacters[author] = nextCharacter;
             }
 
