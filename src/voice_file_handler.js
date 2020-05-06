@@ -226,7 +226,7 @@ class VoiceFileHandler {
 
         const output = ffmpeg(files[0]);
         for (let i = 1; i < files.length; ++i) {
-            output.input('resources/audio/spacing.wav').input(files[i]);
+            output.input('resources/audio/spacing.mp3').input(files[i]);
         }
 
         const result = `tmp/${crypto.randomBytes(4).toString('hex')}.wav`;
