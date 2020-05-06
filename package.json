@@ -20,6 +20,7 @@
     "@discordjs/opus": "^0.1.0",
     "bent": "^7.1.2",
     "discord.js": "^12.1.1",
+    "fluent-ffmpeg": "^2.1.2",
     "modules": "^0.4.0",
     "sinon": "^9.0.2"
   },
