@@ -114,6 +114,8 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
+# Config file
 config.json
 
-*.wav
+# Tmp folder
+tmp
