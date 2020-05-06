@@ -12,6 +12,7 @@ const post = bent('https://api.fifteen.ai/app/getAudioFile', 'POST', 'buffer', {
     Referer: 'https://fifteen.ai/app',
 });
 const FILE_NAME_LIMIT = 50;
+const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
 
 class VoiceFileHandler {
@@ -94,7 +95,7 @@ class VoiceFileHandler {
         if (!data) return null;
 
         const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
-        const file = `tmp/${data.code}_${data.text.replace(/[^A-Z _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(2).toString('hex')}.wav`;
+        const file = `tmp/${data.code}_${data.text.replace(/[^A-Z _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
 
         console.log('Sending request...');
         const response = await this.getResponse(data, MAX_ATTEMPTS);
@@ -179,11 +180,14 @@ class VoiceFileHandler {
                         emotion: randomCharacter.emotions[Math.floor(Math.random() * randomCharacter.emotions.length)],
                     };
                 }
-                
+
                 authorCharacters[author] = nextCharacter;
             }
 
             const parsedText = this.parseText(message.content);
+            if (parsedText.length <= 1) {
+                return null;
+            }
             const data = { text: parsedText, character: authorCharacters[author].name, emotion: authorCharacters[author].emotion };
             result.push(data);
         }
@@ -200,46 +204,56 @@ class VoiceFileHandler {
         return Promise.all(results);
     }
 
-    async getDubVoiceFile(message) {
+    async sendDubVoiceFile(message) {
         const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
         const args = this.extractArguments(message);
         const messages = await this.getMessages(message, args.amount);
         const datum = await this.parseMessages(messages, args.selectedCharacters);
+
+        if (!datum) {
+            sentMessage.delete();
+            message.channel.send(`${message.member} One of the selected messages contains invalid input, sorry.`);
+            return;
+        }
 
         console.log('Sending requests...');
         const responses = await this.getResponses(datum);
 
         if (responses.includes(null)) {
             sentMessage.delete();
-            await message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
+            message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
             return;
         }
 
         const files = [];
         const results = [];
         for (const response of responses) {
-            const fileName = `tmp/${crypto.randomBytes(6).toString('hex')}.wav`;
+            const fileName = `tmp/${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
             files.push(fileName);
             results.push(fs.writeFile(fileName, response));
         }
 
         await Promise.all(results);
 
-        const output = ffmpeg(files[0]);
+        const combinedFiles = ffmpeg(files[0]);
         for (let i = 1; i < files.length; ++i) {
-            output.input('resources/audio/spacing.wav').input(files[i]);
+            combinedFiles.input('resources/audio/spacing.wav').input(files[i]);
         }
 
-        const result = `tmp/${crypto.randomBytes(4).toString('hex')}.wav`;
-        output.on('error', (error) => {
+        const result = `tmp/voicedub_${args.amount}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
+
+        combinedFiles.on('error', (error) => {
             console.log('Failed to merge files:', error);
+
             sentMessage.delete();
             message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
+
             for (const file of files) {
                 fs.unlink(file).catch((err) => console.log('Failed to delete temp file: \n', err));
             }
         }).on('end', () => {
             console.log('Merging finished!');
+
             sentMessage.delete();
             message.channel.send({ content: `${message.member}`, files: [result] }).then(() => {
                 fs.unlink(result).catch((error) => console.log('Failed to delete temp file: \n', error));
