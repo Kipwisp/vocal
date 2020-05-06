@@ -1,4 +1,3 @@
-const fs = require('fs').promises;
 const VoiceFileRequester = require('../voice_file_handler.js');
 const characters = require('../../resources/characters.json');
 const emotions = require('../../resources/characters.json');

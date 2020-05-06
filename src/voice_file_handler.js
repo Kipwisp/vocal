@@ -12,7 +12,6 @@ const post = bent('https://api.fifteen.ai/app/getAudioFile', 'POST', 'buffer', {
     Referer: 'https://fifteen.ai/app',
 });
 const FILE_NAME_LIMIT = 50;
-const MAX_DUB_CHARACTERS = 100;
 const MAX_ATTEMPTS = 3;
 
 class VoiceFileHandler {
@@ -22,7 +21,7 @@ class VoiceFileHandler {
     }
 
     parseText(text) {
-        const filteredText = text.replace(/[^A-Z _.,!?:']/gi, '');
+        const filteredText = text.replace(/[^A-Z _.,!?:']/gi, '').substr(0, config.char_limit);
         const lastChar = filteredText[filteredText.length - 1];
 
         return ['.', ',', ':', '!', '?'].includes(lastChar)
@@ -183,7 +182,7 @@ class VoiceFileHandler {
                 authorCharacters[author] = nextCharacter;
             }
 
-            const parsedText = this.parseText(message.content).substr(MAX_DUB_CHARACTERS);
+            const parsedText = this.parseText(message.content);
             const data = { text: parsedText, character: authorCharacters[author].name, emotion: authorCharacters[author].emotion };
             result.push(data);
         }
