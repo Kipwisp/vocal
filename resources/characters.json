@@ -29,7 +29,7 @@
         },
     "gl": {
             "name": "GLaDOS",
-            "emotions": ["Homicidal"]
+            "emotions": ["Neutral", "Homicidal"]
         },
     "so": {
             "name": "Soldier",

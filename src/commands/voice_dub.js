@@ -1,9 +1,9 @@
-const VoiceFileRequester = require('../voice_file_handler.js');
+const VoiceFileHandler = require('../voice_file_handler.js');
 const characters = require('../../resources/characters.json');
-const emotions = require('../../resources/characters.json');
+const emotions = require('../../resources/emotions.json');
 const config = require('../../config.json');
 
-const voiceFileRequester = new VoiceFileRequester(characters, emotions);
+const voiceFileHandler = new VoiceFileHandler(characters, emotions);
 
 module.exports = {
     name: 'Voice Dub',
@@ -11,6 +11,6 @@ module.exports = {
     format: `${config.prefix}voicedub n -xxy -xxy -xxy ...`,
     description: 'Generates a voice dub of the last n messages using the specified characters or random characters otherwise.',
     exec: async (message) => {
-        voiceFileRequester.sendDubVoiceFile(message);
+        voiceFileHandler.sendDubVoiceFile(message);
     },
 };
