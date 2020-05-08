@@ -1,9 +1,9 @@
 const sinon = require('sinon');
 
-class MockChannel {
+class MockTextChannel {
     constructor() {
         this.send = sinon.fake();
     }
 }
 
-module.exports = MockChannel;
+module.exports = MockTextChannel;

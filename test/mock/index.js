@@ -1,4 +1,4 @@
-const MockChannel = require('./mock_channel.js');
+const MockTextChannel = require('./mock_text_channel.js');
 const MockAuthor = require('./mock_author.js');
 const MockMember = require('./mock_member.js');
 const MockMessage = require('./mock_message.js');
@@ -7,7 +7,7 @@ const MockVoiceChannel = require('./mock_voice_channel.js');
 const MockDispatcher = require('./mock_dispatcher.js');
 const MockVoice = require('./mock_voice.js');
 
-module.exports.MockChannel = MockChannel;
+module.exports.MockTextChannel = MockTextChannel;
 module.exports.MockAuthor = MockAuthor;
 module.exports.MockMember = MockMember;
 module.exports.MockMessage = MockMessage;

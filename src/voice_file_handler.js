@@ -146,14 +146,16 @@ class VoiceFileHandler {
         const amount = message.content.substr(message.content.indexOf(' ') + 1, 1);
 
         const selectedCharacters = [];
-        const codes = message.content.matchAll(new RegExp('-[a-z][a-z][a-zA-Z]?'));
+        const codes = message.content.matchAll(new RegExp('-[a-z][a-z][a-zA-Z]?', 'g'));
         for (const code of codes) {
             const characterCode = code[0].substr(1, 2);
             const emotionCode = code[0].substr(3, 1);
+
             if (characterCode in this.characters) {
                 selectedCharacters.push({
                     name: this.characters[characterCode].name,
-                    emotion: (emotionCode === '' || !(emotionCode in this.emotions)) ? this.characters[characterCode].emotions[0] : this.emotions[emotionCode],
+                    emotion: ((emotionCode in this.emotions && this.characters[characterCode].emotions.includes(this.emotions[emotionCode])))
+                        ? this.emotions[emotionCode] : this.characters[characterCode].emotions[0],
                 });
             }
         }
@@ -162,33 +164,38 @@ class VoiceFileHandler {
     }
 
     async parseMessages(messages, selectedCharacters) {
-        const characterList = [...Object.values(this.characters)];
-        const authorCharacters = {};
+        let characterList = [...Object.values(this.characters)];
+        const memberCharacters = {};
         const result = [];
 
         for (const message of messages) {
-            const author = message.author;
-            if (!(author in authorCharacters)) {
+            const member = message.member.id;
+            if (!(member in memberCharacters)) {
                 let nextCharacter = null;
+
                 if (selectedCharacters.length > 0) {
-                    nextCharacter = selectedCharacters.splice(0)[0];
+                    nextCharacter = selectedCharacters.splice(0, 1)[0];
+                    characterList.filter((element) => element.name !== nextCharacter.name);
                 } else {
                     const randomCharacter = characterList.splice(Math.floor(Math.random() * characterList.length), 1)[0];
-
                     nextCharacter = {
                         name: randomCharacter.name,
                         emotion: randomCharacter.emotions[Math.floor(Math.random() * randomCharacter.emotions.length)],
                     };
+
+                    if (characterList.length === 0) {
+                        characterList = [...Object.values(this.characters)];
+                    }
                 }
 
-                authorCharacters[author] = nextCharacter;
+                memberCharacters[member] = nextCharacter;
             }
 
             const parsedText = this.parseText(message.content);
             if (parsedText.length <= 1) {
                 return null;
             }
-            const data = { text: parsedText, character: authorCharacters[author].name, emotion: authorCharacters[author].emotion };
+            const data = { text: parsedText, character: memberCharacters[member].name, emotion: memberCharacters[member].emotion };
             result.push(data);
         }
 

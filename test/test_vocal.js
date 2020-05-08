@@ -7,7 +7,7 @@ const config = require('../config.json');
 describe('#handleMessage(message)', () => {
     beforeEach(() => {
         vocal = new Vocal();
-        mockChannel = new mock.MockChannel();
+        mockChannel = new mock.MockTextChannel();
         mockVoice = new mock.MockVoice();
         mockMember = new mock.MockMember(mockVoice);
     });

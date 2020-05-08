@@ -6,7 +6,7 @@ const QueueHandler = require('../src/queue_handler.js');
 
 describe('#addToQueue(guildID, request)', () => {
     beforeEach(() => {
-        mockChannel = new mock.MockChannel();
+        mockChannel = new mock.MockTextChannel(null);
         mockMember = new mock.MockMember();
         callback = sinon.fake();
         queueHandler = new QueueHandler(callback);
@@ -51,7 +51,7 @@ describe('#addToQueue(guildID, request)', () => {
 
 describe('#play(guildID)', () => {
     beforeEach(() => {
-        mockChannel = new mock.MockChannel();
+        mockChannel = new mock.MockTextChannel(null);
         mockVoiceChannel = new mock.MockVoiceChannel();
         mockConnection = new mock.MockConnection(mockVoiceChannel);
         callback = sinon.fake();
