@@ -14,6 +14,7 @@ const post = bent('https://api.fifteen.ai/app/getAudioFile', 'POST', 'buffer', {
 const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
+const MAX_CHARS = 1300;
 
 class VoiceFileHandler {
     constructor(characters, emotions) {
@@ -167,6 +168,7 @@ class VoiceFileHandler {
         let characterList = [...Object.values(this.characters)];
         const memberCharacters = {};
         const result = [];
+        let charTotal = 0;
 
         for (const message of messages) {
             const member = message.member.id;
@@ -192,6 +194,7 @@ class VoiceFileHandler {
             }
 
             const parsedText = this.parseText(message.content);
+            charTotal += parsedText.length;
             if (parsedText.length <= 1) {
                 return null;
             }
@@ -199,7 +202,7 @@ class VoiceFileHandler {
             result.push(data);
         }
 
-        return result;
+        return { result, charTotal };
     }
 
     async getResponses(datum) {
@@ -215,16 +218,21 @@ class VoiceFileHandler {
         const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
         const args = this.extractArguments(message);
         const messages = await this.getMessages(message, args.amount);
-        const datum = await this.parseMessages(messages, args.selectedCharacters);
 
-        if (!datum) {
+        const data = await this.parseMessages(messages, args.selectedCharacters);
+        if (data.charTotal > MAX_CHARS) {
             sentMessage.delete();
-            message.channel.send(`${message.member} One of the selected messages contains invalid input, sorry.`);
+            message.channel.send(`${message.member} Sorry, the selected messages may result in a file that is too large to send.`);
+            return;
+        }
+        if (!data.result) {
+            sentMessage.delete();
+            message.channel.send(`${message.member} Sorry, one of the selected messages contains invalid input.`);
             return;
         }
 
         console.log('Sending requests...');
-        const responses = await this.getResponses(datum);
+        const responses = await this.getResponses(data.result);
 
         if (responses.includes(null)) {
             sentMessage.delete();
@@ -259,7 +267,7 @@ class VoiceFileHandler {
                 fs.unlink(file).catch((err) => console.log('Failed to delete temp file: \n', err));
             }
         }).on('end', () => {
-            console.log('Merging finished!');
+            console.log('Merging finished.');
 
             sentMessage.delete();
             message.channel.send({ content: `${message.member}`, files: [result] }).then(() => {
