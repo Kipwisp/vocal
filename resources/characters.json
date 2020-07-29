@@ -1,54 +1,26 @@
 {
     "ts": {
             "name": "Twilight Sparkle",
-            "emotions": ["Happy", "Neutral"]
+            "emotions": ["0.59", "0.33"]
         },
     "fs": {
             "name": "Fluttershy",
-            "emotions": ["Neutral"]
-        },
-    "ra": {
-            "name": "Rarity",
-            "emotions": ["Neutral"]
-        },
-    "aj": {
-            "name": "Applejack",
-            "emotions": ["Neutral"]
-        },
-    "rd": {
-            "name": "Rainbow Dash",
-            "emotions": ["Neutral"]
-        },
-    "pp": {
-            "name": "Pinkie Pie",
-            "emotions": ["Neutral"]
-        },
-    "dh": {
-            "name": "Derpy Hooves",
-            "emotions": ["Neutral"]
+            "emotions": ["0.33"]
         },
     "gl": {
             "name": "GLaDOS",
-            "emotions": ["Neutral", "Homicidal"]
-        },
-    "so": {
-            "name": "Soldier",
-            "emotions": ["Neutral"]
+            "emotions": ["0.31"]
         },
     "mp": {
             "name": "Miss Pauling",
-            "emotions": ["Neutral"]
+            "emotions": ["0.30"]
         },
     "rk": {
         "name": "Rise Kujikawa",
-        "emotions": ["Neutral"]
+        "emotions": ["0.56"]
     },
     "sb": {
         "name": "SpongeBob",
-        "emotions": ["Neutral"]
-    },
-    "an": {
-        "name": "Announcer",
-        "emotions": ["Neutral"]
-    }    
+        "emotions": ["0.30"]
+    }
 }

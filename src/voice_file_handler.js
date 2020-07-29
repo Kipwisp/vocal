@@ -17,13 +17,12 @@ const MAX_ATTEMPTS = 3;
 const MAX_CHARS = 1300;
 
 class VoiceFileHandler {
-    constructor(characters, emotions) {
+    constructor(characters) {
         this.characters = characters;
-        this.emotions = emotions;
     }
 
     parseText(text) {
-        const filteredText = text.replace(/[^A-Z _.,!?:']/gi, '').substr(0, config.char_limit);
+        const filteredText = text.substr(0, config.char_limit);
         const lastChar = filteredText[filteredText.length - 1];
 
         return ['.', ',', ':', '!', '?'].includes(lastChar)
@@ -41,22 +40,17 @@ class VoiceFileHandler {
         }
         const characterName = this.characters[character].name;
 
-        let emotionName;
+        let emotionCode;
         const characterEmotions = this.characters[character].emotions;
-        if (code.match(RegExp('[a-z][a-z][a-zA-Z]\\+?$'))) {
-            const emotion = code.substr(2, 1);
-            if (!(emotion in this.emotions)) {
-                await message.channel.send(`${message.member} That emotion code is invalid. Say ${config.prefix}help to view valid codes.`);
-                return null;
-            }
-            emotionName = this.emotions[emotion];
+        if (code.match(RegExp('[a-z][a-z]([01].[0-9][0-9])]\\+?$'))) {
+            emotionCode = code.substr(2, 4);
 
-            if (!characterEmotions.includes(emotionName)) {
+            if (!characterEmotions.includes(emotion)) {
                 await message.channel.send(`${message.member} That character does not have that emotion. Say ${config.prefix}help to view valid character emotions.`);
                 return null;
             }
         } else {
-            emotionName = characterEmotions[0];
+            emotionCode = characterEmotions[0];
         }
 
         const text = this.parseText(message.content.substr(message.content.indexOf(' ') + 1));
@@ -67,7 +61,8 @@ class VoiceFileHandler {
         }
 
         return {
-            text, character: characterName, emotion: emotionName, code,
+            parameters: { text, character: characterName, emotion: `μ = ${emotionCode}` },
+            code,
         };
     }
 
@@ -96,10 +91,10 @@ class VoiceFileHandler {
         if (!data) return null;
 
         const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
-        const file = `tmp/${data.code}_${data.text.replace(/[^A-Z _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
+        const file = `tmp/${data.code}_${data.parameters.text.replace(/[^A-Z _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
 
         console.log('Sending request...');
-        const response = await this.getResponse(data, MAX_ATTEMPTS);
+        const response = await this.getResponse(data.parameters, MAX_ATTEMPTS);
         sentMessage.delete();
 
         if (!response) {
@@ -112,9 +107,9 @@ class VoiceFileHandler {
 
         return {
             file,
-            character: data.character,
-            emotion: data.emotion,
-            line: data.text,
+            character: data.parameters.character,
+            emotion: data.parameters.emotion,
+            line: data.parameters.text,
             member: message.member,
             channel: message.channel,
         };
@@ -155,8 +150,8 @@ class VoiceFileHandler {
             if (characterCode in this.characters) {
                 selectedCharacters.push({
                     name: this.characters[characterCode].name,
-                    emotion: ((emotionCode in this.emotions && this.characters[characterCode].emotions.includes(this.emotions[emotionCode])))
-                        ? this.emotions[emotionCode] : this.characters[characterCode].emotions[0],
+                    emotion: ((this.characters[characterCode].emotions.includes(emotionCode)))
+                        ? emotionCode : this.characters[characterCode].emotions[0],
                 });
             }
         }
@@ -198,7 +193,7 @@ class VoiceFileHandler {
             if (parsedText.length <= 1) {
                 return null;
             }
-            const data = { text: parsedText, character: memberCharacters[member].name, emotion: memberCharacters[member].emotion };
+            const data = { text: parsedText, character: memberCharacters[member].name, emotion: `μ = ${memberCharacters[member].emotion}` };
             result.push(data);
         }
 
@@ -266,13 +261,12 @@ class VoiceFileHandler {
             for (const file of files) {
                 fs.unlink(file).catch((err) => console.log('Failed to delete temp file: \n', err));
             }
-        }).on('end', () => {
+        }).on('end', async () => {
             console.log('Merging finished.');
 
             sentMessage.delete();
-            message.channel.send({ content: `${message.member}`, files: [result] }).then(() => {
-                fs.unlink(result).catch((error) => console.log('Failed to delete temp file: \n', error));
-            });
+            await message.channel.send({ content: `${message.member}`, files: [result] });
+            fs.unlink(result).catch((error) => console.log('Failed to delete temp file: \n', error));
 
             for (const file of files) {
                 fs.unlink(file).catch((error) => console.log('Failed to delete temp file: \n', error));

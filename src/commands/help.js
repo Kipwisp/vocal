@@ -1,5 +1,4 @@
 const characters = require('../../resources/characters.json');
-const emotions = require('../../resources/emotions.json');
 const config = require('../../config.json');
 
 const name = 'Help';
@@ -30,11 +29,6 @@ module.exports = {
                 helpMessage += `, ${characterEmotions[i]}`;
             }
             helpMessage += '\n\n';
-        }
-
-        helpMessage += 'Emotion codes:\n';
-        for (const emotion of Object.keys(emotions)) {
-            helpMessage += `${emotion}: ${emotions[emotion]} \n`;
         }
 
         message.channel.send(`${message.member} ${helpMessage}\`\`\``);
