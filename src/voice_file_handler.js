@@ -45,7 +45,7 @@ class VoiceFileHandler {
         if (code.match(RegExp('[a-z][a-z]([01].[0-9][0-9])]\\+?$'))) {
             emotionCode = code.substr(2, 4);
 
-            if (!characterEmotions.includes(emotion)) {
+            if (!characterEmotions.includes(emotionCode)) {
                 await message.channel.send(`${message.member} That character does not have that emotion. Say ${config.prefix}help to view valid character emotions.`);
                 return null;
             }
