@@ -44,7 +44,6 @@ class VoiceFileHandler {
         const characterEmotions = this.characters[character].emotions;
         if (code.match(RegExp('[a-z][a-z]([01].[0-9][0-9])\\+?$'))) {
             emotionCode = code.substr(2, 4);
-            console.log(emotionCode);
             if (!characterEmotions.includes(emotionCode)) {
                 await message.channel.send(`${message.member} That character does not have that emotion. Say ${config.prefix}help to view valid character emotions.`);
                 return null;
@@ -142,10 +141,10 @@ class VoiceFileHandler {
         const amount = message.content.substr(message.content.indexOf(' ') + 1, 1);
 
         const selectedCharacters = [];
-        const codes = message.content.matchAll(new RegExp('-[a-z][a-z][a-zA-Z]?', 'g'));
+        const codes = message.content.matchAll(new RegExp('-[a-z][a-z]([01].[0-9][0-9])?', 'g'));
         for (const code of codes) {
             const characterCode = code[0].substr(1, 2);
-            const emotionCode = code[0].substr(3, 1);
+            const emotionCode = code[0].substr(3, 5);
 
             if (characterCode in this.characters) {
                 selectedCharacters.push({
