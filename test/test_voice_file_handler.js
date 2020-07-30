@@ -5,18 +5,13 @@ const VoiceFileHandler = require('../src/voice_file_handler.js');
 const config = require('../config.json');
 
 const characters = {
-    ts: { name: 'Twilight Sparkle', emotions: ['Happy', 'Neutral'] },
-    gl: { name: 'GLaDOS', emotions: ['Neutral', 'Homicidal'] },
-};
-const emotions = {
-    h: 'Happy',
-    n: 'Neutral',
-    H: 'Homicidal',
+    ts: { name: 'Twilight Sparkle', emotions: ['0.10', '0.20'] },
+    gl: { name: 'GLaDOS', emotions: ['0.20', '0.30'] },
 };
 
 describe('#parseMessage(message)', () => {
     beforeEach(() => {
-        voiceFileHandler = new VoiceFileHandler(characters, emotions);
+        voiceFileHandler = new VoiceFileHandler(characters);
         mockChannel = new mock.MockTextChannel(null);
         mockMember = new mock.MockMember();
     });
@@ -31,18 +26,8 @@ describe('#parseMessage(message)', () => {
         assert(mockChannel.send.calledWith(`${mockMessage.member} That character code is invalid. Say ${config.prefix}help to view valid codes.`));
     });
 
-    it('Should return null when the emotion code is invalid and send an appropriate response', async () => {
-        const content = `${config.prefix}tsx Testing.`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.parseMessage(mockMessage);
-
-        assert(!result);
-        assert(mockChannel.send.calledWith(`${mockMessage.member} That emotion code is invalid. Say ${config.prefix}help to view valid codes.`));
-    });
-
     it('Should return null when a character does not have the specified emotion and send an appropriate response', async () => {
-        const content = `${config.prefix}tsH Testing.`;
+        const content = `${config.prefix}ts0.30 Testing.`;
         const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
         const result = await voiceFileHandler.parseMessage(mockMessage);
@@ -68,37 +53,37 @@ describe('#parseMessage(message)', () => {
 
         const result = await voiceFileHandler.parseMessage(mockMessage);
 
-        assert.equal(result.text, 'Testing.');
-        assert.equal(result.character, 'Twilight Sparkle');
-        assert.equal(result.emotion, 'Happy');
+        assert.equal(result.parameters.text, 'Testing.');
+        assert.equal(result.parameters.character, 'Twilight Sparkle');
+        assert.equal(result.parameters.emotion, 'μ = 0.10');
     });
 
     it('Should return the extracted data for the specified character with the specified emotion', async () => {
-        const content = `${config.prefix}tsn Testing.`;
+        const content = `${config.prefix}ts0.20 Testing.`;
         const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
         const result = await voiceFileHandler.parseMessage(mockMessage);
 
-        assert.equal(result.text, 'Testing.');
-        assert.equal(result.character, 'Twilight Sparkle');
-        assert.equal(result.emotion, 'Neutral');
+        assert.equal(result.parameters.text, 'Testing.');
+        assert.equal(result.parameters.character, 'Twilight Sparkle');
+        assert.equal(result.parameters.emotion, 'μ = 0.20');
     });
 
     it('Should return the extracted data for the specified character with the specified emotion for voice join', async () => {
-        const content = `${config.prefix}tsn+ Testing.`;
+        const content = `${config.prefix}ts0.10+ Testing.`;
         const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
         const result = await voiceFileHandler.parseMessage(mockMessage);
 
-        assert.equal(result.text, 'Testing.');
-        assert.equal(result.character, 'Twilight Sparkle');
-        assert.equal(result.emotion, 'Neutral');
+        assert.equal(result.parameters.text, 'Testing.');
+        assert.equal(result.parameters.character, 'Twilight Sparkle');
+        assert.equal(result.parameters.emotion, 'μ = 0.10');
     });
 });
 
 describe('#extractArguments(message)', () => {
     beforeEach(() => {
-        voiceFileHandler = new VoiceFileHandler(characters, emotions);
+        voiceFileHandler = new VoiceFileHandler(characters);
         mockChannel = new mock.MockTextChannel();
         mockMember = new mock.MockMember();
     });
@@ -121,7 +106,7 @@ describe('#extractArguments(message)', () => {
         assert.equal(result.amount, 5);
         assert.deepEqual(result.selectedCharacters, [{
             name: 'Twilight Sparkle',
-            emotion: 'Happy',
+            emotion: '0.10',
         }]);
     });
 
@@ -134,15 +119,15 @@ describe('#extractArguments(message)', () => {
         assert.equal(result.amount, 5);
         assert.deepEqual(result.selectedCharacters, [{
             name: 'Twilight Sparkle',
-            emotion: 'Happy',
+            emotion: '0.10',
         }, {
             name: 'GLaDOS',
-            emotion: 'Neutral',
+            emotion: '0.20',
         }]);
     });
 
     it('Should extract the number of messages and the selected character and emotion', async () => {
-        const content = `${config.prefix}voicedub 5 -tsn`;
+        const content = `${config.prefix}voicedub 5 -ts0.20`;
         const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
         const result = await voiceFileHandler.extractArguments(mockMessage);
@@ -150,7 +135,7 @@ describe('#extractArguments(message)', () => {
         assert.equal(result.amount, 5);
         assert.deepEqual(result.selectedCharacters, [{
             name: 'Twilight Sparkle',
-            emotion: 'Neutral',
+            emotion: '0.20',
         }]);
     });
 
@@ -165,7 +150,7 @@ describe('#extractArguments(message)', () => {
     });
 
     it('Should extract the number of messages and the selected characters but select the default emotion for invalid character emotions', async () => {
-        const content = `${config.prefix}voicedub 5 -tsH`;
+        const content = `${config.prefix}voicedub 5 -ts0.30`;
         const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
         const result = await voiceFileHandler.extractArguments(mockMessage);
@@ -173,122 +158,14 @@ describe('#extractArguments(message)', () => {
         assert.equal(result.amount, 5);
         assert.deepEqual(result.selectedCharacters, [{
             name: 'Twilight Sparkle',
-            emotion: 'Happy',
-        }]);
-    });
-
-    it('Should extract the number of messages and the selected characters but select the default emotion for invalid emotion codes', async () => {
-        const content = `${config.prefix}voicedub 5 -tsx`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-        assert.deepEqual(result.selectedCharacters, [{
-            name: 'Twilight Sparkle',
-            emotion: 'Happy',
-        }]);
-    });
-});
-
-describe('#extractArguments(message)', () => {
-    beforeEach(() => {
-        voiceFileHandler = new VoiceFileHandler(characters, emotions);
-        mockChannel = new mock.MockTextChannel();
-        mockMember = new mock.MockMember();
-    });
-
-    it('Should extract the number of messages', async () => {
-        const content = `${config.prefix}voicedub 5`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-    });
-
-    it('Should extract the number of messages and the selected character', async () => {
-        const content = `${config.prefix}voicedub 5 -ts`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-        assert.deepEqual(result.selectedCharacters, [{
-            name: 'Twilight Sparkle',
-            emotion: 'Happy',
-        }]);
-    });
-
-    it('Should extract the number of messages and the selected characters', async () => {
-        const content = `${config.prefix}voicedub 5 -ts -gl`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-        assert.deepEqual(result.selectedCharacters, [{
-            name: 'Twilight Sparkle',
-            emotion: 'Happy',
-        }, {
-            name: 'GLaDOS',
-            emotion: 'Neutral',
-        }]);
-    });
-
-    it('Should extract the number of messages and the selected character and emotion', async () => {
-        const content = `${config.prefix}voicedub 5 -tsn`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-        assert.deepEqual(result.selectedCharacters, [{
-            name: 'Twilight Sparkle',
-            emotion: 'Neutral',
-        }]);
-    });
-
-    it('Should extract the number of messages and ignore invalid character codes', async () => {
-        const content = `${config.prefix}voicedub 5 -xx`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-        assert.deepEqual(result.selectedCharacters, []);
-    });
-
-    it('Should extract the number of messages and the selected characters but select the default emotion for invalid character emotions', async () => {
-        const content = `${config.prefix}voicedub 5 -tsH`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-        assert.deepEqual(result.selectedCharacters, [{
-            name: 'Twilight Sparkle',
-            emotion: 'Happy',
-        }]);
-    });
-
-    it('Should extract the number of messages and the selected characters but select the default emotion for invalid emotion codes', async () => {
-        const content = `${config.prefix}voicedub 5 -tsx`;
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
-
-        const result = await voiceFileHandler.extractArguments(mockMessage);
-
-        assert.equal(result.amount, 5);
-        assert.deepEqual(result.selectedCharacters, [{
-            name: 'Twilight Sparkle',
-            emotion: 'Happy',
+            emotion: '0.10',
         }]);
     });
 });
 
 describe('#parseMessages(messages, selectedCharacters)', () => {
     beforeEach(() => {
-        voiceFileHandler = new VoiceFileHandler(characters, emotions);
+        voiceFileHandler = new VoiceFileHandler(characters);
         mockChannel = new mock.MockTextChannel();
         mockMember1 = new mock.MockMember(null, 1);
         mockMember2 = new mock.MockMember(null, 2);
@@ -328,18 +205,18 @@ describe('#parseMessages(messages, selectedCharacters)', () => {
         const messages = [message1, message2];
         const selectedCharacters = [{
             name: 'Fluttershy',
-            emotion: 'Happy',
+            emotion: '0.10',
         }, {
             name: 'Rarity',
-            emotion: 'Neutral',
+            emotion: '0.20',
         }];
 
         const result = (await voiceFileHandler.parseMessages(messages, selectedCharacters)).result;
 
         assert.equal(result[0].character, 'Fluttershy');
-        assert.equal(result[0].emotion, 'Happy');
+        assert.equal(result[0].emotion, 'μ = 0.10');
         assert.equal(result[1].character, 'Rarity');
-        assert.equal(result[1].emotion, 'Neutral');
+        assert.equal(result[1].emotion, 'μ = 0.20');
         assert.equal(selectedCharacters.length, 0);
     });
 
@@ -349,13 +226,13 @@ describe('#parseMessages(messages, selectedCharacters)', () => {
         const messages = [message1, message2];
         const selectedCharacters = [{
             name: 'Fluttershy',
-            emotion: 'Happy',
+            emotion: '0.10',
         }];
 
         const result = (await voiceFileHandler.parseMessages(messages, selectedCharacters)).result;
 
         assert.equal(result[0].character, 'Fluttershy');
-        assert.equal(result[0].emotion, 'Happy');
+        assert.equal(result[0].emotion, 'μ = 0.10');
         assert.notEqual(result[1].character, 'Fluttershy');
         assert.equal(selectedCharacters.length, 0);
     });
