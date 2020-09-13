@@ -23,7 +23,7 @@ class VoiceFileHandler {
     }
 
     parseText(text) {
-        const filteredText = text.replace(/[^A-Z _.,!?:']/gi, '').substr(0, config.char_limit);
+        const filteredText = text.substr(0, config.char_limit).trim();
         const lastChar = filteredText[filteredText.length - 1];
 
         return ['.', ',', ':', '!', '?'].includes(lastChar)
