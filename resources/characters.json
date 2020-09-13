@@ -1,54 +1,26 @@
 {
     "ts": {
             "name": "Twilight Sparkle",
-            "emotions": ["Happy", "Neutral"]
+            "emotions": ["High / Fast"]
         },
     "fs": {
             "name": "Fluttershy",
-            "emotions": ["Neutral"]
+            "emotions": ["High / Fast"]
         },
     "ra": {
             "name": "Rarity",
-            "emotions": ["Neutral"]
-        },
-    "aj": {
-            "name": "Applejack",
-            "emotions": ["Neutral"]
+            "emotions": ["High / Fast"]
         },
     "rd": {
             "name": "Rainbow Dash",
-            "emotions": ["Neutral"]
-        },
-    "pp": {
-            "name": "Pinkie Pie",
-            "emotions": ["Neutral"]
-        },
-    "dh": {
-            "name": "Derpy Hooves",
-            "emotions": ["Neutral"]
-        },
-    "gl": {
-            "name": "GLaDOS",
-            "emotions": ["Neutral", "Homicidal"]
-        },
-    "so": {
-            "name": "Soldier",
-            "emotions": ["Neutral"]
-        },
-    "mp": {
-            "name": "Miss Pauling",
-            "emotions": ["Neutral"]
+            "emotions": ["High / Fast"]
         },
     "rk": {
-        "name": "Rise Kujikawa",
-        "emotions": ["Neutral"]
-    },
+            "name": "Rise Kujikawa",
+            "emotions": ["High / Fast"]
+        },
     "sb": {
-        "name": "SpongeBob",
-        "emotions": ["Neutral"]
-    },
-    "an": {
-        "name": "Announcer",
-        "emotions": ["Neutral"]
-    }    
+            "name": "SpongeBob",
+            "emotions": ["High / Fast"]
+    }
 }
