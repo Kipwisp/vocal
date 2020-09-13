@@ -178,7 +178,7 @@ describe('#parseMessages(messages, selectedCharacters)', () => {
         const messages = [message1, message2];
         const selectedCharacters = [];
 
-        const result = (await voiceFileHandler.parseMessages(messages, selectedCharacters)).result;
+        const result = await voiceFileHandler.parseMessages(messages, selectedCharacters);
 
         assert.equal(result[0].text, 'Testing a.');
         assert.equal(result[1].text, 'Testing b.');
@@ -192,7 +192,7 @@ describe('#parseMessages(messages, selectedCharacters)', () => {
         const messages = [message1, message2];
         const selectedCharacters = [];
 
-        const result = (await voiceFileHandler.parseMessages(messages, selectedCharacters)).result;
+        const result = await voiceFileHandler.parseMessages(messages, selectedCharacters);
 
         assert.equal(result[0].text, 'Testing a.');
         assert.equal(result[1].text, 'Testing b.');
@@ -211,7 +211,7 @@ describe('#parseMessages(messages, selectedCharacters)', () => {
             emotion: '0.20',
         }];
 
-        const result = (await voiceFileHandler.parseMessages(messages, selectedCharacters)).result;
+        const result = await voiceFileHandler.parseMessages(messages, selectedCharacters);
 
         assert.equal(result[0].character, 'Fluttershy');
         assert.equal(result[0].emotion, 'μ = 0.10');
@@ -229,7 +229,7 @@ describe('#parseMessages(messages, selectedCharacters)', () => {
             emotion: '0.10',
         }];
 
-        const result = (await voiceFileHandler.parseMessages(messages, selectedCharacters)).result;
+        const result = await voiceFileHandler.parseMessages(messages, selectedCharacters);
 
         assert.equal(result[0].character, 'Fluttershy');
         assert.equal(result[0].emotion, 'μ = 0.10');
@@ -255,8 +255,7 @@ describe('#parseMessages(messages, selectedCharacters)', () => {
         const messages = [message1, message2, message3];
         const selectedCharacters = [];
 
-        const result = (await voiceFileHandler.parseMessages(messages, selectedCharacters)).result;
-
+        const result = await voiceFileHandler.parseMessages(messages, selectedCharacters);
         assert(result);
     });
 });
