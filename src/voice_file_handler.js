@@ -14,7 +14,6 @@ const post = bent('https://api.fifteen.ai/app/getAudioFile', 'POST', 'buffer', {
 const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
-const MAX_CHARS = 1300;
 
 class VoiceFileHandler {
     constructor(characters) {
@@ -162,7 +161,6 @@ class VoiceFileHandler {
         let characterList = [...Object.values(this.characters)];
         const memberCharacters = {};
         const result = [];
-        let charTotal = 0;
 
         for (const message of messages) {
             const member = message.member.id;
@@ -188,7 +186,6 @@ class VoiceFileHandler {
             }
 
             const parsedText = this.parseText(message.content);
-            charTotal += parsedText.length;
             if (parsedText.length <= 1) {
                 return null;
             }
@@ -196,7 +193,7 @@ class VoiceFileHandler {
             result.push(data);
         }
 
-        return { result, charTotal };
+        return result;
     }
 
     async getResponses(datum) {
@@ -212,21 +209,16 @@ class VoiceFileHandler {
         const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
         const args = this.extractArguments(message);
         const messages = await this.getMessages(message, args.amount);
+        const datum = await this.parseMessages(messages, args.selectedCharacters);
 
-        const data = await this.parseMessages(messages, args.selectedCharacters);
-        if (data.charTotal > MAX_CHARS) {
+        if (!datum) {
             sentMessage.delete();
-            message.channel.send(`${message.member} Sorry, the selected messages may result in a file that is too large to send.`);
-            return;
-        }
-        if (!data.result) {
-            sentMessage.delete();
-            message.channel.send(`${message.member} Sorry, one of the selected messages contains invalid input.`);
+            message.channel.send(`${message.member} One of the selected messages contains invalid input, sorry.`);
             return;
         }
 
         console.log('Sending requests...');
-        const responses = await this.getResponses(data.result);
+        const responses = await this.getResponses(datum);
 
         if (responses.includes(null)) {
             sentMessage.delete();
