@@ -1,19 +1,27 @@
 {
     "ts": {
             "name": "Twilight Sparkle",
-            "emotions": ["High / Fast"]
+            "emotions": ["High / Moderate"]
         },
     "fs": {
             "name": "Fluttershy",
-            "emotions": ["High / Fast"]
+            "emotions": ["High / Moderate"]
         },
     "ra": {
             "name": "Rarity",
-            "emotions": ["High / Fast"]
+            "emotions": ["High / Moderate"]
         },
     "rd": {
             "name": "Rainbow Dash",
-            "emotions": ["High / Fast"]
+            "emotions": ["High / Moderate"]
+        },
+    "aj": {
+            "name": "Applejack",
+            "emotions": ["High / Moderate"]
+        },
+    "pp": {
+            "name": "Pinkie Pie",
+            "emotions": ["High / Moderate"]
         },
     "rk": {
             "name": "Rise Kujikawa",
@@ -21,6 +29,6 @@
         },
     "sb": {
             "name": "SpongeBob",
-            "emotions": ["High / Fast"]
+            "emotions": ["High / Moderate"]
     }
 }
