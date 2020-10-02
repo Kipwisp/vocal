@@ -1,34 +1,122 @@
 {
     "ts": {
             "name": "Twilight Sparkle",
-            "emotions": ["High / Moderate"]
+            "emotions": ["Medium", "High"]
         },
     "fs": {
             "name": "Fluttershy",
-            "emotions": ["High / Moderate"]
+            "emotions": ["Medium", "High"]
         },
     "ra": {
             "name": "Rarity",
-            "emotions": ["High / Moderate"]
+            "emotions": ["Medium", "High"]
         },
     "rd": {
             "name": "Rainbow Dash",
-            "emotions": ["High / Moderate"]
+            "emotions": ["Medium", "High"]
         },
     "aj": {
             "name": "Applejack",
-            "emotions": ["High / Moderate"]
+            "emotions": ["Medium", "High"]
         },
     "pp": {
             "name": "Pinkie Pie",
-            "emotions": ["High / Moderate"]
+            "emotions": ["Medium", "High"]
         },
-    "rk": {
-            "name": "Rise Kujikawa",
-            "emotions": ["High / Fast"]
+    "pc": {
+            "name": "Princess Celestia",
+            "emotions": ["Medium", "High"]
+        },
+    "pl": {
+            "name": "Princess Luna",
+            "emotions": ["Medium", "High"]
+        },
+    "sg": {
+            "name": "Starlight Glimmer",
+            "emotions": ["Medium", "High"]
+        },
+    "tr": {
+            "name": "Trixie",
+            "emotions": ["Medium", "High"]
+        },
+    "sp": {
+            "name": "Spike",
+            "emotions": ["Medium", "High"]
+        },
+    "ab": {
+            "name": "Apple Bloom",
+            "emotions": ["Medium", "High"]
         },
     "sb": {
+            "name": "Sweetie Belle",
+            "emotions": ["Medium", "High"]
+        },
+    "sc": {
+            "name": "Scootloo",
+            "emotions": ["Medium", "High"]
+        },
+    "ly": {
+            "name": "Lyra",
+            "emotions": ["Medium", "High"]
+        },
+    "bb": {
+            "name": "Bon Bon",
+            "emotions": ["Medium", "High"]
+        },
+    "ss": {
+            "name": "Sunset Shimmer",
+            "emotions": ["Medium", "High"]
+        },
+    "mi": {
+            "name": "Minuette",
+            "emotions": ["Medium", "High"]
+        },
+    "sf": {
+            "name": "Spitefire",
+            "emotions": ["Medium", "High"]
+        },
+    "dh": {
+            "name": "Derpy Hooves",
+            "emotions": ["Medium", "High"]
+        },
+    "ch": {
+            "name": "Cheerilee",
+            "emotions": ["Medium", "High"]
+        },
+    "ze": {
+            "name": "Zecora",
+            "emotions": ["Medium", "High"]
+        },
+    "cp": {
+            "name": "Coco Pommel",
+            "emotions": ["Medium", "High"]
+        },
+    "Sb": {
+            "name": "Sugar Belle",
+            "emotions": ["Medium", "High"]
+        },
+    "vt": {
+            "name": "Vapor Trail",
+            "emotions": ["Medium", "High"]
+        },
+    "md": {
+            "name": "Moondancer",
+            "emotions": ["Medium", "High"]
+        },
+    "cg": {
+            "name": "Cozy Glow",
+            "emotions": ["Medium", "High"]
+        },
+    "qc": {
+            "name": "Queen Chrysalis",
+            "emotions": ["Medium", "High"]
+        },
+    "ld": {
+            "name": "Lightning Dust",
+            "emotions": ["Medium", "High"]
+        },
+    "SB": {
             "name": "SpongeBob",
-            "emotions": ["High / Moderate"]
+            "emotions": ["Medium"]
     }
 }
