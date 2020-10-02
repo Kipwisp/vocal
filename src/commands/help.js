@@ -32,7 +32,7 @@ module.exports = {
         helpMessage += `\nCharacter codes and emotions (Page ${page} of ${maxPages}):\n`;
 
         const characterKeys = Object.keys(characters);
-        const selectedCharacters = characterKeys.slice((page - 1) * Math.floor(characterKeys.length / maxPages), page * Math.floor(characterKeys.length / maxPages));
+        const selectedCharacters = characterKeys.slice((page - 1) * charactersPerPage, page * charactersPerPage);
         for (const character of selectedCharacters) {
             helpMessage += `${character}: ${characters[character].name} \nEmotions: `;
 
