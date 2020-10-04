@@ -1,6 +1,7 @@
 const characters = require('../resources/characters.json');
 const emotions = require('../resources/emotions.json');
 
+const TTL = 60000;
 const charactersPerPage = 10;
 const maxPages = Math.ceil(Object.keys(characters).length / charactersPerPage);
 const LEFT_ARROW = '⬅️';
@@ -59,7 +60,13 @@ class HelpMessageHandler {
         }
 
         const filter = (reaction) => reaction.count !== 1 && options.includes(reaction.emoji.name);
-        const collected = await sentMessage.awaitReactions(filter, { max: 1 });
+        const collected = await sentMessage.awaitReactions(filter, { max: 1, idle: TTL });
+
+        if (collected.size === 0) {
+            sentMessage.react('❌');
+            return;
+        }
+
         this.updateHelpMessage(sentMessage, page, collected);
     }
 }
