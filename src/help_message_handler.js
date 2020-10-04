@@ -1,11 +1,13 @@
+const config = require('../config.json');
 const characters = require('../resources/characters.json');
 const emotions = require('../resources/emotions.json');
 
-const TTL = 60000;
+const TTL = config.help_ttl;
 const charactersPerPage = 10;
 const maxPages = Math.ceil(Object.keys(characters).length / charactersPerPage);
 const LEFT_ARROW = '⬅️';
 const RIGHT_ARROW = '➡️';
+const TERMINATED = '❌';
 
 class HelpMessageHandler {
     generateHelpMessage(page) {
@@ -63,7 +65,7 @@ class HelpMessageHandler {
         const collected = await sentMessage.awaitReactions(filter, { max: 1, idle: TTL });
 
         if (collected.size === 0) {
-            sentMessage.react('❌');
+            sentMessage.react(TERMINATED);
             return;
         }
 
