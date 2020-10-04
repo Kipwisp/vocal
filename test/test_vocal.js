@@ -42,16 +42,6 @@ describe('#handleMessage(message)', () => {
         assert(mockChannel.send.notCalled);
     });
 
-    it('Should reply to the help command', async () => {
-        const content = `${config.prefix}help`;
-        const mockAuthor = new mock.MockAuthor(false);
-        const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
-
-        vocal.handleMessage(mockMessage);
-
-        assert(mockChannel.send.calledOnce);
-    });
-
     it('Should reply to the invite command', async () => {
         const content = `${config.prefix}invite`;
         const mockAuthor = new mock.MockAuthor(false);
