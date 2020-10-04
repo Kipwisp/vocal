@@ -47,7 +47,7 @@
             "name": "Apple Bloom",
             "emotions": ["Medium", "High"]
         },
-    "sb": {
+    "sw": {
             "name": "Sweetie Belle",
             "emotions": ["Medium", "High"]
         },
@@ -72,7 +72,7 @@
             "emotions": ["Medium", "High"]
         },
     "sf": {
-            "name": "Spitefire",
+            "name": "Spitfire",
             "emotions": ["Medium", "High"]
         },
     "dh": {
@@ -91,7 +91,7 @@
             "name": "Coco Pommel",
             "emotions": ["Medium", "High"]
         },
-    "Sb": {
+    "su": {
             "name": "Sugar Belle",
             "emotions": ["Medium", "High"]
         },
@@ -115,7 +115,7 @@
             "name": "Lightning Dust",
             "emotions": ["Medium", "High"]
         },
-    "SB": {
+    "sb": {
             "name": "SpongeBob",
             "emotions": ["Medium"]
     }
