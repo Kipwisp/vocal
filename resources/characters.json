@@ -67,6 +67,10 @@
             "name": "Sunset Shimmer",
             "emotions": ["Medium", "High"]
         },
+    "ca": {
+            "name": "Princess Cadance",
+            "emotions": ["Medium", "High"]
+        },
     "mi": {
             "name": "Minuette",
             "emotions": ["Medium", "High"]
