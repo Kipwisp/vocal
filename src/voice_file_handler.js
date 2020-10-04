@@ -23,7 +23,7 @@ class VoiceFileHandler {
     }
 
     parseText(text) {
-        const filteredText = text.substr(0, config.char_limit).trim();
+        const filteredText = text.trim();
         const lastChar = filteredText[filteredText.length - 1];
 
         return ['.', ',', ':', '!', '?'].includes(lastChar)
@@ -60,7 +60,8 @@ class VoiceFileHandler {
         }
 
         const text = this.parseText(message.content.substr(message.content.indexOf(' ') + 1));
-        if (text.length > config.char_limit) {
+        console.log(text.length);
+        if (text.length >= config.char_limit) {
             const difference = text.length - config.char_limit;
             await message.channel.send(`${message.member} Your message is ${difference} character${difference === 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
             return null;
