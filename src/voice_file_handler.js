@@ -60,8 +60,7 @@ class VoiceFileHandler {
         }
 
         const text = this.parseText(message.content.substr(message.content.indexOf(' ') + 1));
-        console.log(text.length);
-        if (text.length >= config.char_limit) {
+        if (text.length > config.char_limit) {
             const difference = text.length - config.char_limit;
             await message.channel.send(`${message.member} Your message is ${difference} character${difference === 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
             return null;
