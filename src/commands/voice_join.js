@@ -20,7 +20,7 @@ const queueHandler = new QueueHandler(async (guildID, request, speaking) => {
 
 module.exports = {
     name: 'Voice Join',
-    command: new RegExp(`^${config.prefix}[a-z][a-z][a-zA-Z]?\\+ `),
+    command: new RegExp(`^${config.prefix}[a-zA-Z][a-zA-Z][a-zA-Z]?\\+ `),
     format: `${config.prefix}xxy+ message`,
     description: 'Joins the voice channel the user is in and plays the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => {
