@@ -8,8 +8,6 @@ const post = bent('https://api.15.ai/app/getAudioFile', 'POST', 'buffer', {
     Host: 'api.15.ai',
     'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
     'Access-Control-Allow-Origin': '*',
-    Origin: 'https://15.ai',
-    Referer: 'https://15.ai/',
 });
 const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;

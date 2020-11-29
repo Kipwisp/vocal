@@ -1,126 +1,194 @@
 {
     "ts": {
             "name": "Twilight Sparkle",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "fs": {
             "name": "Fluttershy",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "ra": {
             "name": "Rarity",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "rd": {
             "name": "Rainbow Dash",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "aj": {
             "name": "Applejack",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "pp": {
             "name": "Pinkie Pie",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "pc": {
             "name": "Princess Celestia",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "pl": {
             "name": "Princess Luna",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "sg": {
             "name": "Starlight Glimmer",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "tr": {
             "name": "Trixie",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "sp": {
             "name": "Spike",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "ab": {
             "name": "Apple Bloom",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "sw": {
             "name": "Sweetie Belle",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "sc": {
-            "name": "Scootloo",
-            "emotions": ["Medium", "High"]
+            "name": "Scootaloo",
+            "emotions": ["Contextual"]
         },
     "ly": {
             "name": "Lyra",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "bb": {
             "name": "Bon Bon",
-            "emotions": ["Medium", "High"]
-        },
-    "ss": {
-            "name": "Sunset Shimmer",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "ca": {
             "name": "Princess Cadance",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "mi": {
             "name": "Minuette",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "sf": {
             "name": "Spitfire",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "dh": {
             "name": "Derpy Hooves",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "ch": {
             "name": "Cheerilee",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "ze": {
             "name": "Zecora",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "cp": {
             "name": "Coco Pommel",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "su": {
             "name": "Sugar Belle",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "vt": {
             "name": "Vapor Trail",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "md": {
             "name": "Moondancer",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "cg": {
             "name": "Cozy Glow",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "qc": {
             "name": "Queen Chrysalis",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
     "ld": {
             "name": "Lightning Dust",
-            "emotions": ["Medium", "High"]
+            "emotions": ["Contextual"]
         },
-    "sb": {
-            "name": "SpongeBob",
-            "emotions": ["Medium"]
-    }
+    "di": {
+            "name": "Discord",
+            "emotions": ["Contextual"]
+        },
+    "sn": {
+            "name": "Snips",
+            "emotions": ["Contextual"]
+        },
+    "Sn": {
+            "name": "Snails",
+            "emotions": ["Contextual"]
+        },
+    "so": {
+            "name": "Soarin'",
+            "emotions": ["Contextual"]
+        },
+    "bm": {
+            "name": "Big Mac'",
+            "emotions": ["Contextual"]
+        },
+    "sa": {
+            "name": "Shining Armor",
+            "emotions": ["Contextual"]
+        },
+    "Su": {
+            "name": "Sunburst",
+            "emotions": ["Contextual"]
+        },
+    "dt": {
+            "name": "Diamond Tiara",
+            "emotions": ["Contextual"]
+        },
+    "Ss": {
+            "name": "Silver Spoon",
+            "emotions": ["Contextual"]
+        },
+    "oc": {
+            "name": "Octavia",
+            "emotions": ["Contextual"]
+        },
+    "gi": {
+            "name": "Gilda",
+            "emotions": ["Contextual"]
+        },
+    "ga": {
+            "name": "Gabby",
+            "emotions": ["Contextual"]
+        },
+    "lp": {
+            "name": "Limestone Pie",
+            "emotions": ["Contextual"]
+        },
+    "br": {
+            "name": "Braeburn",
+            "emotions": ["Contextual"]
+        },
+    "dd": {
+            "name": "Daring Do",
+            "emotions": ["Contextual"]
+        },
+    "ss": {
+            "name": "Sunset Shimmer",
+            "emotions": ["Contextual"]
+        },
+    "ad": {
+            "name": "Adagio Dazzle",
+            "emotions": ["Contextual"]
+        },
+    "Ab": {
+            "name": "Aria Blaze",
+            "emotions": ["Contextual"]
+        },
+    "sd": {
+            "name": "Sonata Dusk",
+            "emotions": ["Contextual"]
+        }
 }
