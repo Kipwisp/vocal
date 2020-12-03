@@ -1,22 +1,10 @@
-const fs = require('fs').promises;
 const VoiceFileHandler = require('../voice_file_handler.js');
-const QueueHandler = require('../queue_handler.js');
+const queueHandler = require('../queue_handler.js');
 const characters = require('../../resources/characters.json');
 const emotions = require('../../resources/emotions.json');
 const config = require('../../config.json');
 
-const DELAY = 2000;
 const voiceFileHandler = new VoiceFileHandler(characters, emotions);
-const queueHandler = new QueueHandler(async (guildID, request, speaking) => {
-    if (!speaking) {
-        fs.unlink(request.file).catch((error) => console.log('Failed to delete temp file: \n', error));
-        setTimeout(() => {
-            if (!queueHandler.isFinished(guildID)) {
-                queueHandler.play(guildID);
-            }
-        }, DELAY);
-    }
-});
 
 module.exports = {
     name: 'Voice Join',
@@ -33,11 +21,6 @@ module.exports = {
         const result = await voiceFileHandler.getVoiceFile(message);
         if (!result) return;
 
-        const isPlaying = queueHandler.addToQueue(message.guild.id, result);
-
-        if (!isPlaying) {
-            await queueHandler.joinVoiceChannel(message.guild.id, voiceChannel);
-            queueHandler.play(message.guild.id);
-        }
+        queueHandler.addRequest(message.guild.id, result, voiceChannel);
     },
 };
