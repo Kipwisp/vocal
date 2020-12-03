@@ -5,6 +5,7 @@ class MockConnection {
     constructor(channel) {
         this.channel = channel;
         this.play = sinon.fake.returns(new MockDispatcher());
+        this.disconnect = sinon.fake();
     }
 }
 

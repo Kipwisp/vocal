@@ -13,6 +13,8 @@ const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
 const MAX_CHARS = 1300;
+const DEFAULT_SIGMA = 0.95;
+const DEFAULT_DENOISE = 0.02;
 
 class VoiceFileHandler {
     constructor(characters, emotions) {
@@ -21,7 +23,7 @@ class VoiceFileHandler {
     }
 
     parseText(text) {
-        const filteredText = text.trim();
+        const filteredText = text.trim().replace(/[^A-Za-z0-9 -.,!?|[\]{}']/gi, '');
         const lastChar = filteredText[filteredText.length - 1];
 
         return ['.', ',', ':', '!', '?'].includes(lastChar)
@@ -70,8 +72,12 @@ class VoiceFileHandler {
     }
 
     async getResponse(data, attempts) {
+        const params = data;
+        params.sigma = DEFAULT_SIGMA;
+        params.denoiser =DEFAULT_DENOISE;
+
         try {
-            const response = await post('', data);
+            const response = await post('', params);
             console.log('Retrieved data successfully.');
             console.log('Processing data...');
 
@@ -82,7 +88,7 @@ class VoiceFileHandler {
             const attemptsLeft = attempts - 1;
             if (attemptsLeft > 0) {
                 console.log(`Attempts left: ${attemptsLeft} | Trying again...`);
-                return this.getResponse(data, attemptsLeft);
+                return this.getResponse(params, attemptsLeft);
             }
 
             return null;

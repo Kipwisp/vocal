@@ -1,51 +1,16 @@
+const GuildQueue = require('./guild_queue.js');
+
 class QueueHandler {
-    constructor(callback) {
+    constructor() {
         this.guilds = {};
-        this.callback = callback;
     }
 
-    async play(guildID) {
-        const guild = this.guilds[guildID];
-        const request = guild.queue.shift();
-
-        request.channel.send(`Now playing: [${request.character} - ${request.emotion}] ${request.line} | Requested by ${request.member}`);
-        const dispatcher = guild.connection.play(request.file);
-        dispatcher.on('speaking', (speaking) => {
-            this.callback(guildID, request, speaking);
-        });
-
-        return dispatcher;
-    }
-
-    async joinVoiceChannel(guildID, voiceChannel) {
-        const guild = this.guilds[guildID];
-        guild.playing = true;
-        guild.connection = await voiceChannel.join();
-    }
-
-    isFinished(guildID) {
-        const guild = this.guilds[guildID];
-
-        if (guild.queue.length === 0) {
-            guild.playing = false;
-            guild.connection.channel.leave();
-        }
-
-        return !guild.playing;
-    }
-
-    addToQueue(guildID, request) {
-        if (!this.guilds[guildID]) this.guilds[guildID] = { queue: [], playing: false, connection: null };
-        const guild = this.guilds[guildID];
-
-        guild.queue.push(request);
-
-        if (guild.playing) {
-            request.channel.send(`${request.member} Queued your request: [${request.character} - ${request.emotion}] ${request.line}`);
-        }
-
-        return guild.playing;
+    addRequest(guildID, request, voiceChannel) {
+        if (!this.guilds[guildID]) this.guilds[guildID] = new GuildQueue();
+        this.guilds[guildID].add(request, voiceChannel);
     }
 }
 
-module.exports = QueueHandler;
+const queueHandler = new QueueHandler();
+
+module.exports = queueHandler;
