@@ -1,10 +1,9 @@
-const VoiceFileHandler = require('../voice_file_handler.js');
+const sendRequest = require('../api_handler.js').sendRequest;
 const queueHandler = require('../queue_handler.js');
+const parseMessage = require('../message_parser.js').parseMessage;
+const config = require('../../config.json');
 const characters = require('../../resources/characters.json');
 const emotions = require('../../resources/emotions.json');
-const config = require('../../config.json');
-
-const voiceFileHandler = new VoiceFileHandler(characters, emotions);
 
 module.exports = {
     name: 'Voice Join',
@@ -18,7 +17,8 @@ module.exports = {
             return;
         }
 
-        const result = await voiceFileHandler.getVoiceFile(message);
+        const data = await parseMessage(message, characters, emotions);
+        const result = await sendRequest(message, data);
         if (!result) return;
 
         queueHandler.addRequest(message.guild.id, result, voiceChannel);
