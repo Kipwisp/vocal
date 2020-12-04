@@ -9,10 +9,9 @@ const RANDOM_BYTES = 4;
 
 async function getMessages(message, amount) {
     const messageHandler = message.channel.messages;
+    const messages = await messageHandler.fetch({ before: message.id, limit: amount });
 
-    const messages = await messageHandler.fetch({ limit: amount });
-
-    return messages.values();
+    return [...messages.values()].reverse();
 }
 
 function extractArguments(message, characters, emotions) {
