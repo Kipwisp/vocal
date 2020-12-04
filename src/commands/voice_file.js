@@ -1,10 +1,9 @@
 const fs = require('fs').promises;
-const VoiceFileHandler = require('../voice_file_handler.js');
+const sendRequest = require('../api_handler.js').sendRequest;
+const parseMessage = require('../message_parser.js').parseMessage;
+const config = require('../../config.json');
 const characters = require('../../resources/characters.json');
 const emotions = require('../../resources/emotions.json');
-const config = require('../../config.json');
-
-const voiceFileHandler = new VoiceFileHandler(characters, emotions);
 
 module.exports = {
     name: 'Voice File',
@@ -12,7 +11,8 @@ module.exports = {
     format: `${config.prefix}xxy message`,
     description: 'Sends a .wav file of the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => {
-        const result = await voiceFileHandler.getVoiceFile(message);
+        const data = await parseMessage(message, characters, emotions);
+        const result = await sendRequest(message, data);
         if (!result) return;
 
         await message.channel.send({ content: `${message.member}`, files: [result.file] });

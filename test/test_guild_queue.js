@@ -3,11 +3,12 @@ const assert = require('assert');
 const mock = require('./mock');
 const GuildQueue = require('../src/guild_queue.js');
 
-describe('#add(request)', () => {
+describe('#add(request, voiceChannel)', () => {
     beforeEach(() => {
         mockChannel = new mock.MockTextChannel(null);
+        mockVoiceChannel = new mock.MockVoiceChannel();
         mockMember = new mock.MockMember();
-        queue = new GuildQueue();;
+        queue = new GuildQueue();
     });
 
     it('Should add one request to the queue when the queue is empty', async () => {
@@ -15,7 +16,7 @@ describe('#add(request)', () => {
             line: 'Test', emotion: 'Test', character: 'Test', channel: mockChannel, member: mockMember,
         };
 
-        queue.add(request);
+        queue.add(request, mockVoiceChannel);
 
         assert.equal(queue.queue.length, 1);
     });
@@ -24,11 +25,11 @@ describe('#add(request)', () => {
         const request = {
             line: 'Test', emotion: 'Test', character: 'Test', channel: mockChannel, member: mockMember,
         };
-        const guildID = 1;
+
         queue.queue = ['Another test'];
         queue.connection = new mock.MockConnection();
 
-        queue.add(request);
+        queue.add(request, mockVoiceChannel);
 
         assert.equal(queue.queue.length, 2);
         assert(mockChannel.send.calledOnce);
@@ -78,21 +79,6 @@ describe('#play()', () => {
         assert(mockConnection.play.calledOnce);
         assert(mockChannel.send.calledOnce);
         assert(dispatcher.on.calledOnce);
-    });
-});
-
-describe('#join(voiceChannel)', () => {
-    beforeEach(() => {
-        mockVoiceChannel = new mock.MockVoiceChannel();
-        mockConnection = new mock.MockConnection(mockVoiceChannel);
-        queue = new GuildQueue();
-    });
-
-    it('Should join the voice channel', async () => {
-        queue.join(mockVoiceChannel);
-
-        assert(queue.connection !== null);
-        assert(mockVoiceChannel.join.calledOnce);
     });
 });
 
