@@ -10,24 +10,9 @@ const RANDOM_BYTES = 4;
 async function getMessages(message, amount) {
     const messageHandler = message.channel.messages;
 
-    const messages = [];
-    let previousMessage = message;
-    for (let i = 0; i < amount; ++i) {
-        // eslint-disable-next-line no-await-in-loop
-        previousMessage = (await messageHandler.fetch({ before: previousMessage.id, limit: 1 })).values().next().value;
+    const messages = await messageHandler.fetch({ limit: amount });
 
-        if (!previousMessage) {
-            break;
-        }
-
-        if (previousMessage.author.bot) {
-            --i;
-        } else {
-            messages.unshift(previousMessage);
-        }
-    }
-
-    return messages;
+    return messages.values();
 }
 
 function extractArguments(message, characters, emotions) {
