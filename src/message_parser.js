@@ -11,8 +11,10 @@ function repairText(text) {
 
 async function parseMessage(message, characters, emotions) {
     const code = message.content.substring(config.prefix.length, message.content.indexOf(' '));
+    const characterCodeLength = Object.keys(characters)[0].length;
+    const emotionCodeLength = Object.keys(emotions)[0].length;
 
-    const character = code.substr(0, 2);
+    const character = code.substr(0, characterCodeLength);
     if (!(character in characters)) {
         await message.channel.send(`${message.member} That character code is invalid. Say ${config.prefix}help to view valid codes.`);
         return null;
@@ -21,8 +23,8 @@ async function parseMessage(message, characters, emotions) {
 
     let emotionName;
     const characterEmotions = characters[character].emotions;
-    if (code.match(RegExp('[a-zA-Z][a-zA-Z][a-zA-Z]\\+?$'))) {
-        const emotion = code.substr(2, 1);
+    if (code.match(RegExp(`[a-zA-Z]{${characterCodeLength}}[a-zA-Z]{${emotionCodeLength}}\\+?$`))) {
+        const emotion = code.substr(characterCodeLength, emotionCodeLength);
         if (!(emotion in emotions)) {
             await message.channel.send(`${message.member} That emotion code is invalid. Say ${config.prefix}help to view valid codes.`);
             return null;
