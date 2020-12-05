@@ -5,9 +5,12 @@ const config = require('../../config.json');
 const characters = require('../../resources/characters.json');
 const emotions = require('../../resources/emotions.json');
 
+const characterCodeLength = Object.keys(characters)[0].length;
+const emotionCodeLength = Object.keys(emotions)[0].length;
+
 module.exports = {
     name: 'Voice File',
-    command: new RegExp(`^${config.prefix}[a-zA-Z][a-zA-Z][a-zA-Z]? `),
+    command: new RegExp(`^${config.prefix}[a-zA-Z]{${characterCodeLength}}([a-zA-Z]{${emotionCodeLength}})? `),
     format: `${config.prefix}xxy message`,
     description: 'Sends a .wav file of the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => {
