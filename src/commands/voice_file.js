@@ -15,6 +15,7 @@ module.exports = {
     description: 'Sends a .wav file of the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => {
         const data = await parseMessage(message, characters, emotions);
+        if (!data) return;
         const result = await sendRequest(message, data);
         if (!result) return;
 
