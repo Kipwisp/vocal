@@ -103,9 +103,9 @@ async function sendDub(message, characters, emotions) {
         console.log('Merging finished.');
         sentMessage.delete();
 
-        await message.channel.send(createCastingCredits(data));
+        const credits = createCastingCredits(data);
 
-        message.channel.send({ content: `${message.member}`, files: [result] }).then(() => {
+        message.channel.send({ content: `${message.member}\n${credits}`, files: [result] }).then(() => {
             fs.unlink(result).catch((error) => console.log('Failed to delete temp file: \n', error));
         });
 
