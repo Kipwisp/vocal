@@ -21,6 +21,8 @@ module.exports = {
         }
 
         const data = await parseMessage(message, characters, emotions);
+        if (!data) return;
+
         const result = await sendRequest(message, data);
         if (!result) return;
 
