@@ -20,7 +20,7 @@ function generateHelpMessage(page) {
         }
     }
 
-    helpMessage += `\n**Character codes and emotions** (Page **${page}** of ${maxPages}):\n`;
+    helpMessage += `\n**Character codes** (Page **${page}** of ${maxPages}):\n`;
 
     const characterKeys = Object.keys(characters);
     const selectedCharacters = characterKeys.slice((page - 1) * charactersPerPage, page * charactersPerPage);
