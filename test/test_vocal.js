@@ -53,7 +53,7 @@ describe('#handleMessage(message)', () => {
     });
 
     it('Should not execute the voice join command if the user is not in a voice channel and should send an appropriate response', async () => {
-        const content = `${config.prefix}ts+ Test.`;
+        const content = `${config.prefix}twi+ Test.`;
         const mockAuthor = new mock.MockAuthor(false);
         const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
 
