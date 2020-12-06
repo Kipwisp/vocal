@@ -11,7 +11,7 @@ const emotionCodeLength = Object.keys(emotions)[0].length;
 module.exports = {
     name: 'Voice File',
     command: new RegExp(`^${config.prefix}[a-zA-Z]{${characterCodeLength}}([a-zA-Z]{${emotionCodeLength}})? `),
-    format: `${config.prefix}xxy message`,
+    format: `${config.prefix}xxxy message`,
     description: 'Sends a .wav file of the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => {
         const data = await parseMessage(message, characters, emotions);

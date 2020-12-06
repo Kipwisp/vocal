@@ -28,11 +28,15 @@ To set up the bot, install the required dependencies for it with the following c
 ```
 npm install
 ```
+Then run the script to automatically generate the character and emotion codes for the bot which will be saved to the resources directory:
+```
+npm run generate
+```
 
 ## Running
 Run the following command to start the bot:
 ```
-node bot.js
+npm run start
 ```
 Upon the bot successfully logging into Discord, a message should appear stating "Logged in as [bot name]!" in the console.
 

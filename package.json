@@ -4,7 +4,9 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node bot.js",
+    "generate": "node src/code_generator.js"
   },
   "repository": {
     "type": "git",

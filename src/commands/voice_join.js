@@ -11,7 +11,7 @@ const emotionCodeLength = Object.keys(emotions)[0].length;
 module.exports = {
     name: 'Voice Join',
     command: new RegExp(`^${config.prefix}[a-zA-Z]{${characterCodeLength}}([a-zA-Z]{${emotionCodeLength}})?\\+ `),
-    format: `${config.prefix}xxy+ message`,
+    format: `${config.prefix}xxxy+ message`,
     description: 'Joins the voice channel the user is in and plays the generated voice for the selected character, emotion (optional), and message.',
     exec: async (message) => {
         const voiceChannel = message.member.voice.channel;

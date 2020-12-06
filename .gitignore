@@ -119,3 +119,6 @@ config.json
 
 # Tmp folder
 tmp
+
+# Generated resources
+resources/*.json

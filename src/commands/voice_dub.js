@@ -9,7 +9,7 @@ const emotionCodeLength = Object.keys(emotions)[0].length;
 module.exports = {
     name: 'Voice Dub',
     command: new RegExp(`^${config.prefix}voicedub [1-9]( -[a-zA-Z]{${characterCodeLength}}([a-zA-Z]{${emotionCodeLength}})?)*$`),
-    format: `${config.prefix}voicedub n -xxy -xxy -xxy ...`,
+    format: `${config.prefix}voicedub n -xxxy -xxxy -xxxy ...`,
     description: 'Generates a voice dub of the last n messages using the specified characters or random characters otherwise.',
     exec: async (message) => {
         sendDub(message, characters, emotions);
