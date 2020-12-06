@@ -11,12 +11,13 @@ const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
 const DEFAULT_SIGMA = 0.95;
-const DEFAULT_DENOISE = 0.02;
+const DEFAULT_DENOISE = 0.005;
 
 async function getResponse(data) {
     const params = data;
     params.sigma = DEFAULT_SIGMA;
     params.denoiser = DEFAULT_DENOISE;
+    params.use_hifigan = true;
 
     for (let i = 0; i < MAX_ATTEMPTS; ++i) {
         try {
