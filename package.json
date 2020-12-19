@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node bot.js",
-    "generate": "node src/code_generator.js"
+    "generate": "node src/generate_codes.js"
   },
   "repository": {
     "type": "git",
