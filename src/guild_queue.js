@@ -26,7 +26,8 @@ class GuildQueue {
             this.connection = await voiceChannel.join();
             this.play();
         } catch (error) {
-            console.log('Failed to connect to voice channel \n', error);
+            console.log('Failed to connect to voice channel: \n', error);
+            voiceChannel.leave();
             this.connection = null;
         }
     }
