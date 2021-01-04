@@ -6,11 +6,9 @@ const fs = require('fs').promises;
 const CHARACTER_CODE_LENGTH = 3;
 const EMOTION_CODE_LENGTH = 1;
 const SOURCE_FILTER = [
-'2001: A Space Odyssey', 'Portal', 'Team Fortress 2', 'Persona 4', 'SpongeBob SquarePants',
-    'Super Smash Bros. Ultimate', 'Steven Universe', 'The Stanley Parable', 'Fallout: New Vegas', 'Aqua Teen Hunger Force',
-    'Dan Vs.', 'Daria', 'Half-Life', 'HuniePop', 'Doctor Who', 'Undertale', 'Celeste',
+    'Fallout: New Vegas', 'Undertale', 'Celeste',
 ];
-const CHARACTER_FILTER = [];
+const CHARACTER_FILTER = ['Chell', 'Stanley', 'Gordon Freeman'];
 
 async function getSourceFile() {
     let get = bent('https://15.ai/', 'GET', 'string', {
