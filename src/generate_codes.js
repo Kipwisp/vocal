@@ -6,7 +6,7 @@ const fs = require('fs').promises;
 const CHARACTER_CODE_LENGTH = 3;
 const EMOTION_CODE_LENGTH = 1;
 const SOURCE_FILTER = [
-    'Fallout: New Vegas', 'Undertale', 'Celeste',
+    'Super Smash Bros. Ultimate', 'Fallout: New Vegas', 'Undertale', 'Celeste',
 ];
 const CHARACTER_FILTER = ['Chell', 'Stanley', 'Gordon Freeman'];
 
@@ -32,17 +32,17 @@ async function getSourceFile() {
 
 async function extractResources() {
     const result = await getSourceFile();
-
     const filter = /["[\]]/g;
-    const charactersFound = [...result.matchAll(RegExp('name:"[A-Z][\'A-Za-z0-9 ]+"', 'g'))];
-    const characters = {};
-    charactersFound.forEach((x) => characters[x[0].split(':')[1].replace(filter, '')] = x.index);
-    console.log(`Found ${charactersFound.length} characters.`);
 
     const emotionsFound = result.match(RegExp('emotions:\\["[A-Z][A-Za-z, ]+"\\]', 'g')).slice(0, -1);
     const emotions = [];
     emotionsFound.forEach((x) => emotions.push(x.split(':')[1].replace(filter, '').split(',')));
-    console.log(`Found ${emotionsFound.length} character emotions.`);
+    console.log(`Found ${emotions.length} character emotions.`);
+
+    const charactersFound = [...result.matchAll(RegExp('name:"[A-Z][\'A-Za-z0-9 ]+"', 'g'))];
+    const characters = {};
+    charactersFound.slice(0, emotions.length).forEach((x) => characters[x[0].split(':')[1].replace(filter, '')] = x.index);
+    console.log(`Found ${Object.keys(characters).length} characters.`);
 
     const sourcesFound = [...result.matchAll(RegExp('"?[A-Z0-9][A-Za-z0-9.\\- :]+"?:\\[', 'g'))];
     const sources = {};
@@ -78,6 +78,7 @@ function createKey(name, codeLength, codes) {
 
 async function generateCodes() {
     const [characters, emotions, sources] = await extractResources();
+    const warning = Object.keys(characters).length !== emotions.length;
 
     const characterCodes = {};
     const emotionNames = new Set();
@@ -118,6 +119,10 @@ async function generateCodes() {
     }
 
     console.log(emotionCodes);
+
+    if (warning) {
+        console.log('WARNING: The number of character emotions do not match the number of characters!');
+    }
 
     return [characterCodes, emotionCodes];
 }
