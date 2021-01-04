@@ -8,7 +8,7 @@ const EMOTION_CODE_LENGTH = 1;
 const SOURCE_FILTER = [
     'Super Smash Bros. Ultimate', 'Fallout: New Vegas', 'Undertale', 'Celeste',
 ];
-const CHARACTER_FILTER = ['Chell', 'Stanley', 'Gordon Freeman'];
+const CHARACTER_FILTER = ['Chell', 'Stanley', 'Gordon Freeman', 'Overwatch'];
 
 async function getSourceFile() {
     let get = bent('https://15.ai/', 'GET', 'string', {
