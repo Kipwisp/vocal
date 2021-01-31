@@ -28,7 +28,7 @@ async function getResponse(data) {
 
             const wav = new wavefile.WaveFile();
             wav.fromScratch(1, 44100, '32f', response.waveforms[0][0][1]);
-            const emotions = response.torchmoji.splice(2, 5).map((x) => emojis[x]);
+            const emotions = response.torchmoji.splice(2, 5).map((x) => emojis[x]).join(' ');
 
             return [wav.toBuffer(), emotions];
         } catch (error) {

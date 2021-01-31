@@ -11,7 +11,7 @@ class GuildQueue {
     play() {
         const request = this.queue.shift();
 
-        request.channel.send(`Now playing: [${request.character}] ${request.line} | Requested by ${request.member}`);
+        request.channel.send(`Now playing: [${request.character} - ${request.emotions}] ${request.line} | Requested by ${request.member}`);
         const dispatcher = this.connection.play(request.file);
         dispatcher.on('speaking', (speaking) => {
             this.finish(request, speaking);
@@ -55,7 +55,7 @@ class GuildQueue {
         if (this.connection === null || this.connection?.status === DISCONNECTED) {
             this.join(voiceChannel);
         } else {
-            request.channel.send(`${request.member} Queued your request: [${request.character}] ${request.line}`);
+            request.channel.send(`${request.member} Queued your request: [${request.character} - ${request.emotions}] ${request.line}`);
         }
     }
 }

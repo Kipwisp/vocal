@@ -9,7 +9,7 @@ const emojis = ':joy: :unamused: :weary: :sob: :heart_eyes: \
 :clap: :eyes: :gun: :persevere: :smiling_imp: \
 :sweat: :broken_heart: :yellow_heart: :musical_note: :speak_no_evil: \
 :wink: :skull: :confounded: :smile: :stuck_out_tongue_winking_eye: \
-:angry: :no_good: :muscle: :facepunch: :purple_heart: \
+:angry: :no_good: :muscle: :punch: :purple_heart: \
 :sparkling_heart: :blue_heart: :grimacing: :sparkles:'.split(' ');
 
 module.exports = emojis;
