@@ -5,9 +5,7 @@ const fs = require('fs').promises;
 
 const CHARACTER_CODE_LENGTH = 3;
 const EMOTION_CODE_LENGTH = 1;
-const SOURCE_FILTER = [
-    'Super Smash Bros. Ultimate', 'Fallout: New Vegas', 'Undertale', 'Celeste',
-];
+const SOURCE_FILTER = ['Super Smash Bros. Ultimate', 'Fallout: New Vegas', 'Undertale', 'Celeste'];
 const CHARACTER_FILTER = ['Chell', 'Stanley', 'Gordon Freeman', 'Overwatch'];
 
 async function getSourceFile() {

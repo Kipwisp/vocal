@@ -9,10 +9,9 @@ function repairText(text) {
         : `${filteredText}.`;
 }
 
-async function parseMessage(message, characters, emotions) {
+async function parseMessage(message, characters) {
     const code = message.content.substring(config.prefix.length, message.content.indexOf(' '));
     const characterCodeLength = Object.keys(characters)[0].length;
-    const emotionCodeLength = Object.keys(emotions)[0].length;
 
     const character = code.substr(0, characterCodeLength);
     if (!(character in characters)) {
@@ -20,24 +19,6 @@ async function parseMessage(message, characters, emotions) {
         return null;
     }
     const characterName = characters[character].name;
-
-    let emotionName;
-    const characterEmotions = characters[character].emotions;
-    if (code.match(RegExp(`[a-zA-Z]{${characterCodeLength}}[a-zA-Z]{${emotionCodeLength}}\\+?$`))) {
-        const emotion = code.substr(characterCodeLength, emotionCodeLength);
-        if (!(emotion in emotions)) {
-            await message.channel.send(`${message.member} That emotion code is invalid. Say ${config.prefix}help to view valid codes.`);
-            return null;
-        }
-        emotionName = emotions[emotion];
-
-        if (!characterEmotions.includes(emotionName)) {
-            await message.channel.send(`${message.member} That character does not have that emotion. Say ${config.prefix}help to view valid character emotions.`);
-            return null;
-        }
-    } else {
-        emotionName = characterEmotions[0];
-    }
 
     const text = repairText(message.content.substr(message.content.indexOf(' ') + 1));
     if (text.length > config.char_limit) {
@@ -49,7 +30,6 @@ async function parseMessage(message, characters, emotions) {
     return {
         text,
         character: characterName,
-        emotion: emotionName,
         code,
     };
 }
@@ -71,7 +51,6 @@ async function parseMessages(messages, characters, selectedCharacters) {
                 const randomCharacter = characterList.splice(Math.floor(Math.random() * characterList.length), 1)[0];
                 nextCharacter = {
                     name: randomCharacter.name,
-                    emotion: randomCharacter.emotions[Math.floor(Math.random() * randomCharacter.emotions.length)],
                 };
 
                 if (characterList.length === 0) {
@@ -91,7 +70,6 @@ async function parseMessages(messages, characters, selectedCharacters) {
         const data = {
             text: parsedText,
             character: memberCharacters[member].name,
-            emotion: memberCharacters[member].emotion,
             member: message.member,
         };
 

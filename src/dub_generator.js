@@ -14,22 +14,18 @@ async function getMessages(message, amount) {
     return [...messages.values()].reverse();
 }
 
-function extractArguments(message, characters, emotions) {
+function extractArguments(message, characters) {
     const amount = message.content.substr(message.content.indexOf(' ') + 1, 1);
     const characterCodeLength = Object.keys(characters)[0].length;
-    const emotionCodeLength = Object.keys(emotions)[0].length;
 
     const selectedCharacters = [];
-    const codes = message.content.matchAll(new RegExp(`-[a-zA-Z]{${characterCodeLength}}([a-zA-Z]{${emotionCodeLength}})?`, 'g'));
+    const codes = message.content.matchAll(new RegExp(`-[a-zA-Z]{${characterCodeLength}}`, 'g'));
     for (const code of codes) {
         const characterCode = code[0].substr(1, characterCodeLength);
-        const emotionCode = code[0].substr(characterCodeLength + 1, emotionCodeLength);
 
         if (characterCode in characters) {
             selectedCharacters.push({
                 name: characters[characterCode].name,
-                emotion: ((emotionCode in emotions && characters[characterCode].emotions.includes(emotions[emotionCode])))
-                    ? emotions[emotionCode] : characters[characterCode].emotions[0],
             });
         }
     }
@@ -53,7 +49,7 @@ function createCastingCredits(data) {
 
 async function sendDub(message, characters, emotions) {
     const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
-    const args = extractArguments(message, characters, emotions);
+    const args = extractArguments(message, characters);
     const messages = await getMessages(message, args.amount);
 
     const data = await parseMessages(messages, characters, args.selectedCharacters);

@@ -1,8 +1,9 @@
 const bent = require('bent');
 const crypto = require('crypto');
 const fs = require('fs').promises;
+const wavefile = require('wavefile');
 
-const post = bent('https://api.15.ai/app/getAudioFile', 'POST', 'buffer', {
+const post = bent('https://api.15.ai/app/getAudioFile2', 'POST', 'json', {
     Host: 'api.15.ai',
     'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
     'Access-Control-Allow-Origin': '*',
@@ -13,6 +14,8 @@ const MAX_ATTEMPTS = 3;
 
 async function getResponse(data) {
     const params = data;
+    params.use_diagonal = true;
+    params.emotion = 'Contextual';
 
     for (let i = 0; i < MAX_ATTEMPTS; ++i) {
         try {
@@ -21,7 +24,9 @@ async function getResponse(data) {
 
             console.log('Retrieved data successfully.');
             console.log('Processing data...');
-            return response;
+            const wav = new wavefile.WaveFile();
+            wav.fromScratch(1, 44100, '32f', response.waveforms[0][0][1]);
+            return wav.toBuffer();
         } catch (error) {
             console.log('An error occurred: \n', error);
         }
@@ -49,7 +54,6 @@ async function sendRequest(message, data) {
     return {
         file,
         character: data.character,
-        emotion: data.emotion,
         line: data.text,
         member: message.member,
         channel: message.channel,

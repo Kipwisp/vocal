@@ -1,9 +1,8 @@
 const config = require('../config.json');
 const characters = require('../resources/characters.json');
-const emotions = require('../resources/emotions.json');
 
 const TTL = config.help_ttl;
-const charactersPerPage = 10;
+const charactersPerPage = 20;
 const maxPages = Math.ceil(Object.keys(characters).length / charactersPerPage);
 const LEFT_ARROW = '⬅️';
 const RIGHT_ARROW = '➡️';
@@ -25,19 +24,7 @@ function generateHelpMessage(page) {
     const characterKeys = Object.keys(characters);
     const selectedCharacters = characterKeys.slice((page - 1) * charactersPerPage, page * charactersPerPage);
     for (const character of selectedCharacters) {
-        helpMessage += `**${character}**: ${characters[character].name} \nEmotions: `;
-
-        const characterEmotions = characters[character].emotions;
-        helpMessage += `${characterEmotions[0]} (default)`;
-        for (let i = 1; i < characterEmotions.length; ++i) {
-            helpMessage += `, ${characterEmotions[i]}`;
-        }
-        helpMessage += '\n\n';
-    }
-
-    helpMessage += '**Emotion codes**:\n';
-    for (const emotion of Object.keys(emotions)) {
-        helpMessage += `**${emotion}**: ${emotions[emotion]} \n`;
+        helpMessage += `**${character}**: ${characters[character].name} \n`;
     }
 
     return helpMessage;
