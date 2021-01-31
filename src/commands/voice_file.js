@@ -17,7 +17,7 @@ module.exports = {
         const result = await sendRequest(message, data);
         if (!result) return;
 
-        await message.channel.send({ content: `${message.member}`, files: [result.file] });
+        await message.channel.send({ content: `${message.member} \nEmotions: ${result.emotions.join(' ')}`, files: [result.file] });
         fs.unlink(result.file).catch((error) => console.log('Failed to delete temp file: \n', error));
     },
 };

@@ -2,6 +2,7 @@ const bent = require('bent');
 const crypto = require('crypto');
 const fs = require('fs').promises;
 const wavefile = require('wavefile');
+const emojis = require('../resources/emojis.js');
 
 const post = bent('https://api.15.ai/app/getAudioFile2', 'POST', 'json', {
     Host: 'api.15.ai',
@@ -24,9 +25,12 @@ async function getResponse(data) {
 
             console.log('Retrieved data successfully.');
             console.log('Processing data...');
+
             const wav = new wavefile.WaveFile();
             wav.fromScratch(1, 44100, '32f', response.waveforms[0][0][1]);
-            return wav.toBuffer();
+            const emotions = response.torchmoji.splice(2, 5).map((x) => emojis[x]);
+
+            return [wav.toBuffer(), emotions];
         } catch (error) {
             console.log('An error occurred: \n', error);
         }
@@ -40,7 +44,7 @@ async function sendRequest(message, data) {
     const file = `tmp/${data.code}_${data.text.replace(/[^A-Z0-9 _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
 
     console.log('Sending request...');
-    const response = await getResponse(data);
+    const [response, emotions] = await getResponse(data);
     sentMessage.delete();
 
     if (!response) {
@@ -57,6 +61,7 @@ async function sendRequest(message, data) {
         line: data.text,
         member: message.member,
         channel: message.channel,
+        emotions,
     };
 }
 
@@ -82,7 +87,7 @@ async function sendRequests(requests) {
     for (const response of responses) {
         const fileName = `tmp/${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
         files.push(fileName);
-        results.push(fs.writeFile(fileName, response));
+        results.push(fs.writeFile(fileName, response[0]));
     }
 
     await Promise.all(results);
