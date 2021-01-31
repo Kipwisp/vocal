@@ -49,10 +49,10 @@ npm test
 ## Commands
 The bot has the following commands:
 
- * **\<prefix\>\<character code\>\<emotion code\> \<message\>** - The bot will reply with a .wav file of the requested voice.
- * **\<prefix\>\<character code\>\<emotion code\>+ \<message\>** - The bot will join the voice channel the user is in and play the requested voice.
- * **\<prefix\>voicedub n -\<character code\>\<emotion code\> -\<character code\>\<emotion code\> -\<character code\>\<emotion code\> ...** - The bot will create a 'voice dub' of the last n messages using the characters specified or random characters otherwise.
- * **\<prefix\>help** - The bot will reply with a general format on how to make a voice request, all the character codes for their respective characters and all the emotion codes.
+ * **\<prefix\>\<character code\> \<message\>** - The bot will reply with a .wav file of the requested voice.
+ * **\<prefix\>\<character code\>+ \<message\>** - The bot will join the voice channel the user is in and play the requested voice.
+ * **\<prefix\>voicedub n -\<character code\> -\<character code\> -\<character code\>...** - The bot will create a 'voice dub' of the last n messages using the characters specified or random characters otherwise.
+ * **\<prefix\>help** - The bot will reply with a general format on how to make a voice request and all the character codes for their respective characters.
  * **\<prefix\>invite** - The bot will send its invite link.
   
 ## Dependencies
