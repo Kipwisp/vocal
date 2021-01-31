@@ -47,7 +47,7 @@ function createCastingCredits(data) {
     return credits;
 }
 
-async function sendDub(message, characters, emotions) {
+async function sendDub(message, characters) {
     const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
     const args = extractArguments(message, characters);
     const messages = await getMessages(message, args.amount);
