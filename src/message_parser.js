@@ -1,7 +1,7 @@
 const config = require('../config.json');
 
 function repairText(text) {
-    const filteredText = text.trim().replace(/[^A-Za-z0-9 -.,!?|[\]{}']/gi, '');
+    const filteredText = text.trim().replace(/[^A-Za-z -.,!?|[\]{}']/gi, '');
     const lastChar = filteredText[filteredText.length - 1];
 
     return ['.', ',', ':', '!', '?'].includes(lastChar)
