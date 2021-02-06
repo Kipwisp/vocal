@@ -24,6 +24,7 @@
     "discord.js": "^12.5.1",
     "fluent-ffmpeg": "^2.1.2",
     "modules": "^0.4.0",
+    "number-to-words": "^1.2.4",
     "sinon": "^9.2.1",
     "wavefile": "^11.0.0"
   },

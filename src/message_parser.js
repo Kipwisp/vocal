@@ -1,3 +1,4 @@
+const converter = require('number-to-words');
 const config = require('../config.json');
 
 function repairText(text) {
@@ -7,6 +8,15 @@ function repairText(text) {
     return ['.', ',', ':', '!', '?'].includes(lastChar)
         ? filteredText
         : `${filteredText}.`;
+}
+
+function convertNumbers(text) {
+    let result = text;
+    const numbers = [...text.matchAll(new RegExp('[0-9]+', 'g'))];
+    for (const number of numbers) {
+        result = result.replace(number[0], converter.toWords(Number(number[0])));
+    }
+    return result;
 }
 
 async function parseMessage(message, characters) {
@@ -20,7 +30,8 @@ async function parseMessage(message, characters) {
     }
     const characterName = characters[character].name;
 
-    const text = repairText(message.content.substr(message.content.indexOf(' ') + 1));
+    let text = convertNumbers(message.content.substr(message.content.indexOf(' ') + 1));
+    text = repairText(text);
     if (text.length > config.char_limit) {
         const difference = text.length - config.char_limit;
         await message.channel.send(`${message.member} Your message is ${difference} character${difference === 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
@@ -61,7 +72,8 @@ async function parseMessages(messages, characters, selectedCharacters) {
             memberCharacters[member] = nextCharacter;
         }
 
-        const parsedText = repairText(message.content);
+        let parsedText = convertNumbers(message.content);
+        parsedText = repairText(parsedText);
 
         if (parsedText.length <= 1) {
             return null;
