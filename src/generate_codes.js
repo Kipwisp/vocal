@@ -104,31 +104,20 @@ async function generateCodes() {
         characterCodes[key].name = character;
 
         const characterEmotions = emotions.pop();
-        characterEmotions.forEach((emotion) => emotionNames.add(emotion));
-        characterCodes[key].emotions = characterEmotions;
     }
 
     console.log(characterCodes);
-
-    const emotionCodes = {};
-    for (const emotion of emotionNames) {
-        const key = createKey(emotion, EMOTION_CODE_LENGTH, emotionCodes);
-        emotionCodes[key] = emotion;
-    }
-
-    console.log(emotionCodes);
 
     if (warning) {
         console.log('WARNING: The number of character emotions do not match the number of characters!');
     }
 
-    return [characterCodes, emotionCodes];
+    return characterCodes;
 }
 
 async function writeCodes() {
-    const [characterCodes, emotionCodes] = await generateCodes();
+    const characterCodes = await generateCodes();
     fs.writeFile('resources/characters.json', JSON.stringify(characterCodes, null, 4));
-    fs.writeFile('resources/emotions.json', JSON.stringify(emotionCodes, null, 4));
     console.log('Saved generated codes to resources directory.');
 }
 
