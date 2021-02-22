@@ -4,7 +4,6 @@ const bent = require('bent');
 const fs = require('fs').promises;
 
 const CHARACTER_CODE_LENGTH = 3;
-const EMOTION_CODE_LENGTH = 1;
 const SOURCE_FILTER = ['Super Smash Bros. Ultimate', 'Fallout: New Vegas', 'Undertale', 'Celeste'];
 const CHARACTER_FILTER = ['Chell', 'Stanley', 'Gordon Freeman', 'Overwatch'];
 
@@ -79,7 +78,6 @@ async function generateCodes() {
     const warning = Object.keys(characters).length !== emotions.length;
 
     const characterCodes = {};
-    const emotionNames = new Set();
     for (const [character, index] of Object.entries(characters)) {
         if (CHARACTER_FILTER.includes(character)) {
             emotions.pop();
@@ -102,8 +100,9 @@ async function generateCodes() {
 
         characterCodes[key] = {};
         characterCodes[key].name = character;
+        characterCodes[key].source = source;
 
-        const characterEmotions = emotions.pop();
+        emotions.pop();
     }
 
     console.log(characterCodes);

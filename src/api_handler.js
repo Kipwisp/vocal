@@ -1,10 +1,9 @@
 const bent = require('bent');
 const crypto = require('crypto');
 const fs = require('fs').promises;
-const wavefile = require('wavefile');
 const emojis = require('../resources/emojis.js');
 
-const post = bent('https://api.15.ai/app/getAudioFile2', 'POST', 'json', {
+const post = bent('https://api.15.ai/app/getAudioFile3', 'POST', 'json', {
     Host: 'api.15.ai',
     'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
     'Access-Control-Allow-Origin': '*',
@@ -12,6 +11,7 @@ const post = bent('https://api.15.ai/app/getAudioFile2', 'POST', 'json', {
 const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
+const NUM_EMOTIONS = 5;
 
 async function getResponse(data) {
     const params = data;
@@ -26,11 +26,14 @@ async function getResponse(data) {
             console.log('Retrieved data successfully.');
             console.log('Processing data...');
 
-            const wav = new wavefile.WaveFile();
-            wav.fromScratch(1, 44100, '32f', response.waveforms[0][0][1]);
-            const emotions = response.torchmoji.splice(2, 5).map((x) => emojis[x]).join(' ');
+            const waveform = response.waveforms[0].data;
+            const emotions = response.torchmoji.splice(2, NUM_EMOTIONS).map((x) => emojis[x]).join(' ');
 
-            return [wav.toBuffer(), emotions];
+            return {
+                // eslint-disable-next-line new-cap
+                mp3: new Int8Array(new Buffer.from(waveform)),
+                emotions,
+            };
         } catch (error) {
             console.log('An error occurred: \n', error);
         }
@@ -41,10 +44,10 @@ async function getResponse(data) {
 
 async function sendRequest(message, data) {
     const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
-    const file = `tmp/${data.code}_${data.text.replace(/[^A-Z0-9 _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
+    const file = `tmp/${data.code}_${data.text.replace(/[^A-Z0-9 _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.mp3`;
 
     console.log('Sending request...');
-    const [response, emotions] = await getResponse(data);
+    const response = await getResponse(data);
     sentMessage.delete();
 
     if (!response) {
@@ -52,7 +55,7 @@ async function sendRequest(message, data) {
         return null;
     }
 
-    await fs.writeFile(file, response);
+    await fs.writeFile(file, response.mp3);
     console.log('Finished processing.');
 
     return {
@@ -61,7 +64,7 @@ async function sendRequest(message, data) {
         line: data.text,
         member: message.member,
         channel: message.channel,
-        emotions,
+        emotions: response.emotions,
     };
 }
 
@@ -85,9 +88,9 @@ async function sendRequests(requests) {
     const files = [];
     const results = [];
     for (const response of responses) {
-        const fileName = `tmp/${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
+        const fileName = `tmp/${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.mp3`;
         files.push(fileName);
-        results.push(fs.writeFile(fileName, response[0]));
+        results.push(fs.writeFile(fileName, response.mp3));
     }
 
     await Promise.all(results);

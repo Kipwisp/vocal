@@ -84,7 +84,7 @@ async function sendDub(message, characters) {
         combinedFiles.input('resources/audio/spacing.wav').input(files[i]);
     }
 
-    const result = `tmp/voicedub_${args.amount}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
+    const result = `tmp/voicedub_${args.amount}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.mp3`;
 
     combinedFiles.on('error', (error) => {
         console.log('Failed to merge files:', error);
