@@ -3,11 +3,12 @@ const crypto = require('crypto');
 const fs = require('fs').promises;
 const emojis = require('../resources/emojis.js');
 
-const post = bent('https://api.15.ai/app/getAudioFile3', 'POST', 'json', {
+const post = bent('https://api.15.ai/app/getAudioFile4', 'POST', 'json', {
     Host: 'api.15.ai',
     'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
     'Access-Control-Allow-Origin': '*',
 });
+const getFile = bent('GET', 'buffer');
 const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
@@ -26,12 +27,15 @@ async function getResponse(data) {
             console.log('Retrieved data successfully.');
             console.log('Processing data...');
 
-            const waveform = response.waveforms[0].data;
+            const waveFile = response.wavNames[0];
+            const fileURL = `https://cdn.15.ai/${waveFile}`;
+            // eslint-disable-next-line no-await-in-loop
+            const voice = await getFile(fileURL);
+
             const emotions = response.torchmoji.splice(2, NUM_EMOTIONS).map((x) => emojis[x]).join(' ');
 
             return {
-                // eslint-disable-next-line new-cap
-                mp3: new Int8Array(new Buffer.from(waveform)),
+                voice,
                 emotions,
             };
         } catch (error) {
@@ -44,7 +48,7 @@ async function getResponse(data) {
 
 async function sendRequest(message, data) {
     const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
-    const file = `tmp/${data.code}_${data.text.replace(/[^A-Z0-9 _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.mp3`;
+    const file = `tmp/${data.code}_${data.text.replace(/[^A-Z0-9 _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
 
     console.log('Sending request...');
     const response = await getResponse(data);
@@ -55,7 +59,7 @@ async function sendRequest(message, data) {
         return null;
     }
 
-    await fs.writeFile(file, response.mp3);
+    await fs.writeFile(file, response.voice);
     console.log('Finished processing.');
 
     return {
@@ -88,9 +92,9 @@ async function sendRequests(requests) {
     const files = [];
     const results = [];
     for (const response of responses) {
-        const fileName = `tmp/${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.mp3`;
+        const fileName = `tmp/${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
         files.push(fileName);
-        results.push(fs.writeFile(fileName, response.mp3));
+        results.push(fs.writeFile(fileName, response.voice));
     }
 
     await Promise.all(results);
