@@ -28,7 +28,7 @@ async function getResponse(data) {
             console.log('Processing data...');
 
             const waveFile = response.wavNames[0];
-            const fileURL = `https://cdn.15.ai/${waveFile}`;
+            const fileURL = `https://cdn.15.ai/audio/${waveFile}`;
             // eslint-disable-next-line no-await-in-loop
             const voice = await getFile(fileURL);
 
