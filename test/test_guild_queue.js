@@ -16,7 +16,7 @@ describe('#add(request, voiceChannel)', () => {
             line: 'Test', emotion: 'Test', character: 'Test', channel: mockChannel, member: mockMember,
         };
 
-        queue.add(request, mockVoiceChannel);
+        queue._add(request, mockVoiceChannel);
 
         assert.equal(queue.queue.length, 1);
     });
@@ -29,7 +29,7 @@ describe('#add(request, voiceChannel)', () => {
         queue.queue = ['Another test'];
         queue.connection = new mock.MockConnection();
 
-        queue.add(request, mockVoiceChannel);
+        queue._add(request, mockVoiceChannel);
 
         assert.equal(queue.queue.length, 2);
         assert(mockChannel.send.calledOnce);
@@ -82,7 +82,7 @@ describe('#play()', () => {
     });
 });
 
-describe('#next()', () => {
+describe('#finishPlaying()', () => {
     beforeEach(() => {
         mockVoiceChannel = new mock.MockVoiceChannel();
         mockConnection = new mock.MockConnection(mockVoiceChannel);
@@ -93,7 +93,7 @@ describe('#next()', () => {
         queue.queue = [];
         queue.connection = mockConnection;
 
-        queue.next();
+        queue._finishPlaying();
 
         assert(mockConnection.disconnect.calledOnce);
     });
@@ -105,7 +105,7 @@ describe('#next()', () => {
         queue.queue = [request];
         queue.connection = mockConnection;
 
-        queue.next();
+        queue._finishPlaying();
 
         assert(mockConnection.disconnect.notCalled);
     });

@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Kipwisp/vocal#readme",
   "dependencies": {
     "@discordjs/opus": "^0.1.0",
+    "async-mutex": "^0.3.1",
     "bent": "^7.3.12",
     "discord.js": "^12.5.1",
     "fluent-ffmpeg": "^2.1.2",
