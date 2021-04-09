@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const bent = require('bent');
 const crypto = require('crypto');
 const fs = require('fs').promises;
@@ -21,7 +22,6 @@ async function getResponse(data) {
 
     for (let i = 0; i < MAX_ATTEMPTS; ++i) {
         try {
-            // eslint-disable-next-line no-await-in-loop
             const response = await post('', params);
 
             console.log('Retrieved data successfully.');
@@ -29,9 +29,11 @@ async function getResponse(data) {
 
             const waveFile = response.wavNames[0];
             const fileURL = `https://cdn.15.ai/audio/${waveFile}`;
-            // eslint-disable-next-line no-await-in-loop
-            const voice = await getFile(fileURL);
 
+            // If we try to access the file too soon, we might get a forbidden error
+            await new Promise((r) => setTimeout(r, 1000));
+
+            const voice = await getFile(fileURL);
             const emotions = response.torchmoji.splice(2, NUM_EMOTIONS).map((x) => emojis[x]).join(' ');
 
             return {
