@@ -17,6 +17,10 @@ async function getSourceFile() {
 
     const sourceCode = result.match(RegExp('/js/app\\.[0-9abcdef]+\\.js'));
 
+    if (!sourceCode) {
+        return null;
+    }
+
     get = bent(`https://15.ai${sourceCode[0]}`, 'GET', 'string', {
         Host: '15.ai',
         'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
@@ -27,24 +31,23 @@ async function getSourceFile() {
     return result;
 }
 
-async function extractResources() {
-    const result = await getSourceFile();
+async function extractResources(file) {
     const filter = /["[\]]/g;
 
-    const emotionsFound = result.match(RegExp('emotions:\\["[A-Z][A-Za-z, ]+"\\]', 'g')).slice(0, -1);
+    const emotionsFound = file.match(RegExp('emotions:\\["[A-Z][A-Za-z, ]+"\\]', 'g')).slice(0, -1);
     const emotions = [];
     emotionsFound.forEach((x) => emotions.push(x.split(':')[1].replace(filter, '').split(',')));
     console.log(`Found ${emotions.length} character emotions.`);
 
-    const charactersFound = [...result.matchAll(RegExp('name:"[A-Z][\'A-Za-z0-9 ]+"', 'g'))];
+    const charactersFound = [...file.matchAll(RegExp('name:"[A-Z][\'A-Za-z0-9 ]+"', 'g'))];
     const characters = {};
     charactersFound.slice(0, emotions.length).forEach((x) => characters[x[0].split(':')[1].replace(filter, '')] = x.index);
     console.log(`Found ${Object.keys(characters).length} characters.`);
 
-    const sourcesFound = [...result.matchAll(RegExp('"?[A-Z0-9][A-Za-z0-9.\\- :]+"?:\\[', 'g'))];
+    const sourcesFound = [...file.matchAll(RegExp('"?[A-Z0-9][A-Za-z0-9.\\- :]+"?:\\[', 'g'))];
     const sources = {};
     for (let i = 0; i < sourcesFound.length; ++i) {
-        const range = (i === sourcesFound.length - 1) ? { min: sourcesFound[i].index, max: result.length } : { min: sourcesFound[i].index, max: sourcesFound[i + 1].index };
+        const range = (i === sourcesFound.length - 1) ? { min: sourcesFound[i].index, max: file.length } : { min: sourcesFound[i].index, max: sourcesFound[i + 1].index };
         sources[sourcesFound[i][0].replace(filter, '').slice(0, -1)] = range;
     }
     console.log(`Found ${sourcesFound.length} sources.`);
@@ -73,8 +76,7 @@ function createKey(name, codeLength, codes) {
     return key;
 }
 
-async function generateCodes() {
-    const [characters, emotions, sources] = await extractResources();
+async function generateCodes(characters, emotions, sources) {
     const warning = Object.keys(characters).length !== emotions.length;
 
     const characterCodes = {};
@@ -115,9 +117,15 @@ async function generateCodes() {
 }
 
 async function writeCodes() {
-    const characterCodes = await generateCodes();
-    fs.writeFile('resources/characters.json', JSON.stringify(characterCodes, null, 4));
-    console.log('Saved generated codes to resources directory.');
+    const file = await getSourceFile();
+    if (file) {
+        const [characters, emotions, sources] = await extractResources(file);
+        const characterCodes = await generateCodes(characters, emotions, sources);
+        fs.writeFile('resources/characters.json', JSON.stringify(characterCodes, null, 4));
+        console.log('Saved generated codes to resources directory.');
+    } else {
+        console.log('15.ai is currently down. Please try again later.');
+    }
 }
 
 writeCodes();
