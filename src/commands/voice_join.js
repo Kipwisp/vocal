@@ -1,6 +1,6 @@
 const sendRequest = require('../api_handler.js').sendRequest;
-const queueHandler = require('../queue_handler.js');
 const parseMessage = require('../message_parser.js').parseMessage;
+const queueHandler = require('../queue_handler.js');
 const config = require('../../config.json');
 const characters = require('../../resources/characters.json');
 
