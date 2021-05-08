@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const fs = require('fs').promises;
 const emojis = require('../resources/emojis.js');
 
-const API = 'https://api.15.ai/app/getAudioFile3';
+const API = 'https://api.15.ai/app/getAudioFile4';
 const post = bent(API, 'POST', 'json', {
     Host: 'api.15.ai',
     'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
