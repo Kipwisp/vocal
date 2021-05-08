@@ -4,7 +4,8 @@ const crypto = require('crypto');
 const fs = require('fs').promises;
 const emojis = require('../resources/emojis.js');
 
-const post = bent('https://api.15.ai/app/getAudioFile4', 'POST', 'json', {
+const API = 'https://api.15.ai/app/getAudioFile3';
+const post = bent(API, 'POST', 'json', {
     Host: 'api.15.ai',
     'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
     'Access-Control-Allow-Origin': '*',
@@ -14,6 +15,18 @@ const FILE_NAME_LIMIT = 50;
 const RANDOM_BYTES = 4;
 const MAX_ATTEMPTS = 3;
 const NUM_EMOTIONS = 5;
+
+async function getStatus() {
+    let status;
+    try {
+        const response = await post('', { character: 'Twilight Sparkle', text: 'Test.', emotion: 'Contextual' });
+        status = response.statusCode;
+    } catch (error) {
+        status = error.statusCode;
+    }
+
+    return status !== 404;
+}
 
 async function getResponse(data) {
     const params = data;
@@ -103,4 +116,4 @@ async function sendRequests(requests) {
     return files;
 }
 
-module.exports = { sendRequest, sendRequests };
+module.exports = { sendRequest, sendRequests, getStatus };
