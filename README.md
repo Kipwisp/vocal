@@ -1,13 +1,13 @@
 # Vocal
 Vocal is a Discord bot that utilizes fifteen's application to send generated voices from popular fictional characters upon user request. 
-Be sure to check out fifteen's wonderful tool that makes this project possible. Their tool can be found at https://fifteen.ai/.
+Be sure to check out fifteen's wonderful tool that makes this project possible. Their tool can be found at https://15.ai/.
 
 ## Configuration
 Configure the following values for the bot in config.json:
   * token: The unique token for your Discord bot
   * client_id: The client ID for your Discord bot
   * prefix: The prefix the bot looks for in a message in order to be activated
-  * char_limit: The maximum number of characters allowed for a message, 200 is recommended
+  * char_limit: The maximum number of characters allowed for a message (300 characters is currently the maximum 15.ai allows)
   * help_ttl: The amount of idle time in milliseconds before a help message expires
 
 An example is shown here:
@@ -16,7 +16,7 @@ An example is shown here:
   "token": "XXXXXXXXXXXXXXXXXXXXXXXX.XXXXXX.XXXXXXXXXXXXXXXXXXXXXXXXXXX",
   "client_id": "000000000000000000",
   "prefix": "v!",
-  "char_limit": 200,
+  "char_limit": 300,
   "help_ttl": 60000
 }
 ```
@@ -54,12 +54,14 @@ The bot has the following commands:
  * **\<prefix\>voicedub n -\<character code\> -\<character code\> -\<character code\>...** - The bot will create a 'voice dub' of the last n messages using the characters specified or random characters otherwise.
  * **\<prefix\>help** - The bot will reply with a general format on how to make a voice request and all the character codes for their respective characters.
  * **\<prefix\>invite** - The bot will send its invite link.
+ * **\<prefix\>status** - Checks the current status of the 15.ai API.
   
 ## Dependencies
   * [Discord.js](https://discord.js.org/)
   * [Bent](https://github.com/mikeal/bent)
   * [Mocha](https://mochajs.org/)
   * [Sinon](https://sinonjs.org/)
+  * [Async-Mutex](https://www.npmjs.com/package/async-mutex)
 
 ## Licensing
 This project is licensed under the GNU GPLv3 - see [LICENSE](https://raw.githubusercontent.com/Kipwisp/vocal/master/LICENSE?token=AOSFA3HRIRAR4EIZHD4QQC26RUHEO) for details.
