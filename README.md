@@ -1,6 +1,6 @@
 # Vocal
 Vocal is a Discord bot that utilizes fifteen's application to send generated voices from popular fictional characters upon user request. 
-Be sure to check out fifteen's wonderful tool that makes this project possible at 15.ai.
+Be sure to check out fifteen's wonderful tool that makes this project possible at [15.ai](https://15.ai/).
 
 ## Setting up
 Vocal runs on a Node.js server. If you do not have Node.js installed, install it [here](https://nodejs.org/en/download/).
