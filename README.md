@@ -1,16 +1,30 @@
 # Vocal
 Vocal is a Discord bot that utilizes fifteen's application to send generated voices from popular fictional characters upon user request. 
-Be sure to check out fifteen's wonderful tool that makes this project possible. Their tool can be found at https://15.ai/.
+Be sure to check out fifteen's wonderful tool that makes this project possible at 15.ai.
 
-## Configuration
-Configure the following values for the bot in config.json:
+## Setting up
+Vocal runs on a Node.js server. If you do not have Node.js installed, install it [here](https://nodejs.org/en/download/).
+
+To set up the bot, install the required dependencies for it with the following command:
+```
+npm install
+```
+Then run the script to automatically generate the character codes for the bot which will be saved to the `resources` directory as `characters.json`:
+```
+npm run generate
+```
+
+## Configuring
+Before the bot can be ran, a configuration file must be created named `config.json`. Make sure you place the `config.json` file in the root directory of the repository.
+
+`config.json` defines the following parameters:
   * token: The unique token for your Discord bot
   * client_id: The client ID for your Discord bot
   * prefix: The prefix the bot looks for in a message in order to be activated
   * char_limit: The maximum number of characters allowed for a message (300 characters is currently the maximum 15.ai allows)
   * help_ttl: The amount of idle time in milliseconds before a help message expires
 
-An example is shown here:
+An example `config.json` is shown here:
 ```
 { 
   "token": "XXXXXXXXXXXXXXXXXXXXXXXX.XXXXXX.XXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -21,24 +35,12 @@ An example is shown here:
 }
 ```
 
-## Setting up
-Vocal runs on a Node.js server. If you do not have Node.js installed, install it [here](https://nodejs.org/en/download/).
-
-To set up the bot, install the required dependencies for it with the following command:
-```
-npm install
-```
-Then run the script to automatically generate the character and emotion codes for the bot which will be saved to the resources directory:
-```
-npm run generate
-```
-
 ## Running
 Run the following command to start the bot:
 ```
 npm run start
 ```
-Upon the bot successfully logging into Discord, a message should appear stating "Logged in as [bot name]!" in the console.
+Upon the bot successfully logging into Discord, a message should appear stating `Logged in as [bot name]!` in the console.
 
 ## Testing
 Run the following command to run the test suite for the bot:
@@ -49,13 +51,27 @@ npm test
 ## Commands
 The bot has the following commands:
 
- * **\<prefix\>\<character code\> \<message\>** - The bot will reply with a .wav file of the requested voice.
- * **\<prefix\>\<character code\>+ \<message\>** - The bot will join the voice channel the user is in and play the requested voice.
- * **\<prefix\>voicedub n -\<character code\> -\<character code\> -\<character code\>...** - The bot will create a 'voice dub' of the last n messages using the characters specified or random characters otherwise.
- * **\<prefix\>help** - The bot will reply with a general format on how to make a voice request and all the character codes for their respective characters.
- * **\<prefix\>invite** - The bot will send its invite link.
- * **\<prefix\>status** - Checks the current status of the 15.ai API.
-  
+ * **Voice File** (_\<prefix\>\<character code\> \<message\>_) - The bot will reply with a .wav file of the requested voice.
+ * **Voice Join** (_\<prefix\>\<character code\>+ \<message\>_) - The bot will join the voice channel the user is in and play the requested voice.
+ * **Voice Dub** (_\<prefix\>voicedub n -\<character code\> -\<character code\> -\<character code\>..._) - The bot will create a 'voice dub' of the last n messages using the characters specified or random characters otherwise.
+ * **Help** (_\<prefix\>help_) - The bot will reply with a general format on how to make a voice request and all the character codes for their respective characters.
+ * **Invite** (_\<prefix\>invite_) - The bot will send its invite link.
+ * **Status** (_\<prefix\>status_) - Checks the current status of the 15.ai API.
+
+## Demos
+
+### Voice File Demo:
+
+![Voice File Demo](./demo/voice_file.png)
+
+### Voice Join Demo:
+
+![Voice File Demo](./demo/voice_join.png)
+
+### Voice Dub Demo:
+
+![Voice File Demo](./demo/voice_dub.png)
+
 ## Dependencies
   * [Discord.js](https://discord.js.org/)
   * [Bent](https://github.com/mikeal/bent)
