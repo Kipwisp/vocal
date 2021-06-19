@@ -1,5 +1,5 @@
 { 
   "prefix" : "v!",
   "char_limit" : 300,
-  "help_ttl": 5000
+  "help_ttl": 120000
 }
