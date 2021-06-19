@@ -7,7 +7,7 @@ Vocal runs on a Node.js server. If you do not have Node.js installed, install it
 
 To set up the bot, install the required dependencies for it with the following command:
 ```
-npm install
+npm install && npm run prepare
 ```
 Then run the script to automatically generate the character codes for the bot which will be saved to the `resources` directory as `characters.json`:
 ```

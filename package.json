@@ -8,7 +8,8 @@
     "start": "node bot.js",
     "generate": "node src/generate_codes.js",
     "lint": "eslint .",
-    "fix": "eslint . --fix"
+    "fix": "eslint . --fix",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,10 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
     "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
     "mocha": "^7.2.0"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }
