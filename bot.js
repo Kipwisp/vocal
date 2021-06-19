@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const config = require('./config.json');
+const auth = require('./auth.json');
 const Vocal = require('./src/vocal.js');
 
 function run() {
@@ -16,7 +16,7 @@ function run() {
     client.on('ready', async () => { bot.setActivity(client); });
     client.on('message', async (message) => { bot.handleMessage(message); });
 
-    client.login(config.token);
+    client.login(auth.token);
 }
 
 run();

@@ -14,26 +14,28 @@ Then run the script to automatically generate the character codes for the bot wh
 npm run generate
 ```
 
-## Configuring
-Before the bot can be ran, a configuration file must be created named `config.json`. Make sure you place the `config.json` file in the root directory of the repository.
+## Authenticating
+Before the bot can be ran, a authentication file must be created named `auth.json`. Make sure you place the `auth.json` file in the root directory of the repository.
 
-`config.json` defines the following parameters:
+`auth.json` defines the following parameters:
   * token: The unique token for your Discord bot
   * client_id: The client ID for your Discord bot
-  * prefix: The prefix the bot looks for in a message in order to be activated
-  * char_limit: The maximum number of characters allowed for a message (300 characters is currently the maximum 15.ai allows)
-  * help_ttl: The amount of idle time in milliseconds before a help message expires
 
-An example `config.json` is shown here:
+An example `auth.json` is shown here:
 ```
 { 
   "token": "XXXXXXXXXXXXXXXXXXXXXXXX.XXXXXX.XXXXXXXXXXXXXXXXXXXXXXXXXXX",
   "client_id": "000000000000000000",
-  "prefix": "v!",
-  "char_limit": 300,
-  "help_ttl": 60000
 }
 ```
+
+## Configuring
+The bot can be configured using `config.json`. 
+
+`config.json` defines the following parameters:
+  * prefix: The prefix the bot looks for in a message in order to be activated
+  * char_limit: The maximum number of characters allowed for a message (300 characters is currently the maximum 15.ai allows)
+  * help_ttl: The amount of idle time in milliseconds before a help message expires
 
 ## Running
 Run the following command to start the bot:

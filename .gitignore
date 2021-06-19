@@ -114,10 +114,10 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
-# Config file
-config.json
+# Authentication file
+auth.json
 
-# Tmp folder
+# tmp folder
 tmp
 
 # Generated resources
