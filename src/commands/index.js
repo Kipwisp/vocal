@@ -6,5 +6,5 @@ const invite = require('./invite');
 const status = require('./status');
 
 module.exports = {
-  commands: [voiceFile, voiceJoin, voiceDub, help, invite, status],
+	commands: [voiceFile, voiceJoin, voiceDub, help, invite, status],
 };

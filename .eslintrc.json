@@ -20,6 +20,8 @@
         "guard-for-in": "off",
         "max-len": "off",
         "no-underscore-dangle": "off",
-        "no-multi-str": "off"
+        "no-multi-str": "off",
+        "indent": ["error", "tab"],
+        "no-tabs": "off"
     }
 }
