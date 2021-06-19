@@ -11,7 +11,7 @@ Be sure to check out fifteen's wonderful tool that makes this project possible a
 * [Configuring](#configuring)
 * [Running](#running)
 * [Testing](#testing)
-* [Command](#commands)
+* [Commands](#commands)
 * [Demos](#demos)
 * [Dependencies](#dependencies)
 * [Licensing](#licensing)
