@@ -1,9 +1,9 @@
 const sinon = require('sinon');
 
 class MockDispatcher {
-    constructor() {
-        this.on = sinon.fake();
-    }
+  constructor() {
+    this.on = sinon.fake();
+  }
 }
 
 module.exports = MockDispatcher;

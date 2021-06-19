@@ -1,11 +1,11 @@
-const MockTextChannel = require('./mock_text_channel.js');
-const MockAuthor = require('./mock_author.js');
-const MockMember = require('./mock_member.js');
-const MockMessage = require('./mock_message.js');
-const MockConnection = require('./mock_connection.js');
-const MockVoiceChannel = require('./mock_voice_channel.js');
-const MockDispatcher = require('./mock_dispatcher.js');
-const MockVoice = require('./mock_voice.js');
+const MockTextChannel = require('./mock_text_channel');
+const MockAuthor = require('./mock_author');
+const MockMember = require('./mock_member');
+const MockMessage = require('./mock_message');
+const MockConnection = require('./mock_connection');
+const MockVoiceChannel = require('./mock_voice_channel');
+const MockDispatcher = require('./mock_dispatcher');
+const MockVoice = require('./mock_voice');
 
 module.exports.MockTextChannel = MockTextChannel;
 module.exports.MockAuthor = MockAuthor;
