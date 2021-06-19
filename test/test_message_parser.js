@@ -10,7 +10,7 @@ const characters = {
 	gl: { name: 'GLaDOS' },
 };
 
-describe('#parseMessage(message, characters, emotions)', () => {
+describe('#parseMessage(message, characters)', () => {
 	beforeEach(() => {
 		mockChannel = new mock.MockTextChannel(null);
 		mockMember = new mock.MockMember();
