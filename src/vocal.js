@@ -1,4 +1,6 @@
+const Discord = require('discord.js');
 const config = require('../config.json');
+const auth = require('../auth.json');
 const commands = require('./commands');
 
 class Vocal {
@@ -21,6 +23,13 @@ class Vocal {
 				break;
 			}
 		}
+	}
+
+	start() {
+		const client = new Discord.Client();
+		client.on('ready', async () => { this.setActivity(client); });
+		client.on('message', async (message) => { this.handleMessage(message); });
+		client.login(auth.token);
 	}
 }
 

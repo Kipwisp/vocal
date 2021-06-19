@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "test": "mocha",
-    "start": "node bot.js",
+    "start": "node main.js",
     "generate": "node src/generate_codes.js",
     "lint": "eslint .",
     "fix": "eslint . --fix",
@@ -29,6 +29,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "modules": "^0.4.0",
     "number-to-words": "^1.2.4",
+    "prompt-sync": "^4.2.0",
     "sinon": "^9.2.1"
   },
   "devDependencies": {
