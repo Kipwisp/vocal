@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const fs = require('fs').promises;
 const emojis = require('../resources/emojis');
 
-const API = 'https://api.15.ai/app/getAudioFile4';
+const API = 'https://api.15.ai/app/getAudioFile5';
 const post = bent(API, 'POST', 'json', {
 	Host: 'api.15.ai',
 	'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/74.0',
@@ -30,7 +30,6 @@ async function getStatus() {
 
 async function getResponse(data) {
 	const params = data;
-	params.use_diagonal = true;
 	params.emotion = 'Contextual';
 
 	for (let i = 0; i < MAX_ATTEMPTS; ++i) {
