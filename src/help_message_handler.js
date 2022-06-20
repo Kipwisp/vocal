@@ -1,9 +1,9 @@
 const config = require('../config.json');
-const characters = require('../resources/characters.json');
+const resources = require('./resource_fetcher');
 
 const TTL = config.help_ttl;
 const charactersPerPage = 20;
-const maxPages = Math.ceil(Object.keys(characters).length / charactersPerPage);
+const maxPages = Math.ceil(Object.keys(resources.characters).length / charactersPerPage);
 const LEFT_ARROW = '⬅️';
 const RIGHT_ARROW = '➡️';
 const TERMINATED = '❌';
@@ -21,10 +21,10 @@ function generateHelpMessage(page) {
 
 	helpMessage += `\n**Character codes** (Page **${page}** of ${maxPages}):\n`;
 
-	const characterKeys = Object.keys(characters);
+	const characterKeys = Object.keys(resources.characters);
 	const selectedCharacters = characterKeys.slice((page - 1) * charactersPerPage, page * charactersPerPage);
 	for (const character of selectedCharacters) {
-		helpMessage += `**${character}**: ${characters[character].name} \n`;
+		helpMessage += `**${character}**: ${resources.characters[character].name} \n`;
 	}
 
 	return helpMessage;

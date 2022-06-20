@@ -2,9 +2,9 @@ const sendRequest = require('../api_handler').sendRequest;
 const parseMessage = require('../message_parser').parseMessage;
 const queueHandler = require('../queue_handler');
 const config = require('../../config.json');
-const characters = require('../../resources/characters.json');
+const resources = require('../resource_fetcher');
 
-const characterCodeLength = Object.keys(characters)[0].length;
+const characterCodeLength = Object.keys(resources.characters)[0].length;
 
 module.exports = {
 	name: 'Voice Join',
@@ -18,7 +18,7 @@ module.exports = {
 			return;
 		}
 
-		const data = await parseMessage(message, characters);
+		const data = await parseMessage(message, resources.characters);
 		if (!data) return;
 
 		const result = await sendRequest(message, data);

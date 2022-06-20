@@ -22,7 +22,6 @@
         "no-underscore-dangle": "off",
         "no-multi-str": "off",
         "indent": ["error", "tab"],
-        "no-tabs": "off",
-        "import/no-unresolved": [2, { "ignore": ["\\.json$"] }]
+        "no-tabs": "off"
     }
 }
