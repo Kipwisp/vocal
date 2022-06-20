@@ -121,11 +121,11 @@ async function writeCodes() {
 	if (file) {
 		const [characters, emotions, sources] = await extractResources(file);
 		const characterCodes = await generateCodes(characters, emotions, sources);
-		fs.writeFile('resources/characters.json', JSON.stringify(characterCodes, null, 4));
+		await fs.writeFile('resources/characters.json', JSON.stringify(characterCodes, null, 4));
 		console.log('Saved generated codes to resources directory.');
 	} else {
 		console.log('15.ai is currently down. Please try again later.');
 	}
 }
 
-writeCodes();
+module.exports = writeCodes;

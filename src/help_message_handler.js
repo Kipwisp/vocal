@@ -74,7 +74,6 @@ async function sendHelpMessage(message) {
 		collected = await collectReactions(sentMessage, page);
 
 		if (collected) {
-			// eslint-disable-next-line no-await-in-loop
 			page = updateHelpMessage(sentMessage, page, collected);
 		}
 	}

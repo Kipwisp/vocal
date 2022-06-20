@@ -3,6 +3,7 @@ const bent = require('bent');
 const crypto = require('crypto');
 const fs = require('fs').promises;
 const emojis = require('../resources/emojis');
+const notifications = require('../resources/notifications');
 
 const API = 'https://api.15.ai/app/getAudioFile5';
 const post = bent(API, 'POST', 'json', {
@@ -61,7 +62,7 @@ async function getResponse(data) {
 }
 
 async function sendRequest(message, data) {
-	const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
+	const sentMessage = await message.channel.send(notifications.notifyProcessing(message.member));
 	const file = `tmp/${data.code}_${data.text.replace(/[^A-Z0-9 _']/gi, '').substr(0, FILE_NAME_LIMIT)}_${crypto.randomBytes(RANDOM_BYTES).toString('hex')}.wav`;
 
 	console.log('Sending request...');
@@ -69,7 +70,7 @@ async function sendRequest(message, data) {
 	sentMessage.delete();
 
 	if (!response) {
-		await message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
+		await message.channel.send(notifications.notifyError(message.member));
 		return null;
 	}
 

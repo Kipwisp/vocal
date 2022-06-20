@@ -2,12 +2,13 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 const auth = require('../auth.json');
 const commands = require('./commands');
+const notifications = require('../resources/notifications');
 
 class Vocal {
 	async setActivity(client) {
 		console.log(`Logged in as ${client.user.tag}! \n`);
 		try {
-			await client.user.setActivity(`${config.prefix}help | Powered by 15.ai`, { type: 'WATCHING' });
+			await client.user.setActivity(notifications.notifyActivity(config.prefix));
 		} catch (error) {
 			console.log('Failed to set activity: ', error);
 		}

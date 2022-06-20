@@ -3,6 +3,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const crypto = require('crypto');
 const sendRequests = require('./api_handler').sendRequests;
 const parseMessages = require('./message_parser').parseMessages;
+const notifications = require('../resources/notifications');
 
 const MAX_CHARS = 1300;
 const RANDOM_BYTES = 4;
@@ -48,7 +49,7 @@ function createCastingCredits(data) {
 }
 
 async function sendDub(message, characters) {
-	const sentMessage = await message.channel.send(`${message.member} Hold on, this might take a bit...`);
+	const sentMessage = await message.channel.send(notifications.notifyProcessing(message.member));
 	const args = extractArguments(message, characters);
 	const messages = await getMessages(message, args.amount);
 
@@ -56,7 +57,7 @@ async function sendDub(message, characters) {
 
 	if (!data) {
 		sentMessage.delete();
-		message.channel.send(`${message.member} Sorry, one of the selected messages contains invalid input.`);
+		message.channel.send(notifications.notifyError(message.member));
 		return;
 	}
 
@@ -67,7 +68,7 @@ async function sendDub(message, characters) {
 
 	if (charTotal > MAX_CHARS) {
 		sentMessage.delete();
-		message.channel.send(`${message.member} Sorry, the selected messages may result in a file that is too large to send.`);
+		message.channel.send(notifications.notifySizeLimitExceeded(message.member));
 		return;
 	}
 
@@ -75,7 +76,7 @@ async function sendDub(message, characters) {
 
 	if (files == null) {
 		sentMessage.delete();
-		message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
+		message.channel.send(notifications.notifyError(message.member));
 		return;
 	}
 
@@ -90,7 +91,7 @@ async function sendDub(message, characters) {
 		console.log('Failed to merge files:', error);
 
 		sentMessage.delete();
-		message.channel.send(`${message.member} Sorry, your request failed. Try again.`);
+		message.channel.send(notifications.notifyError(message.member));
 
 		for (const file of files) {
 			fs.unlink(file).catch((err) => console.log('Failed to delete temp file: \n', err));

@@ -1,7 +1,8 @@
 const fs = require('fs');
 const prompt = require('prompt-sync');
+const generateCodes = require('./src/generate_codes');
 
-function setUp() {
+async function setUp() {
 	const tmpDir = 'tmp';
 	if (!fs.existsSync(tmpDir)) {
 		fs.mkdirSync(tmpDir);
@@ -22,10 +23,16 @@ function setUp() {
 
 		fs.writeFileSync(auth, result);
 	}
+
+	const characters = 'resources/characters.json';
+	if (!fs.existsSync(characters)) {
+		console.log('SETUP: Creating `characters.json`...');
+		await generateCodes();
+	}
 }
 
-function run() {
-	setUp();
+async function run() {
+	await setUp();
 
 	// eslint-disable-next-line global-require
 	const Vocal = require('./src/vocal');

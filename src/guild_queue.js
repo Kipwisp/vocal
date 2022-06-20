@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const Mutex = require('async-mutex').Mutex;
+const notifications = require('../resources/notifications');
 
 const DELAY = 2000;
 const DISCONNECTED = 4;
@@ -14,7 +15,7 @@ class GuildQueue {
 	play() {
 		const request = this.queue.shift();
 
-		request.channel.send(`Now playing: [${request.character} - ${request.emotions}] ${request.line} | Requested by ${request.member}`);
+		request.channel.send(notifications.notifyRequestQueued(request.member, request.character, request.emotions, request.line));
 		const dispatcher = this.connection.play(request.file);
 		dispatcher.on('speaking', (speaking) => {
 			this.speakingCallback(request, speaking);
@@ -68,7 +69,7 @@ class GuildQueue {
 		if (this.connection === null || this.connection?.status === DISCONNECTED) {
 			await this.join(voiceChannel);
 		} else {
-			request.channel.send(`${request.member} Queued your request: [${request.character} - ${request.emotions}] ${request.line}`);
+			request.channel.send(notifications.notifyRequestQueued(request.member, request.character, request.emotions, request.line));
 		}
 	}
 }

@@ -1,5 +1,6 @@
 const converter = require('number-to-words');
 const config = require('../config.json');
+const notifications = require('../resources/notifications');
 
 function repairText(text) {
 	const filteredText = text.trim().replace(/[^A-Za-z -.,!?|[\]{}']/gi, '');
@@ -25,7 +26,7 @@ async function parseMessage(message, characters) {
 
 	const character = code.substr(0, characterCodeLength);
 	if (!(character in characters)) {
-		await message.channel.send(`${message.member} That character code is invalid. Say ${config.prefix}help to view valid codes.`);
+		await message.channel.send(notifications.notifyInvalidCharacterCode(message.member, config.prefix));
 		return null;
 	}
 	const characterName = characters[character].name;
@@ -34,7 +35,7 @@ async function parseMessage(message, characters) {
 	text = repairText(text);
 	if (text.length > config.char_limit) {
 		const difference = text.length - config.char_limit;
-		await message.channel.send(`${message.member} Your message is ${difference} character${difference === 1 ? '' : 's'} over the character limit (${config.char_limit} characters max).`);
+		await message.channel.send(notifications.notifyCharLimitExceeded(message.member, difference, config.char_limit));
 		return null;
 	}
 
