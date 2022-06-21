@@ -1,5 +1,5 @@
 # Vocal
-![David](https://img.shields.io/david/kipwisp/vocal)
+[![Build](https://img.shields.io/github/workflow/status/kipwisp/vocal/test/master)](https://github.com/Kipwisp/vocal/actions/workflows/node.js.yml)
 [![GitHub license](https://img.shields.io/github/license/Kipwisp/vocal)](https://github.com/Kipwisp/vocal/blob/master/LICENSE)
 
 Vocal is a Discord bot that utilizes fifteen's application to send generated voices from popular fictional characters upon user request. 

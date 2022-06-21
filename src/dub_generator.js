@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const sendRequests = require('./api_handler').sendRequests;
 const parseMessages = require('./message_parser').parseMessages;
 const notifications = require('../resources/notifications');
+const resources = require('./resource_fetcher');
 
 const MAX_CHARS = 1300;
 const RANDOM_BYTES = 4;
@@ -15,18 +16,17 @@ async function getMessages(message, amount) {
 	return [...messages.values()].reverse();
 }
 
-function extractArguments(message, characters) {
+function extractArguments(message) {
 	const amount = message.content.substr(message.content.indexOf(' ') + 1, 1);
-	const characterCodeLength = Object.keys(characters)[0].length;
 
 	const selectedCharacters = [];
-	const codes = message.content.matchAll(new RegExp(`-[a-zA-Z]{${characterCodeLength}}`, 'g'));
+	const codes = message.content.matchAll(new RegExp(`-[a-zA-Z]{${resources.codeLength}}`, 'g'));
 	for (const code of codes) {
-		const characterCode = code[0].substr(1, characterCodeLength);
+		const characterCode = code[0].substr(1, resources.codeLength);
 
-		if (characterCode in characters) {
+		if (characterCode in resources.characters) {
 			selectedCharacters.push({
-				name: characters[characterCode].name,
+				name: resources.characters[characterCode].name,
 			});
 		}
 	}
@@ -48,12 +48,12 @@ function createCastingCredits(data) {
 	return credits;
 }
 
-async function sendDub(message, characters) {
+async function sendDub(message) {
 	const sentMessage = await message.channel.send(notifications.notifyProcessing(message.member));
-	const args = extractArguments(message, characters);
+	const args = extractArguments(message);
 	const messages = await getMessages(message, args.amount);
 
-	const data = await parseMessages(messages, characters, args.selectedCharacters);
+	const data = await parseMessages(messages, args.selectedCharacters);
 
 	if (!data) {
 		sentMessage.delete();

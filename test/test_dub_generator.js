@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const assert = require('assert');
+const sinon = require('sinon');
 const mock = require('./mock');
 const extractArguments = require('../src/dub_generator')._extractArguments;
 const config = require('../config.json');
@@ -10,7 +11,12 @@ const characters = {
 	gl: { name: 'GLaDOS' },
 };
 
-describe('#extractArguments(message, characters)', () => {
+const resources = require('../src/resource_fetcher');
+
+sinon.stub(resources, 'characters').value(characters);
+sinon.stub(resources, 'codeLength').value(2);
+
+describe('#extractArguments(message)', () => {
 	beforeEach(() => {
 		mockChannel = new mock.MockTextChannel();
 		mockMember = new mock.MockMember();
@@ -20,7 +26,7 @@ describe('#extractArguments(message, characters)', () => {
 		const content = `${config.prefix}voicedub 5`;
 		const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
-		const result = await extractArguments(mockMessage, characters);
+		const result = await extractArguments(mockMessage);
 
 		assert.equal(result.amount, 5);
 	});
@@ -29,7 +35,7 @@ describe('#extractArguments(message, characters)', () => {
 		const content = `${config.prefix}voicedub 5 -ts`;
 		const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
-		const result = await extractArguments(mockMessage, characters);
+		const result = await extractArguments(mockMessage);
 
 		assert.equal(result.amount, 5);
 		assert.deepEqual(result.selectedCharacters, [{
@@ -41,7 +47,7 @@ describe('#extractArguments(message, characters)', () => {
 		const content = `${config.prefix}voicedub 5 -ts -gl`;
 		const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
-		const result = await extractArguments(mockMessage, characters);
+		const result = await extractArguments(mockMessage);
 
 		assert.equal(result.amount, 5);
 		assert.deepEqual(result.selectedCharacters, [{
@@ -55,7 +61,7 @@ describe('#extractArguments(message, characters)', () => {
 		const content = `${config.prefix}voicedub 5 -xx`;
 		const mockMessage = new mock.MockMessage(mockChannel, mockMember, null, content);
 
-		const result = await extractArguments(mockMessage, characters);
+		const result = await extractArguments(mockMessage);
 
 		assert.equal(result.amount, 5);
 		assert.deepEqual(result.selectedCharacters, []);

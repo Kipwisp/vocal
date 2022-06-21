@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
+const fs = require('fs');
 const config = require('../config.json');
-const auth = require('../auth.json');
 const commands = require('./commands');
 const notifications = require('../resources/notifications');
 
@@ -30,6 +30,9 @@ class Vocal {
 		const client = new Discord.Client();
 		client.on('ready', async () => { this.setActivity(client); });
 		client.on('message', async (message) => { this.handleMessage(message); });
+
+		const auth = JSON.parse(fs.readFileSync('auth.json'));
+
 		client.login(auth.token);
 	}
 }

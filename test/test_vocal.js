@@ -1,8 +1,13 @@
 /* eslint-disable no-undef */
 const assert = require('assert');
+const sinon = require('sinon');
 const mock = require('./mock');
-const Vocal = require('../src/vocal');
 const config = require('../config.json');
+const resources = require('../src/resource_fetcher');
+
+sinon.stub(resources, 'codeLength').value(2);
+
+const Vocal = require('../src/vocal');
 
 describe('#handleMessage(message)', () => {
 	beforeEach(() => {
@@ -53,7 +58,7 @@ describe('#handleMessage(message)', () => {
 	});
 
 	it('Should not execute the voice join command if the user is not in a voice channel and should send an appropriate response', async () => {
-		const content = `${config.prefix}twi+ Test.`;
+		const content = `${config.prefix}ts+ Test.`;
 		const mockAuthor = new mock.MockAuthor(false);
 		const mockMessage = new mock.MockMessage(mockChannel, mockMember, mockAuthor, content);
 
