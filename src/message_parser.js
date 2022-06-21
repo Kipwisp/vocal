@@ -1,6 +1,7 @@
 const converter = require('number-to-words');
 const config = require('../config.json');
 const notifications = require('../resources/notifications');
+const resources = require('./resource_fetcher');
 
 function repairText(text) {
 	const filteredText = text.trim().replace(/[^A-Za-z -.,!?|[\]{}']/gi, '');
@@ -20,16 +21,15 @@ function convertNumbers(text) {
 	return result;
 }
 
-async function parseMessage(message, characters) {
+async function parseMessage(message) {
 	const code = message.content.substring(config.prefix.length, message.content.indexOf(' '));
-	const characterCodeLength = Object.keys(characters)[0].length;
 
-	const character = code.substr(0, characterCodeLength);
-	if (!(character in characters)) {
+	const character = code.substr(0, resources.codeLength);
+	if (!(character in resources.characters)) {
 		await message.channel.send(notifications.notifyInvalidCharacterCode(message.member, config.prefix));
 		return null;
 	}
-	const characterName = characters[character].name;
+	const characterName = resources.characters[character].name;
 
 	let text = convertNumbers(message.content.substr(message.content.indexOf(' ') + 1));
 	text = repairText(text);
@@ -46,8 +46,8 @@ async function parseMessage(message, characters) {
 	};
 }
 
-async function parseMessages(messages, characters, selectedCharacters) {
-	let characterList = [...Object.values(characters)];
+async function parseMessages(messages, selectedCharacters) {
+	let characterList = [...Object.values(resources.characters)];
 	const memberCharacters = {};
 	const result = [];
 
@@ -66,7 +66,7 @@ async function parseMessages(messages, characters, selectedCharacters) {
 				};
 
 				if (characterList.length === 0) {
-					characterList = [...Object.values(characters)];
+					characterList = [...Object.values(resources.characters)];
 				}
 			}
 

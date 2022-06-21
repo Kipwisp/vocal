@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const assert = require('assert');
+const sinon = require('sinon');
 const mock = require('./mock');
 const parseMessage = require('../src/message_parser').parseMessage;
 const parseMessages = require('../src/message_parser').parseMessages;
@@ -10,7 +11,12 @@ const characters = {
 	gl: { name: 'GLaDOS' },
 };
 
-describe('#parseMessage(message, characters)', () => {
+const resources = require('../src/resource_fetcher');
+
+sinon.stub(resources, 'characters').value(characters);
+sinon.stub(resources, 'codeLength').value(2);
+
+describe('#parseMessage(message)', () => {
 	beforeEach(() => {
 		mockChannel = new mock.MockTextChannel(null);
 		mockMember = new mock.MockMember();
@@ -58,7 +64,7 @@ describe('#parseMessage(message, characters)', () => {
 	});
 });
 
-describe('#parseMessages(messages, characters, selectedCharacters)', () => {
+describe('#parseMessages(messages, selectedCharacters)', () => {
 	beforeEach(() => {
 		mockChannel = new mock.MockTextChannel();
 		mockMember1 = new mock.MockMember(null, 1);
@@ -72,7 +78,7 @@ describe('#parseMessages(messages, characters, selectedCharacters)', () => {
 		const messages = [message1, message2];
 		const selectedCharacters = [];
 
-		const result = await parseMessages(messages, characters, selectedCharacters);
+		const result = await parseMessages(messages, selectedCharacters);
 
 		assert.equal(result[0].text, 'Testing a.');
 		assert.equal(result[1].text, 'Testing b.');
@@ -85,7 +91,7 @@ describe('#parseMessages(messages, characters, selectedCharacters)', () => {
 		const messages = [message1, message2];
 		const selectedCharacters = [];
 
-		const result = await parseMessages(messages, characters, selectedCharacters);
+		const result = await parseMessages(messages, selectedCharacters);
 
 		assert.equal(result[0].text, 'Testing a.');
 		assert.equal(result[1].text, 'Testing b.');
@@ -103,7 +109,7 @@ describe('#parseMessages(messages, characters, selectedCharacters)', () => {
 			emotion: 'Neutral',
 		}];
 
-		const result = await parseMessages(messages, characters, selectedCharacters);
+		const result = await parseMessages(messages, selectedCharacters);
 
 		assert.equal(result[0].character, 'Fluttershy');
 		assert.equal(result[1].character, 'Rarity');
@@ -118,7 +124,7 @@ describe('#parseMessages(messages, characters, selectedCharacters)', () => {
 			name: 'Fluttershy',
 		}];
 
-		const result = await parseMessages(messages, characters, selectedCharacters);
+		const result = await parseMessages(messages, selectedCharacters);
 
 		assert.equal(result[0].character, 'Fluttershy');
 		assert.notEqual(result[1].character, 'Fluttershy');
@@ -131,7 +137,7 @@ describe('#parseMessages(messages, characters, selectedCharacters)', () => {
 		const messages = [message1, message2];
 		const selectedCharacters = [];
 
-		const result = await parseMessages(messages, characters, selectedCharacters);
+		const result = await parseMessages(messages, selectedCharacters);
 
 		assert(!result);
 	});
@@ -143,7 +149,7 @@ describe('#parseMessages(messages, characters, selectedCharacters)', () => {
 		const messages = [message1, message2, message3];
 		const selectedCharacters = [];
 
-		const result = await parseMessages(messages, characters, selectedCharacters);
+		const result = await parseMessages(messages, selectedCharacters);
 
 		assert(result);
 	});
