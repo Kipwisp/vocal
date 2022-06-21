@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
-const fs = require('fs');
 const config = require('../config.json');
 const commands = require('./commands');
 const notifications = require('../resources/notifications');
+const resources = require('./resource_fetcher');
 
 class Vocal {
 	async setActivity(client) {
@@ -31,9 +31,7 @@ class Vocal {
 		client.on('ready', async () => { this.setActivity(client); });
 		client.on('message', async (message) => { this.handleMessage(message); });
 
-		const auth = JSON.parse(fs.readFileSync('auth.json'));
-
-		client.login(auth.token);
+		client.login(resources.auth.token);
 	}
 }
 
