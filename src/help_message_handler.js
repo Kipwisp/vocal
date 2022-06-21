@@ -9,7 +9,7 @@ const RIGHT_ARROW = '➡️';
 const TERMINATED = '❌';
 
 function generateHelpMessage(page) {
-	let helpMessage = '>>> Powered by 15.ai\n\n**Commands**:\n';
+	let helpMessage = `>>> Powered by 15.ai | v${process.env.npm_package_version}\n\n**Commands**:\n`;
 
 	// eslint-disable-next-line global-require
 	const commands = require('./commands');
