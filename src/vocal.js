@@ -5,10 +5,15 @@ const notifications = require('../resources/notifications');
 const resources = require('./resource_fetcher');
 
 class Vocal {
-	async setActivity(client) {
+	async onReady(client) {
 		console.log(`Logged in as ${client.user.tag}! \n`);
+		this.setActivity(client);
+		setInterval(async () => { this.setActivity(client); }, 3600000); // update activity every hour
+	}
+
+	async setActivity(client) {
 		try {
-			await client.user.setActivity(notifications.notifyActivity(config.prefix));
+			await client.user.setActivity(notifications.notifyActivity(config.prefix), { type: 'LISTENING' });
 		} catch (error) {
 			console.log('Failed to set activity: ', error);
 		}
@@ -28,7 +33,7 @@ class Vocal {
 
 	start() {
 		const client = new Discord.Client();
-		client.on('ready', async () => { this.setActivity(client); });
+		client.on('ready', async () => { this.onReady(client); });
 		client.on('message', async (message) => { this.handleMessage(message); });
 
 		client.login(resources.auth.token);
