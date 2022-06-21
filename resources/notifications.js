@@ -28,7 +28,7 @@ class Notifications {
 	}
 
 	notifyActivity(prefix) {
-		return `${prefix}help | Powered by 15.ai`;
+		return `${prefix}help | Powered by 15.ai | v${process.env.npm_package_version}`;
 	}
 }
 
