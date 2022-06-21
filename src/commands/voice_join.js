@@ -7,7 +7,7 @@ const resources = require('../resource_fetcher');
 module.exports = {
 	name: 'Voice Join',
 	command: new RegExp(`^${config.prefix}[a-zA-Z]{${resources.codeLength}}\\+ `),
-	format: `${config.prefix}xxx+ message`,
+	format: `${config.prefix}${'x'.repeat(resources.codeLength)}+ message`,
 	description: 'Joins the voice channel the user is in and plays the generated voice for the selected character and message.',
 	exec: async (message) => {
 		const voiceChannel = message.member.voice.channel;
